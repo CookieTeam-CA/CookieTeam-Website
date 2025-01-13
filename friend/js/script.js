@@ -13,15 +13,19 @@ document.addEventListener('DOMContentLoaded', () => {
     let titles = [];
     const tagOptions = Array.from(searchSelect.options);
 
-    // Farben für jeden Tag definieren
     const tagColors = {
         cookieattack3: '#ffa500',
         cookieattack4: '#ffa500',
         minecraft: '#008000',
-        leon: '#0000FF'
+        leon: '#0000FF',
+        frogi: '#008000',
+        mace: '#ffa500',
+        eflix: '#C0C0FF',
+        rl: '#0000FF',
+        crazy: '#8800ff',
+        nils: '#8800ff'
     };
 
-    // Titel aus titles.txt laden
     fetch('titles.txt')
         .then(response => response.text())
         .then(text => {
