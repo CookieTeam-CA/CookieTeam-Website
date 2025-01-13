@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freundebuch</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chewy&family=Modak&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/freunde.css">
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+    <script src="js/script.js" defer></script>
+</head>
+<body> 
+    <header>
+        <h1>Freundebuch</h1>
+    </header>
+    <main>
+        <section>
+            <a href="book.html"><button>ÖFFNEN</button></a>
+        </section>
+        <section class="search">
+            <select id="searchSelect">
+                <option value="">Tags auswählen...</option>
+                <option value="aufhausen">Aufhausen</option>
+                <option value="cookieattack3">CookieAttack 3</option>
+                <option value="cookieattack4">CookieAttack 4</option>
+                <option value="bauwerk">Bauwerk</option>
+                <option value="minecraft">Random Minecraft</option>
+                <option value="frogi">Frogalented</option>
+                <option value="lado">Lado</option>
+                <option value="vertex">Vertex</option>
+                <option value="clown">Clownspieß</option>
+                <option value="basby">Basby</option>
+                <option value="leon">Leon</option>
+                <option value="mace">Mace</option>
+                <option value="eflix">Elite Felix</option>
+                <option value="felix">Felix</option>
+                <option value="nils">Nils</option>
+                <option value="prinz">Prinz</option>
+                <option value="sycron">Sycron</option>
+                <option value="lennard">Lennard</option>
+                <option value="line">Line</option>
+                <option value="enderman">Stripclub Enderman</option>
+                <option value="rekas">rekas</option>
+            </select>
+        </section> 
+        <section class="gallery">
+            <div class="gallery-item" data-tags="aufhausen, frogi, lado, vertex"><img src="img/1.png" alt="Bild 1"></div>
+            <div class="gallery-item" data-tags="aufhausen, frogi, clown, vertex, lado, basby"><img src="img/2.png" alt="Bild 2"></div>
+            <div class="gallery-item" data-tags="aufhausen, lado, basby"><img src="img/3.png" alt="Bild 3"></div>
+            <div class="gallery-item" data-tags="cookieattack3, leon"><img src="img/4.png" alt="Bild 4"></div>
+            <div class="gallery-item" data-tags="cookieattack3"><img src="img/5.png" alt="Bild 5"></div>
+            <div class="gallery-item" data-tags="cookieattack3, mace, bauwerk"><img src="img/6.png" alt="Bild 6"></div>
+            <div class="gallery-item" data-tags="cookieattack3, felix, sycron, lado, nils, leon, mace"><img src="img/7.png" alt="Bild 7"></div>
+            <div class="gallery-item" data-tags="cookieattack3, felix, sycron, lado, nils, leon, mace"><img src="img/8.png" alt="Bild 8"></div>
+            <div class="gallery-item" data-tags="cookieattack3, frogi, bauwerk"><img src="img/9.png" alt="Bild 9"></div>
+            <div class="gallery-item" data-tags="cookieattack3, clown", ><img src="img/10.png" alt="Bild 10"></div>
+            <div class="gallery-item" data-tags="cookieattack3, bauwerk"><img src="img/11.png" alt="Bild 11"></div>
+            <div class="gallery-item" data-tags="cookieattack4, clown"><img src="img/12.png" alt="Bild 12"></div>
+            <div class="gallery-item" data-tags="minecraft, mace, frogi, clown, lado"><img src="img/13.png" alt="Bild 13"></div>
+            <div class="gallery-item" data-tags="cookieattack3"><img src="img/14.png" alt="Bild 14"></div>
+            <div class="gallery-item" data-tags="cookieattack3, lado, frogi, eflix"><img src="img/15.png" alt="Bild 15"></div>
+            <div class="gallery-item" data-tags="cookieattack3, bauwerk"><img src="img/16.png" alt="Bild 16"></div>
+            <div class="gallery-item" data-tags="cookieattack3, felix, eflix"><img src="img/17.png" alt="Bild 17"></div>
+            <div class="gallery-item" data-tags="cookieattack3, lado, bauwerk"><img src="img/18.png" alt="Bild 18"></div>
+            <div class="gallery-item" data-tags="cookieattack3, eflix, nils, frogi, line"><img src="img/19.png" alt="Bild 19"></div>
+            <div class="gallery-item" data-tags="cookieattack3, felix, line, frogi, leon"><img src="img/20.png" alt="Bild 20"></div>
+            <div class="gallery-item" data-tags="cookieattack3, leon"><img src="img/21.png" alt="Bild 21"></div>
+            <div class="gallery-item" data-tags="cookieattack3, eflix, lado, frogi, bauwerk"><img src="img/22.png" alt="Bild 22"></div>
+            <div class="gallery-item" data-tags="cookieattack3, enderman"><img src="img/23.png" alt="Bild 23"></div>
+            <div class="gallery-item" data-tags="cookieattack3, leon, felix, bauwerk"><img src="img/24.png" alt="Bild 24"></div>
+            <div class="gallery-item" data-tags="cookieattack3, lado, bauwerk"><img src="img/25.png" alt="Bild 25"></div>
+            <div class="gallery-item" data-tags="cookieattack3, rekas, bauwerk"><img src="img/26.png" alt="Bild 26"></div>
+            <div class="gallery-item" data-tags="cookieattack3, clown, lado"><img src="img/27.png" alt="Bild 27"></div>
+            <div class="gallery-item" data-tags="cookieattack3, eflix, leon, clown"><img src="img/28.png" alt="Bild 28"></div>
+            <div class="gallery-item" data-tags="cookieattack3, bauwerk"><img src="img/29.png" alt="Bild 29"></div>
+            <div class="gallery-item" data-tags="cookieattack3, mace, lado, leon, frogi"><img src="img/30.png" alt="Bild 30"></div>
+            <div class="gallery-item" data-tags="cookieattack3, leon"><img src="img/31.png" alt="Bild 31"></div>
+            <div class="gallery-item" data-tags="cookieattack3, frogi"><img src="img/32.png" alt="Bild 32"></div>
+            <div class="gallery-item" data-tags="cookieattack3, leon, sycron, lado, felix, eflix, mace"><img src="img/33.png" alt="Bild 33"></div>
+            <div class="gallery-item" data-tags="cookieattack3, leon, sycron, lado, felix, eflix, mace"><img src="img/34.png" alt="Bild 34"></div>
+            <div class="gallery-item" data-tags="cookieattack3, leon, sycron, lado, felix, eflix, mace"><img src="img/35.png" alt="Bild 35"></div>
+            <div class="gallery-item" data-tags="cookieattack3, vertex, leon, lado, mace, frogi, nils"><img src="img/36.png" alt="Bild 36"></div>
+            <div class="gallery-item" data-tags="cookieattack3, nils, frogi, line, lado"><img src="img/37.png" alt="Bild 37"></div>
+            <div class="gallery-item" data-tags="cookieattack4, bauwerk"><img src="img/38.png" alt="Bild 38"></div>
+            <div class="gallery-item" data-tags="cookieattack4"><img src="img/39.gif" alt="Bild 39"></div>
+            <div class="gallery-item" data-tags="cookieattack4, clown, bauwerk"><img src="img/40.png" alt="Bild 40"></div>
+            <div class="gallery-item" data-tags="cookieattack4, mace"><img src="img/41.png" alt="Bild 41"></div>
+            <div class="gallery-item" data-tags="cookieattack4, basby, leon"><img src="img/42.png" alt="Bild 42"></div>
+            <div class="gallery-item" data-tags="cookieattack4, basby, lennard"><img src="img/43.png" alt="Bild 43"></div>
+            <div class="gallery-item" data-tags="cookieattack3, basby, prinz"><img src="img/44.png" alt="Bild 44"></div>
+            <div class="gallery-item" data-tags="cookieattack3, leon, felix"><img src="img/45.png" alt="Bild 45"></div>
+            <div class="gallery-item" data-tags="cookieattack3, leon"><img src="img/46.png" alt="Bild 46"></div>
+            <div class="gallery-item" data-tags="cookieattack3, felix"><img src="img/47.png" alt="Bild 47"></div>
+            <div class="gallery-item" data-tags="cookieattack3, bauwerk"><img src="img/48.png" alt="Bild 48"></div>
+            <div class="gallery-item" data-tags="cookieattack3, bauwerk"><img src="img/49.png" alt="Bild 49"></div>
+            <div class="gallery-item" data-tags="cookieattack3, leon"><img src="img/50.png" alt="Bild 50"></div>
+            <div class="gallery-item" data-tags="cookieattack3, lennard"><img src="img/51.png" alt="Bild 51"></div>
+            <div class="gallery-item" data-tags="cookieattack3, leon"><img src="img/52.png" alt="Bild 52"></div>
+            <div class="gallery-item" data-tags="cookieattack3, nils"><img src="img/53.png" alt="Bild 53"></div>
+            <div class="gallery-item" data-tags="cookieattack3, frogi"><img src="img/54.png" alt="Bild 54"></div>
+            <div class="gallery-item" data-tags="cookieattack3, leon, sycron, clown"><img src="img/55.png" alt="Bild 55"></div>
+            <div class="gallery-item" data-tags="cookieattack3, leon, sycron, clown, basby"><img src="img/56.png" alt="Bild 56"></div>
+        </section>
+    </main>
+</body>
+</html>

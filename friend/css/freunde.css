@@ -1,0 +1,75 @@
+body {
+    background-color: #292929;
+    padding: 0 50px; /* Hinzugefügt: 50px Padding links und rechts */
+}
+
+header {
+    color: white;
+    font-family: "Chewy", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 25px;
+    text-align: center;
+}
+
+button {
+    background-color: #292929;
+    color: white;
+    border: 2px solid white;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-family: "Chewy", serif;
+    font-weight: 400;
+    font-style: normal;
+    margin: 10px auto;
+    display: block;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    cursor: pointer;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+}
+
+button:hover {
+    background-color: white;
+    color: #292929;
+}
+
+.search {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.search select {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 2px solid white;
+    background-color: #292929;
+    color: white;
+    width: 80%;
+}
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.gallery-item {
+    width: calc(25% - 20px);
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 20px;
+}
