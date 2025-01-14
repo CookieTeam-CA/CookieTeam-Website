@@ -72,6 +72,17 @@ button:hover {
     width: 80%;
 }
 
+.search select option {
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    font-family: "Chewy", serif;
+}
+
+.search select option[data-color] {
+    background-color: var(--tag-color);
+}
+
 .gallery {
     display: flex;
     flex-wrap: wrap;
@@ -192,4 +203,30 @@ button:hover {
     font-size: 12px;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-weight: bold;
+}
+
+.modal .prev, .modal .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -22px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.6s ease;
+    user-select: none;
+}
+
+.modal .prev {
+    left: 0;
+}
+
+.modal .next {
+    right: 0;
+}
+
+.modal .prev:hover, .modal .next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
 }
