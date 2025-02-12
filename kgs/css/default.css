@@ -1,11 +1,9 @@
-/* Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Layout */
 html, body {
   font-family: Arial, sans-serif;
   line-height: 1.6;
@@ -20,7 +18,13 @@ body {
   flex: 1;
 }
 
-/* Header */
+video {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
 header {
   position: sticky;
   top: 0;
@@ -90,17 +94,14 @@ nav ul li button {
   cursor: pointer;
 }
 
-/* Dark Mode Button */
 #dark-mode-toggle {
   margin-left: auto;
 }
 
-/* Transition */
 body, header, nav ul li a, .article-intro, .article-content, footer {
   transition: background-color 0.5s ease, color 0.5s ease;
 }
 
-/* Article Intro */
 .article-intro {
   text-align: center;
   padding: 60px 20px;
@@ -117,7 +118,6 @@ body, header, nav ul li a, .article-intro, .article-content, footer {
   font-size: 1.2rem;
 }
 
-/* Article Content */
 .article-content {
   padding: 30px 20px;
   background-color: #fff;
@@ -140,7 +140,6 @@ body, header, nav ul li a, .article-intro, .article-content, footer {
   color: #555;
 }
 
-/* Footer */
 footer {
   background-color: #fff;
   color: #666;
@@ -150,13 +149,11 @@ footer {
   margin-top: auto;
 }
 
-/* Hover Effects */
 nav ul li a:hover,
 footer a:hover {
   color: #007bff;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   nav ul {
     flex-direction: column;
@@ -176,7 +173,6 @@ footer a:hover {
   }
 }
 
-/* Dark Mode Styles */
 body.dark-mode {
   background-color: #121212;
   color: #ffffff;
