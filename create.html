@@ -11,7 +11,6 @@
     <div class="stars"></div>
 
     <div class="skin-container transition-small" id="skin-container">
-        <!-- Ansicht 1: Minecraft-Nameneingabe -->
         <div id="name-input-view">
             <input type="text" id="username" placeholder="Minecraft Name" oninput="fetchSkinLive()" />
             <div id="skin-display">
@@ -20,11 +19,9 @@
                 </div>
                 <img id="skin-image" alt="Skin wird geladen..." style="display: none;">
             </div>
-            <!-- Weiter-Button -->
             <button id="next-button" style="display: none;" onclick="showSizeInputView()">Weiter</button>
         </div>
 
-        <!-- Ansicht 2: Eingabe der Größe -->
         <div id="size-input-view" style="display: none;">
             <label for="height-input">Wie hoch bist du?</label>
             <div style="display: flex; align-items: center; justify-content: center;">
