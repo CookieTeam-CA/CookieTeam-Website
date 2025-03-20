@@ -1,0 +1,122 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Chewy", serif;
+    background-color: #000;
+    color: white;
+    overflow: hidden; /* Verhindert das Scrollen der gesamten Seite */
+}
+
+header {
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(41, 41, 41, 0.7); /* Transparenter Hintergrund */
+    backdrop-filter: blur(10px); /* Glassmorphism-Effekt */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Moderne Schatten */
+    z-index: 1000;
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+header h5 {
+    color: white;
+    text-align: center;
+    margin: 5px 0 0;
+    font-size: 14px;
+}
+
+/* Navigation */
+header nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.5%;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+header nav ul li {
+    display: inline-block;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 10px 15px;
+    border-radius: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    backdrop-filter: blur(10px); /* Glassmorphism-Effekt */
+    background-color: rgba(255, 255, 255, 0.1); /* Leicht transparenter Hintergrund */
+}
+
+header nav ul li a:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Hellerer Hintergrund beim Hover */
+}
+
+/* Aktiver Menüpunkt */
+header nav ul li.active a {
+    background-color: rgba(255, 255, 255, 0.3); /* Hellerer Hintergrund für aktiven Link */
+    color: #292929;
+    cursor: default; /* Deaktiviert den Klick */
+    pointer-events: none; /* Verhindert Klicks */
+}
+
+.video-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory; /* Ermöglicht das sanfte Scrollen zwischen Videos */
+}
+
+/* Video-Stile */
+.video-item {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    scroll-snap-align: start; /* Jedes Video beginnt am oberen Rand */
+    position: relative;
+}
+
+.video-item video {
+    width: 80%;
+    height: 80%;
+    object-fit: cover; /* Verhindert Verzerrungen */
+    border-radius: 15px;
+}
+
+/* Scroll-Buttons */
+.scroll-buttons {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.scroll-buttons button {
+    background-color: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 24px;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: background-color 0.3s ease;
+}
+
+.scroll-buttons button:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Scrollbar ausblenden */
+.video-container::-webkit-scrollbar {
+    display: none;
+}

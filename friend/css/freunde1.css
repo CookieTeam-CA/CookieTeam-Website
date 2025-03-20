@@ -1,60 +1,112 @@
+/* Allgemeine Stile */
 body {
     background-color: #292929;
     padding: 0 2.5%;
+    margin: 0;
+    font-family: "Chewy", serif;
 }
 
+/* Gläserner Header */
 header {
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(41, 41, 41, 0.7); /* Transparenter Hintergrund */
+    backdrop-filter: blur(10px); /* Glassmorphism-Effekt */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Moderne Schatten */
+    z-index: 1000;
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+header h5 {
     color: white;
-    font-family: "Chewy", serif;
-    font-weight: 400;
-    font-style: normal;
-    font-size: 25px;
     text-align: center;
+    margin: 5px 0 0;
+    font-size: 14px;
+}
+
+/* Navigation */
+header nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.5%;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+header nav ul li {
+    display: inline-block;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 10px 15px;
+    border-radius: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    backdrop-filter: blur(10px); /* Glassmorphism-Effekt */
+    background-color: rgba(255, 255, 255, 0.1); /* Leicht transparenter Hintergrund */
+}
+
+header nav ul li a:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Hellerer Hintergrund beim Hover */
+}
+
+/* Aktiver Menüpunkt */
+header nav ul li.active a {
+    background-color: rgba(255, 255, 255, 0.3); /* Hellerer Hintergrund für aktiven Link */
+    color: #292929;
+    cursor: default; /* Deaktiviert den Klick */
+    pointer-events: none; /* Verhindert Klicks */
 }
 
 ::-webkit-scrollbar {
     width: 10px;
-  }
-  
-  ::-webkit-scrollbar-track {
+}
+
+::-webkit-scrollbar-track {
     background: #292929;
-  }
-  
-  ::-webkit-scrollbar-thumb {
+}
+
+::-webkit-scrollbar-thumb {
     background: #555;
     border-radius: 5px;
-  }
-  
-  ::-webkit-scrollbar-thumb:hover {
+}
+
+::-webkit-scrollbar-thumb:hover {
     background: #888;
-  }
+}
 
 button {
-    background-color: #292929;
+    background-color: rgba(41, 41, 41, 0.7); /* Transparenter Hintergrund */
     color: white;
-    border: 2px solid white;
-    border-radius: 5px;
+    border: 2px solid rgba(255, 255, 255, 0.2); /* Leicht transparente Border */
+    border-radius: 10px; /* Abgerundete Ecken */
     padding: 10px 20px;
     font-size: 16px;
     font-family: "Chewy", serif;
     font-weight: 400;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
+    backdrop-filter: blur(10px); /* Glassmorphism-Effekt */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Moderne Schatten */
 }
 
 button:hover {
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.2); /* Hellerer Hintergrund beim Hover */
     color: #292929;
 }
 
-.fixed-button {
-    margin: 10px auto;
-    display: block;
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;
+.intro {
+    color: white;
+    font-family: "Chewy", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 25px;
+    text-align: center;
 }
 
 .search {
@@ -65,11 +117,13 @@ button:hover {
 .search select {
     padding: 10px;
     font-size: 16px;
-    border-radius: 5px;
-    border: 2px solid white;
-    background-color: #292929;
+    border-radius: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.2); /* Leicht transparente Border */
+    background-color: rgba(41, 41, 41, 0.7); /* Transparenter Hintergrund */
     color: white;
     width: 80%;
+    backdrop-filter: blur(10px); /* Glassmorphism-Effekt */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Moderne Schatten */
 }
 
 .search select option {
@@ -77,10 +131,6 @@ button:hover {
     padding: 10px;
     font-size: 16px;
     font-family: "Chewy", serif;
-}
-
-.search select option[data-color] {
-    background-color: var(--tag-color);
 }
 
 .gallery {
@@ -98,6 +148,15 @@ button:hover {
     margin-bottom: 10px;
     overflow: hidden;
     border-radius: 20px;
+    background-color: rgba(41, 41, 41, 0.7); /* Transparenter Hintergrund */
+    backdrop-filter: blur(10px); /* Glassmorphism-Effekt */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Moderne Schatten */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px); /* Leichter Hover-Effekt */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Stärkerer Schatten beim Hover */
 }
 
 .gallery-item img,
@@ -118,10 +177,11 @@ button:hover {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: rgba(0, 0, 0, 0.7); /* Dunkler, transparenter Hintergrund */
     text-align: center;
     opacity: 0;
     transition: opacity 0.3s ease;
+    backdrop-filter: blur(10px); /* Glassmorphism-Effekt */
 }
 
 .modal.show {
@@ -133,10 +193,11 @@ button:hover {
     display: block;
     max-width: 80%;
     border-radius: 20px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Starker Schatten für das Modal */
 }
 
 #modalInfo {
-    background-color: #333;
+    background-color: rgba(51, 51, 51, 0.8); /* Transparenter Hintergrund */
     color: white;
     padding: 15px 20px;
     max-width: 80%;
@@ -147,6 +208,8 @@ button:hover {
     align-items: center;
     gap: 20px;
     font-family: "Chewy", serif;
+    backdrop-filter: blur(10px); /* Glassmorphism-Effekt */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Moderne Schatten */
 }
 
 #modalInfo > div {
@@ -172,23 +235,28 @@ button:hover {
     font-size: 14px;
     font-weight: bold;
     display: inline-block;
+    background-color: rgba(85, 85, 85, 0.7); /* Transparenter Hintergrund */
+    backdrop-filter: blur(10px); /* Glassmorphism-Effekt */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Moderne Schatten */
 }
 
 #downloadBtn button {
-    background-color: #292929;
+    background-color: rgba(41, 41, 41, 0.7); /* Transparenter Hintergrund */
     color: white;
-    border: 2px solid white;
-    border-radius: 5px;
+    border: 2px solid rgba(255, 255, 255, 0.2); /* Leicht transparente Border */
+    border-radius: 10px;
     padding: 10px 20px;
     font-size: 16px;
     font-family: "Chewy", serif;
     font-weight: 400;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
+    backdrop-filter: blur(10px); /* Glassmorphism-Effekt */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Moderne Schatten */
 }
 
 #downloadBtn button:hover {
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.2); /* Hellerer Hintergrund beim Hover */
     color: #292929;
 }
 
@@ -196,13 +264,15 @@ button:hover {
     position: absolute;
     bottom: 5px;
     right: 5px;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.7); /* Transparenter Hintergrund */
     color: white;
     padding: 5px 10px;
     border-radius: 5px;
     font-size: 12px;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-weight: bold;
+    backdrop-filter: blur(10px); /* Glassmorphism-Effekt */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Moderne Schatten */
 }
 
 .modal .prev, .modal .next {
@@ -217,16 +287,20 @@ button:hover {
     font-size: 18px;
     transition: 0.6s ease;
     user-select: none;
+    background-color: rgba(0, 0, 0, 0.5); /* Transparenter Hintergrund */
+    border-radius: 50%;
+    backdrop-filter: blur(10px); /* Glassmorphism-Effekt */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Moderne Schatten */
 }
 
 .modal .prev {
-    left: 0;
+    left: 20px;
 }
 
 .modal .next {
-    right: 0;
+    right: 20px;
 }
 
 .modal .prev:hover, .modal .next:hover {
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.8); /* Dunklerer Hintergrund beim Hover */
 }
