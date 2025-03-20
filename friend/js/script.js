@@ -16,6 +16,14 @@ document.addEventListener('DOMContentLoaded', () => {
     xButton.classList.add('x-button');
     modal.appendChild(xButton);
 
+    let resizeTimer;
+    window.addEventListener("resize", () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            msnry.layout();
+        }, 300); // Layout nur alle 300ms aktualisieren
+    });
+
     let titles = [];
     const tagOptions = Array.from(searchSelect.options);
 
@@ -46,6 +54,16 @@ document.addEventListener('DOMContentLoaded', () => {
             titles = text.split('\n').map(line => line.trim());
         });
 
+    // Funktion zur Überprüfung, ob ein GIF existiert
+    async function checkGifExists(gifPath) {
+        try {
+            const response = await fetch(gifPath);
+            return response.ok;
+        } catch {
+            return false;
+        }
+    }
+
     items.forEach((item, index) => {
         const isVideo = item.querySelector('video') !== null;
 
@@ -56,14 +74,25 @@ document.addEventListener('DOMContentLoaded', () => {
             videoLabel.classList.add('video-label');
             item.appendChild(videoLabel);
 
-            video.muted = true;
-            video.loop = true;
-            video.play();
+            // Vorschau für Videos (GIF oder Platzhalter-Bild)
+            const videoSrc = video.getAttribute('src');
+            const videoNumber = videoSrc.match(/\d+/)[0]; // Extrahiere die Nummer aus dem Dateinamen
+            const gifPath = `img/gifs/${videoNumber}.gif`;
+
+            checkGifExists(gifPath).then((gifExists) => {
+                const previewImg = document.createElement('img');
+                previewImg.classList.add('video-preview');
+                previewImg.src = gifExists ? gifPath : 'img/assets/no_preview.png';
+                previewImg.alt = `Vorschau ${videoNumber}`;
+                item.insertBefore(previewImg, video);
+
+                // Verstecke das Video-Element, bis es angeklickt wird
+                video.style.display = 'none';
+            });
 
             item.addEventListener('click', () => {
                 const tags = item.getAttribute('data-tags').split(',').map(tag => tag.trim());
                 const title = titles[index] || `Video ${index + 1}`;
-                const videoSrc = video.getAttribute('src');
 
                 modalImage.style.display = 'none';
                 modalVideo.style.display = 'block';
@@ -196,9 +225,6 @@ document.addEventListener('DOMContentLoaded', () => {
         zoomLevel = Math.max(1, Math.min(zoomLevel, 3));
         modalImage.style.transform = `scale(${zoomLevel})`;
     });
-
-    
-
 });
 
 let visibleItems = [];
