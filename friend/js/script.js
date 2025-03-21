@@ -1,285 +1,243 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // DOM Elemente
     const gallery = document.querySelector('.gallery');
-    const items = Array.from(gallery.children);
     const searchSelect = document.getElementById('searchSelect');
     const modal = document.getElementById('imageModal');
     const modalImage = document.getElementById('modalImage');
     const modalVideo = document.getElementById('modalVideo');
-    const modalInfo = document.getElementById('modalInfo');
     const modalTags = document.getElementById('modalTags');
     const modalTitle = document.getElementById('modalTitle');
-    const closeBtn = document.querySelector('.close');
     const downloadBtn = document.getElementById('downloadBtn');
     
-    const xButton = document.createElement('button');
-    xButton.innerText = 'X';
-    xButton.classList.add('x-button');
-    modal.appendChild(xButton);
+    // Masonry Instanz und State
+    let masonry = null;
+    let mediaItems = [];
+    let visibleItems = [];
+    let currentIndex = 0;
 
-    let resizeTimer;
-    window.addEventListener("resize", () => {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => {
-            msnry.layout();
-        }, 300); // Layout nur alle 300ms aktualisieren
-    });
+    // API Konfiguration
+    const API_BASE_URL = 'http://api.cookieattack.de:3671';
+    const UPLOADS_URL = `${API_BASE_URL}/uploads`;
 
-    let titles = [];
-    const tagOptions = Array.from(searchSelect.options);
-
+    // Tag Farbkonfiguration
     const tagColors = {
-        cookieattack3: '#ffa500',
-        cookieattack4: '#ffa500',
-        minecraft: '#008000',
-        leon: '#0000FF',
-        frogi: '#008000',
-        mace: '#ffa500',
-        eflix: '#C0C0FF',
-        rl: '#0000FF',
-        crazy: '#8800ff',
-        nils: '#8800ff'
+        aufhausen: '#4CAF50',
+        cookieattack: '#FF9800',
+        minecraft: '#8BC34A',
+        hyklos: '#9C27B0',
+        leon: '#2196F3',
+        frogi: '#4CAF50',
+        mace: '#FF5722',
+        eflix: '#3F51B5',
+        rl: '#00BCD4',
+        vertex: '#E91E63',
+        prinz: '#9E9E9E',
+        nils: '#673AB7',
+        crazy: '#FF4081'
     };
 
-    tagOptions.forEach(option => {
-        const color = tagColors[option.value];
-        if (color) {
-            option.style.backgroundColor = color;
-            option.style.color = 'white';
-        }
-    });
+    // Initialisierung
+    init();
 
-    fetch('titles.txt')
-        .then(response => response.text())
-        .then(text => {
-            titles = text.split('\n').map(line => line.trim());
-        });
-
-    // Funktion zur Überprüfung, ob ein GIF existiert
-    async function checkGifExists(gifPath) {
+    async function init() {
         try {
-            const response = await fetch(gifPath);
-            return response.ok;
-        } catch {
-            return false;
+            await loadMedia();
+            initMasonry();
+            setupTagFilter();
+            setupEventListeners();
+        } catch (error) {
+            console.error('Initialisierungsfehler:', error);
+            showError('Fehler beim Laden der Inhalte');
         }
     }
 
-    items.forEach((item, index) => {
-        const isVideo = item.querySelector('video') !== null;
+    // Medien von API laden
+    async function loadMedia() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/media`);
+            if (!response.ok) throw new Error(`HTTP Fehler: ${response.status}`);
+            
+            const data = await response.json();
+            gallery.innerHTML = '';
+            mediaItems = data.map(createMediaElement);
+            mediaItems.forEach(item => gallery.appendChild(item));
+            
+        } catch (error) {
+            console.error('Medien-Ladefehler:', error);
+            throw error;
+        }
+    }
 
+    // Media Element erstellen
+    function createMediaElement(media) {
+        const item = document.createElement('div');
+        item.className = 'gallery-item';
+        item.dataset.tags = media.tags.join(',').toLowerCase();
+
+        const isVideo = media.filetype === 'video';
+        const mediaElement = isVideo ? 
+            document.createElement('video') : 
+            document.createElement('img');
+
+        // Media URL mit externer API
+        mediaElement.src = `${UPLOADS_URL}/${media.filename}`;
+        mediaElement.alt = media.title || media.filename;
+        mediaElement.loading = 'lazy';
+        
         if (isVideo) {
-            const video = item.querySelector('video');
-            const videoLabel = document.createElement('div');
-            videoLabel.innerText = 'VIDEO';
-            videoLabel.classList.add('video-label');
-            item.appendChild(videoLabel);
-
-            // Vorschau für Videos (GIF oder Platzhalter-Bild)
-            const videoSrc = video.getAttribute('src');
-            const videoNumber = videoSrc.match(/\d+/)[0]; // Extrahiere die Nummer aus dem Dateinamen
-            const gifPath = `img/gifs/${videoNumber}.gif`;
-
-            checkGifExists(gifPath).then((gifExists) => {
-                const previewImg = document.createElement('img');
-                previewImg.classList.add('video-preview');
-                previewImg.src = gifExists ? gifPath : 'img/assets/no_preview.png';
-                previewImg.alt = `Vorschau ${videoNumber}`;
-                item.insertBefore(previewImg, video);
-
-                // Verstecke das Video-Element, bis es angeklickt wird
-                video.style.display = 'none';
-            });
-
-            item.addEventListener('click', () => {
-                const tags = item.getAttribute('data-tags').split(',').map(tag => tag.trim());
-                const title = titles[index] || `Video ${index + 1}`;
-
-                modalImage.style.display = 'none';
-                modalVideo.style.display = 'block';
-                modalVideo.src = videoSrc;
-                modalVideo.play();
-
-                modalTags.innerHTML = '';
-                tags.forEach(tagId => {
-                    const option = tagOptions.find(opt => opt.value === tagId);
-                    if (option) {
-                        const tagElement = document.createElement('div');
-                        tagElement.classList.add('tag');
-                        tagElement.innerText = option.innerText;
-                        tagElement.style.backgroundColor = tagColors[tagId] || '#555';
-                        modalTags.appendChild(tagElement);
-                    }
-                });
-
-                modalTitle.innerText = `Titel: ${title}`;
-                downloadBtn.href = videoSrc;
-
-                modal.style.display = 'block';
-                modal.classList.add('show');
-            });
-        } else {
-            item.addEventListener('click', () => {
-                const tags = item.getAttribute('data-tags').split(',').map(tag => tag.trim());
-                const title = titles[index] || `Bild ${index + 1}`;
-                const pngSrc = `img/png/${index + 1}.png`;
-
-                modalImage.src = pngSrc;
-                modalVideo.style.display = 'none';
-                modalImage.style.display = 'block';
-
-                modalTags.innerHTML = '';
-                tags.forEach(tagId => {
-                    const option = tagOptions.find(opt => opt.value === tagId);
-                    if (option) {
-                        const tagElement = document.createElement('div');
-                        tagElement.classList.add('tag');
-                        tagElement.innerText = option.innerText;
-                        tagElement.style.backgroundColor = tagColors[tagId] || '#555';
-                        modalTags.appendChild(tagElement);
-                    }
-                });
-
-                modalTitle.innerText = `Titel: ${title}`;
-                downloadBtn.href = pngSrc;
-
-                modal.style.display = 'block';
-                modal.classList.add('show');
-            });
+            mediaElement.muted = true;
+            mediaElement.loop = true;
+            mediaElement.playsInline = true;
+            addVideoLabel(item);
         }
-    });
 
-    closeBtn.addEventListener('click', () => {
-        modal.style.display = 'none';
-        modal.classList.remove('show');
-        modalVideo.pause();
-    });
+        item.appendChild(mediaElement);
+        return item;
+    }
 
-    xButton.addEventListener('click', () => {
-        modal.style.display = 'none';
-        modal.classList.remove('show');
-        modalVideo.pause();
-    });
+    // Video Label hinzufügen
+    function addVideoLabel(item) {
+        const label = document.createElement('div');
+        label.className = 'video-label';
+        label.textContent = 'VIDEO';
+        item.appendChild(label);
+    }
 
-    window.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.style.display = 'none';
-            modal.classList.remove('show');
-            modalVideo.pause();
-        }
-    });
+    // Masonry Layout initialisieren
+    function initMasonry() {
+        masonry = new Masonry(gallery, {
+            itemSelector: '.gallery-item',
+            columnWidth: '.gallery-item',
+            percentPosition: true,
+            gutter: 10
+        });
 
-    items.sort(() => Math.random() - 0.5);
-    gallery.innerHTML = '';
-    items.forEach(item => gallery.appendChild(item));
+        imagesLoaded(gallery).on('progress', () => masonry.layout());
+    }
 
-    const msnry = new Masonry(gallery, {
-        itemSelector: '.gallery-item',
-        columnWidth: '.gallery-item',
-        percentPosition: true,
-        gutter: 10
-    });
+    // Tag Filter einrichten
+    function setupTagFilter() {
+        const tags = new Set();
+        mediaItems.forEach(item => {
+            item.dataset.tags.split(',').forEach(tag => tags.add(tag.trim()));
+        });
 
-    imagesLoaded(gallery, () => {
-        msnry.layout();
-    });
+        searchSelect.innerHTML = '<option value="">Alle anzeigen</option>';
+        tags.forEach(tag => {
+            const option = document.createElement('option');
+            option.value = tag;
+            option.textContent = tag;
+            option.style.backgroundColor = tagColors[tag] || '#607D8B';
+            option.style.color = 'white';
+            searchSelect.appendChild(option);
+        });
+    }
 
-    searchSelect.addEventListener('change', () => {
-        const selectedTag = searchSelect.value.toLowerCase();
-        items.forEach(item => {
-            const tags = item.getAttribute('data-tags').toLowerCase();
-            if (selectedTag === "" || tags.includes(selectedTag)) {
-                item.style.display = 'block';
-            } else {
-                item.style.display = 'none';
+    // Event Listener einrichten
+    function setupEventListeners() {
+        // Media Klicks
+        mediaItems.forEach((item, index) => {
+            item.addEventListener('click', () => handleMediaClick(item, index));
+        });
+
+        // Filter
+        searchSelect.addEventListener('change', () => {
+            const filter = searchSelect.value.toLowerCase();
+            mediaItems.forEach(item => {
+                item.style.display = filter && !item.dataset.tags.includes(filter) ? 
+                    'none' : 'block';
+            });
+            masonry.layout();
+            updateVisibleItems();
+        });
+
+        // Modal Navigation
+        modal.querySelector('.close').addEventListener('click', closeModal);
+        modal.querySelector('.prev').addEventListener('click', () => navigate(-1));
+        modal.querySelector('.next').addEventListener('click', () => navigate(1));
+        
+        // Tastatur Events
+        document.addEventListener('keydown', (e) => {
+            if (modal.style.display === 'block') {
+                if (e.key === 'Escape') closeModal();
+                if (e.key === 'ArrowLeft') navigate(-1);
+                if (e.key === 'ArrowRight') navigate(1);
             }
         });
-        msnry.layout();
-        updateVisibleItems();
-    });
 
-    updateVisibleItems();
-
-    searchSelect.addEventListener('change', () => {
-        updateVisibleItems();
-    });
-
-    const galleryItems = document.querySelectorAll('.gallery-item');
-
-    galleryItems.forEach((item, index) => {
-        item.addEventListener('click', () => {
-            currentIndex = visibleItems.indexOf(item);
-            showSlide(currentIndex);
-            modal.style.display = 'block';
-            modal.classList.add('show');
+        // Klick außerhalb schließt Modal
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
         });
-    });
+    }
 
-    let zoomLevel = 1;
-    modalImage.addEventListener('wheel', (e) => {
-        e.preventDefault();
-        if (e.deltaY < 0) {
-            zoomLevel += 0.1;
-        } else {
-            zoomLevel -= 0.1;
-        }
-        zoomLevel = Math.max(1, Math.min(zoomLevel, 3));
-        modalImage.style.transform = `scale(${zoomLevel})`;
-    });
-});
-
-let visibleItems = [];
-let currentIndex = 0;
-
-function updateVisibleItems() {
-    const allItems = document.querySelectorAll('.gallery-item');
-    visibleItems = Array.from(allItems).filter(item => item.style.display !== 'none');
-}
-
-function showSlide(index) {
-    const itemCount = visibleItems.length;
-
-    if (index >= itemCount) {
-        currentIndex = 0;
-    } else if (index < 0) {
-        currentIndex = itemCount - 1;
-    } else {
+    // Media Click Handler
+    function handleMediaClick(item, index) {
         currentIndex = index;
+        updateVisibleItems();
+        showModal(item);
     }
 
-    const currentItem = visibleItems[currentIndex];
-    const isVideo = currentItem.querySelector('video') !== null;
+    // Modal anzeigen
+    function showModal(item) {
+        const mediaElement = item.querySelector('img, video');
+        const isVideo = mediaElement.tagName === 'VIDEO';
 
-    if (isVideo) {
-        const videoSrc = currentItem.querySelector('video').getAttribute('src');
-        modalImage.style.display = 'none';
-        modalVideo.style.display = 'block';
-        modalVideo.src = videoSrc;
-        modalVideo.play();
-    } else {
-        const imgSrc = currentItem.querySelector('img').getAttribute('src');
-        modalVideo.style.display = 'none';
-        modalImage.style.display = 'block';
-        modalImage.src = imgSrc;
-    }
-}
+        // Vollständige URL für Modal und Download
+        const mediaUrl = `${UPLOADS_URL}/${mediaElement.alt}`;
 
-document.querySelector('.prev').addEventListener('click', () => showSlide(currentIndex - 1));
-document.querySelector('.next').addEventListener('click', () => showSlide(currentIndex + 1));
+        if (isVideo) {
+            modalVideo.src = mediaUrl;
+            modalVideo.style.display = 'block';
+            modalImage.style.display = 'none';
+            modalVideo.play();
+        } else {
+            modalImage.src = mediaUrl;
+            modalImage.style.display = 'block';
+            modalVideo.style.display = 'none';
+        }
 
-const style = document.createElement('style');
-style.innerHTML = `
-    .x-button {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background-color: transparent;
-        border: none;
-        font-size: 24px;
-        color: white;
-        cursor: pointer;
+        // Metadata anzeigen
+        modalTitle.textContent = mediaElement.alt;
+        modalTags.innerHTML = item.dataset.tags.split(',').map(tag => 
+            `<div class="tag" style="background-color: ${tagColors[tag] || '#607D8B'}">${tag}</div>`
+        ).join('');
+
+        // Download Link
+        downloadBtn.href = mediaUrl;
+        downloadBtn.download = mediaElement.alt;
+
+        // Modal einblenden
+        modal.style.display = 'block';
+        modal.classList.add('visible'); // Neue Klasse für Sichtbarkeit
     }
-    .x-button:hover {
-        color: red;
+
+    // Navigation im Modal
+    function navigate(direction) {
+        currentIndex = (currentIndex + direction + visibleItems.length) % visibleItems.length;
+        showModal(visibleItems[currentIndex]);
     }
-`;
-document.head.appendChild(style);
+
+    // Sichtbare Items aktualisieren
+    function updateVisibleItems() {
+        visibleItems = mediaItems.filter(item => 
+            item.style.display !== 'none' && getComputedStyle(item).display !== 'none'
+        );
+    }
+
+    // Modal schließen
+    function closeModal() {
+        modal.style.display = 'none';
+        modal.classList.remove('visible'); // Klasse entfernen
+        modalVideo.pause();
+        modalVideo.currentTime = 0;
+    }
+
+    // Fehler anzeigen
+    function showError(message) {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-message';
+        errorDiv.textContent = message;
+        gallery.appendChild(errorDiv);
+    }
+});

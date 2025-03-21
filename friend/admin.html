@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Bilderbuch</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Bilderbuch</a></li>
+                <li><a href="upload.html">Upload</a></li>
+                <li class="active"><a href="admin.html" aria-current="page">Admin</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="admin-container">
+            <h1>Admin Panel</h1>
+            
+            <!-- Medienliste -->
+            <div id="media-list">
+                <!-- Medien werden hier dynamisch geladen -->
+            </div>
+
+            <!-- Statusmeldungen -->
+            <div id="status-messages"></div>
+        </div>
+    </main>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>

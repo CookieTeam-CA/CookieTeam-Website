@@ -1,0 +1,83 @@
+body {
+    background-color: #292929;
+    color: white;
+    font-family: 'Chewy', sans-serif;
+    margin: 0;
+    padding: 0 2.5%;
+}
+
+.admin-container {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+.media-item {
+    background-color: rgba(41, 41, 41, 0.8);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.media-preview {
+    max-width: 150px;
+    border-radius: 10px;
+}
+
+.media-info {
+    flex-grow: 1;
+}
+
+.media-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.tag {
+    display: inline-block;
+    background-color: #555;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-right: 5px;
+}
+
+button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.approve-btn {
+    background-color: #4CAF50;
+}
+
+.reject-btn {
+    background-color: #f44336;
+}
+
+.edit-btn {
+    background-color: #2196F3;
+}
+
+#status-messages {
+    margin-top: 20px;
+}
+
+.status-message {
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+}
+
+.status-message.success {
+    background-color: #4CAF50;
+}
+
+.status-message.error {
+    background-color: #f44336;
+}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload - Bilderbuch</title>
+    <link href="https://fonts.googleapis.com/css2?family=Chewy&family=Modak&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/freunde1.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Bilderbuch</a></li>
+                <li class="active"><a href="#" aria-current="page">Upload</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="upload-container">
+            <h1>Dateien hochladen</h1>
+            
+            <!-- Drag & Drop Bereich -->
+            <div id="drop-zone">
+                <p>Ziehe Dateien hierher oder klicke zum Auswählen</p>
+                <input type="file" id="file-input" multiple accept="image/*, video/*">
+            </div>
+
+            <!-- Fortschrittsbalken -->
+            <div class="progress-container">
+                <div id="progress-bar"></div>
+            </div>
+
+            <!-- Tag-Eingabe -->
+            <div class="tag-input">
+                <label for="tags">Tags (mit Komma getrennt):</label>
+                <input type="text" id="tags" placeholder="z.B. cookieattack3, leon, frogi">
+            </div>
+
+            <!-- Hochladen Button -->
+            <button id="upload-btn">Hochladen</button>
+
+            <!-- Statusmeldungen -->
+            <div id="status-messages"></div>
+        </div>
+    </main>
+
+    <script src="js/upload.js"></script>
+</body>
+</html>

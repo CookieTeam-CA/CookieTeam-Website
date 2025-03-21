@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="css/freunde1.css">
     <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
     <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
-    <script src="js/script.js" defer></script>
 </head>
 <body> 
     <header>
@@ -25,167 +24,14 @@
     <main>
         <section class="intro">
             <h1>Bilderbuch</h1>
-            <h5>Wenn es bei euch bugs gibt dann drückt Strg + Shift + R</h5>
-            <h5>Wenn Videos hinter Bildern sind müsst ihr die einmal die größe des Fensters ändern.</h5>
         </section>
         <section class="search">
             <select id="searchSelect">
-                <option value="">Tags auswählen...</option>
-                <option value="aufhausen">Aufhausen</option>
-                <option value="cookieattack1">CookieAttack 1</option>
-                <option value="cookieattack2">CookieAttack 2</option>
-                <option value="cookieattack3">CookieAttack 3</option>
-                <option value="cookieattack4">CookieAttack 4</option>
-                <option value="hyklos">Hyklos 3</option>
-                <option value="bauwerk">Bauwerk</option>
-                <option value="minecraft">Random Minecraft</option>
-                <option value="ets">Euro Truck</option>
-                <option value="gta">Grand Theft Auto</option>
-                <option value="brawl">Brawlhalla</option>
-                <option value="rl">Rocket League</option>
-                <option value="frogi">Frogalented</option>
-                <option value="lado">Lado</option>
-                <option value="vertex">Vertex</option>
-                <option value="clown">Clownspieß</option>
-                <option value="basby">Basby</option>
-                <option value="leon">Leon</option>
-                <option value="mace">Mace</option>
-                <option value="eflix">Elite Felix</option>
-                <option value="felix">Felix</option>
-                <option value="nils">Nils</option>
-                <option value="prinz">Prinz</option>
-                <option value="sycron">Sycron</option>
-                <option value="lennard">Lennardo</option>
-                <option value="line">Line</option>
-                <option value="enderman">Stripclub Enderman</option>
-                <option value="rekas">rekas</option>
-                <option value="crazy">Crazy</option>
+                <option value="">Alle anzeigen</option>
             </select>
         </section> 
         <section class="gallery">
-            <div class="gallery-item" data-tags="aufhausen, frogi, lado, vertex"><img src="img/1.webp" alt="Bild 1"></div>
-            <div class="gallery-item" data-tags="aufhausen, frogi, clown, vertex, lado, basby"><img src="img/2.webp" alt="Bild 2"></div>
-            <div class="gallery-item" data-tags="aufhausen, lado, basby"><img src="img/3.webp" alt="Bild 3"></div>
-            <div class="gallery-item" data-tags="cookieattack3, leon"><img src="img/4.webp" alt="Bild 4"></div>
-            <div class="gallery-item" data-tags="cookieattack3"><img src="img/5.webp" alt="Bild 5"></div>
-            <div class="gallery-item" data-tags="cookieattack3, mace, bauwerk"><img src="img/6.webp" alt="Bild 6"></div>
-            <div class="gallery-item" data-tags="cookieattack3, felix, sycron, lado, nils, leon, mace"><img src="img/7.webp" alt="Bild 7"></div>
-            <div class="gallery-item" data-tags="cookieattack3, felix, sycron, lado, nils, leon, mace"><img src="img/8.webp" alt="Bild 8"></div>
-            <div class="gallery-item" data-tags="cookieattack3, frogi, bauwerk"><img src="img/9.webp" alt="Bild 9"></div>
-            <div class="gallery-item" data-tags="cookieattack3, clown"><img src="img/10.webp" alt="Bild 10"></div>
-            <div class="gallery-item" data-tags="cookieattack3, bauwerk"><img src="img/11.webp" alt="Bild 11"></div>
-            <div class="gallery-item" data-tags="cookieattack4, clown"><img src="img/12.webp" alt="Bild 12"></div>
-            <div class="gallery-item" data-tags="minecraft, mace, frogi, clown, lado"><img src="img/13.webp" alt="Bild 13"></div>
-            <div class="gallery-item" data-tags="cookieattack3"><img src="img/14.webp" alt="Bild 14"></div>
-            <div class="gallery-item" data-tags="cookieattack3, lado, frogi, eflix"><img src="img/15.webp" alt="Bild 15"></div>
-            <div class="gallery-item" data-tags="cookieattack3, bauwerk"><img src="img/16.webp" alt="Bild 16"></div>
-            <div class="gallery-item" data-tags="cookieattack3, felix, eflix"><img src="img/17.webp" alt="Bild 17"></div>
-            <div class="gallery-item" data-tags="cookieattack3, lado, bauwerk"><img src="img/18.webp" alt="Bild 18"></div>
-            <div class="gallery-item" data-tags="cookieattack3, eflix, nils, frogi, line"><img src="img/19.webp" alt="Bild 19"></div>
-            <div class="gallery-item" data-tags="cookieattack3, felix, line, frogi, leon"><img src="img/20.webp" alt="Bild 20"></div>
-            <div class="gallery-item" data-tags="cookieattack3, leon"><img src="img/21.webp" alt="Bild 21"></div>
-            <div class="gallery-item" data-tags="cookieattack3, eflix, lado, frogi, bauwerk"><img src="img/22.webp" alt="Bild 22"></div>
-            <div class="gallery-item" data-tags="cookieattack3, enderman"><img src="img/23.webp" alt="Bild 23"></div>
-            <div class="gallery-item" data-tags="cookieattack3, leon, felix, bauwerk"><img src="img/24.webp" alt="Bild 24"></div>
-            <div class="gallery-item" data-tags="cookieattack3, lado, bauwerk"><img src="img/25.webp" alt="Bild 25"></div>
-            <div class="gallery-item" data-tags="cookieattack3, rekas, bauwerk"><img src="img/26.webp" alt="Bild 26"></div>
-            <div class="gallery-item" data-tags="cookieattack3, clown, lado"><img src="img/27.webp" alt="Bild 27"></div>
-            <div class="gallery-item" data-tags="cookieattack3, eflix, leon, clown"><img src="img/28.webp" alt="Bild 28"></div>
-            <div class="gallery-item" data-tags="cookieattack3, bauwerk"><img src="img/29.webp" alt="Bild 29"></div>
-            <div class="gallery-item" data-tags="cookieattack3, mace, lado, leon, frogi"><img src="img/30.webp" alt="Bild 30"></div>
-            <div class="gallery-item" data-tags="cookieattack3, leon"><img src="img/31.webp" alt="Bild 31"></div>
-            <div class="gallery-item" data-tags="cookieattack3, frogi"><img src="img/32.webp" alt="Bild 32"></div>
-            <div class="gallery-item" data-tags="cookieattack3, leon, sycron, lado, felix, eflix, mace"><img src="img/33.webp" alt="Bild 33"></div>
-            <div class="gallery-item" data-tags="cookieattack3, leon, sycron, lado, felix, eflix, mace"><img src="img/34.webp" alt="Bild 34"></div>
-            <div class="gallery-item" data-tags="cookieattack3, leon, sycron, lado, felix, eflix, mace"><img src="img/35.webp" alt="Bild 35"></div>
-            <div class="gallery-item" data-tags="cookieattack3, vertex, leon, lado, mace, frogi, nils"><img src="img/36.webp" alt="Bild 36"></div>
-            <div class="gallery-item" data-tags="cookieattack3, nils, frogi, line, lado"><img src="img/37.webp" alt="Bild 37"></div>
-            <div class="gallery-item" data-tags="cookieattack4, bauwerk"><img src="img/38.webp" alt="Bild 38"></div>
-            <div class="gallery-item" data-tags="cookieattack4"><img src="img/39.gif" alt="Bild 39"></div>
-            <div class="gallery-item" data-tags="cookieattack4, clown, bauwerk"><img src="img/40.webp" alt="Bild 40"></div>
-            <div class="gallery-item" data-tags="cookieattack4, mace"><img src="img/41.webp" alt="Bild 41"></div>
-            <div class="gallery-item" data-tags="cookieattack4, basby, leon"><img src="img/42.webp" alt="Bild 42"></div>
-            <div class="gallery-item" data-tags="cookieattack4, basby, lennard"><img src="img/43.webp" alt="Bild 43"></div>
-            <div class="gallery-item" data-tags="cookieattack3, basby, prinz"><img src="img/44.webp" alt="Bild 44"></div>
-            <div class="gallery-item" data-tags="cookieattack3, leon, felix"><img src="img/45.webp" alt="Bild 45"></div>
-            <div class="gallery-item" data-tags="cookieattack3, leon"><img src="img/46.webp" alt="Bild 46"></div>
-            <div class="gallery-item" data-tags="cookieattack3, felix"><img src="img/47.webp" alt="Bild 47"></div>
-            <div class="gallery-item" data-tags="cookieattack3, bauwerk"><img src="img/48.webp" alt="Bild 48"></div>
-            <div class="gallery-item" data-tags="cookieattack3, bauwerk"><img src="img/49.webp" alt="Bild 49"></div>
-            <div class="gallery-item" data-tags="cookieattack3, leon"><img src="img/50.webp" alt="Bild 50"></div>
-            <div class="gallery-item" data-tags="cookieattack3, lennard"><img src="img/51.webp" alt="Bild 51"></div>
-            <div class="gallery-item" data-tags="cookieattack3, leon"><img src="img/52.webp" alt="Bild 52"></div>
-            <div class="gallery-item" data-tags="cookieattack3, nils"><img src="img/53.webp" alt="Bild 53"></div>
-            <div class="gallery-item" data-tags="cookieattack3, frogi"><img src="img/54.webp" alt="Bild 54"></div>
-            <div class="gallery-item" data-tags="cookieattack3, leon, sycron, clown"><img src="img/55.webp" alt="Bild 55"></div>
-            <div class="gallery-item" data-tags="cookieattack3, leon, sycron, clown, basby"><img src="img/56.webp" alt="Bild 56"></div>
-            <div class="gallery-item" data-tags="rl, nils, eflix"><img src="img/57.webp" alt="Bild 57"></div>
-            <div class="gallery-item" data-tags="prinz"><img src="img/58.webp" alt="Bild 58"></div>
-            <div class="gallery-item" data-tags="minecraft, prinz, sycron, nils, frogi"><img src="img/59.webp" alt="Bild 59"></div>
-            <div class="gallery-item" data-tags="crazy, nils"><img src="img/60.webp" alt="Bild 60"></div>
-            <div class="gallery-item" data-tags="crazy, leon"><img src="img/61.webp" alt="Bild 61"></div>
-            <div class="gallery-item" data-tags="crazy, basby"><img src="img/62.webp" alt="Bild 62"></div>
-            <div class="gallery-item" data-tags="crazy, nils"><img src="img/63.webp" alt="Bild 63"></div>
-            <div class="gallery-item" data-tags="minecraft, leon"><img src="img/64.webp" alt="Bild 64"></div>
-            <div class="gallery-item" data-tags="cookieattack3, basby, clown"><img src="img/65.webp" alt="Bild 65"></div>
-            <div class="gallery-item" data-tags="cookieattack3, lado, clown, eflix, sycron"><img src="img/66.webp" alt="Bild 66"></div>
-            <div class="gallery-item" data-tags="cookieattack3, mace, lado"><img src="img/67.webp" alt="Bild 67"></div>
-            <div class="gallery-item" data-tags="cookieattack3, clown, eflix"><img src="img/68.webp" alt="Bild 68"></div>
-            <div class="gallery-item" data-tags="cookieattack3, lado, eflix"><img src="img/69.webp" alt="Bild 69"></div>
-            <div class="gallery-item" data-tags="cookieattack3, frogi, line"><img src="img/70.webp" alt="Bild 70"></div>
-            <div class="gallery-item" data-tags="cookieattack3, clown, lado"><img src="img/71.webp" alt="Bild 71"></div>
-            <div class="gallery-item" data-tags="cookieattack3, sycron"><img src="img/72.webp" alt="Bild 72"></div>
-            <div class="gallery-item" data-tags="cookieattack3, eflix, lado, felix, leon"><img src="img/73.webp" alt="Bild 73"></div>
-            <div class="gallery-item" data-tags="cookieattack3, nils, clown, sycron, leon, frogi"><img src="img/74.webp" alt="Bild 74"></div>
-            <div class="gallery-item" data-tags="cookieattack3, lado"><img src="img/75.webp" alt="Bild 75"></div>
-            <div class="gallery-item" data-tags="cookieattack4, clown, basby, lado, bauwerk"><img src="img/76.webp" alt="Bild 76"></div>
-            <div class="gallery-item" data-tags="cookieattack4, basby, frogi, bauwerk"><img src="img/77.webp" alt="Bild 77"></div>
-            <div class="gallery-item" data-tags="cookieattack4, nils, prinz"><img src="img/78.webp" alt="Bild 78"></div>
-            <div class="gallery-item" data-tags="cookieattack4, nils, prinz"><img src="img/79.webp" alt="Bild 79"></div>
-            <div class="gallery-item" data-tags="crazy, nils"><img src="img/80.webp" alt="Bild 80"></div>
-            <div class="gallery-item" data-tags="crazy, nils"><img src="img/81.webp" alt="Bild 81"></div>
-            <div class="gallery-item" data-tags="basby, clown, leon, frogi, nils"><img src="img/82.webp" alt="Bild 82"></div>
-            <div class="gallery-item" data-tags="frogi, vertex"><img src="img/83.webp" alt="Bild 83"></div>
-            <div class="gallery-item" data-tags="cookieattack1, nils, mace"><img src="img/84.webp" alt="Bild 84"></video></div>
-            <div class="gallery-item" data-tags="cookieattack1, leon"><img src="img/85.webp" alt="Bild 85"></video></div>
-            <div class="gallery-item" data-tags="cookieattack1, lado"><img src="img/86.webp" alt="Bild 86"></video></div>
-            <div class="gallery-item" data-tags="cookieattack1, bauwerk"><img src="img/87.webp" alt="Bild 87"></video></div>
-            <div class="gallery-item" data-tags="cookieattack2, leon"><img src="img/88.webp" alt="Bild 88"></video></div>
-            <div class="gallery-item" data-tags="gta, nils, leon"><video src="img/89.mp4" muted loop></video></div>
-            <div class="gallery-item" data-tags="gta, nils, leon"><video src="img/90.mp4" muted loop></video></div>
-            <div class="gallery-item" data-tags="ets, leon, nils, basby, prinz"><video src="img/91.mp4" muted loop></video></div>
-            <div class="gallery-item" data-tags="brawl, nils, prinz"><video src="img/92.mp4" muted loop></video></div>
-            <div class="gallery-item" data-tags="brawl, nils, leon"><video src="img/93.mp4" muted loop></video></div>
-            <div class="gallery-item" data-tags="rl, nils, leon"><video src="img/94.mp4" muted loop></video></div>
-            <div class="gallery-item" data-tags="ets, nils, leon, basby, prinz"><video src="img/95.mp4" muted loop></video></div>
-            <div class="gallery-item" data-tags="crazy, frogi"><img src="img/96.webp" alt="Bild 96"></div>
-            <div class="gallery-item" data-tags="crazy"><img src="img/97.webp" alt="Bild 97"></div>
-            <div class="gallery-item" data-tags="hyklos, frogi, lado"><img src="img/98.webp" alt="Bild 98"></div>
-            <div class="gallery-item" data-tags="hyklos, vertex, nils, clown, leon, lado, eflix, mace, frogi"><img src="img/99.webp" alt="Bild 99"></div>
-            <div class="gallery-item" data-tags="hyklos"><img src="img/100.webp" alt="Bild 100"></div>
-            <div class="gallery-item" data-tags="hyklos, clown, lado"><img src="img/101.webp" alt="Bild 101"></div>
-            <div class="gallery-item" data-tags="hyklos, eflix, frogi, leon, lado, sycron, mace"><img src="img/102.webp" alt="Bild 102"></div>
-            <div class="gallery-item" data-tags="cookieattack3, frogi"><img src="img/103.webp" alt="Bild 103"></div>
-            <div class="gallery-item" data-tags="cookieattack3, rekas"><img src="img/104.webp" alt="Bild 104"></div>
-            <div class="gallery-item" data-tags="cookieattack3, mace"><img src="img/105.webp" alt="Bild 105"></div>
-            <div class="gallery-item" data-tags="cookieattack3, sycron, prinz, lado, leon"><img src="img/106.webp" alt="Bild 106"></div>
-            <div class="gallery-item" data-tags="cookieattack3, vertex, leon, mace"><img src="img/107.webp" alt="Bild 107"></div>
-            <div class="gallery-item" data-tags="cookieattack3, mace"><img src="img/108.webp" alt="Bild 108"></div>
-            <div class="gallery-item" data-tags="cookieattack3, prinz, mace, leon, felix, nils, sycron, eflix"><img src="img/109.webp" alt="Bild 109"></div>
-            <div class="gallery-item" data-tags="cookieattack3, lennard, nils, basby, leon, prinz"><img src="img/110.webp" alt="Bild 110"></div>
-            <div class="gallery-item" data-tags="cookieattack3, leon"><img src="img/111.webp" alt="Bild 111"></div>
-            <div class="gallery-item" data-tags="leon, basby"><video src="img/112.mp4" muted loop></video></div>
-            <div class="gallery-item" data-tags="ets, basby"><video src="img/113.mp4" muted loop></video></div>
-            <div class="gallery-item" data-tags="basby"><video src="img/114.mp4" muted loop></video></div>
-            <div class="gallery-item" data-tags="ets, nils, basby"><video src="img/115.mp4" muted loop></video></div>
-            <div class="gallery-item" data-tags="ets, nils, basby, prinz, leon"><video src="img/116.mp4" muted loop></video></div>
-            <div class="gallery-item" data-tags="ets, nils, basby, prinz, leon"><video src="img/117.mp4" muted loop></video></div>
-            <div class="gallery-item" data-tags="ets, nils, basby, prinz, leon"><video src="img/118.mp4" muted loop></video></div>
-            <div class="gallery-item" data-tags="ets, nils, basby, prinz, leon"><video src="img/118.mp4" muted loop></video></div>
-            <div class="gallery-item" data-tags="basby, leon"><video src="img/119.mp4" muted loop></video></div>
-            <div class="gallery-item" data-tags="basby, leon"><video src="img/120.mp4" muted loop></video></div>
-            <div class="gallery-item" data-tags="basby, leon, lado"><video src="img/121.mp4" muted loop></video></div>
-            <div class="gallery-item" data-tags="basby, leon"><video src="img/122.mp4" muted loop></video></div>
+            <span class="loader"></span>
         </section>
 
         <div id="imageModal" class="modal">
@@ -203,5 +49,6 @@
             </div>
         </div>                                       
     </main>
+    <script src="js/script.js"></script>
 </body>
 </html>
