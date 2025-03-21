@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Vorschau
             const preview = document.createElement(media.filetype === 'video' ? 'video' : 'img');
-            preview.src = `uploads/${media.filename}`;
+            preview.src = `https://api.cookieattack.de:3671/uploads/${media.filename}`;
             preview.className = 'media-preview';
             if (media.filetype === 'video') {
                 preview.controls = true;
