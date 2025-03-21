@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentIndex = 0;
 
     // API Konfiguration
-    const API_BASE_URL = 'http://api.cookieattack.de:3671';
+    const API_BASE_URL = 'https://api.cookieattack.de:3671';
     const UPLOADS_URL = `${API_BASE_URL}/uploads`;
 
     // Tag Farbkonfiguration

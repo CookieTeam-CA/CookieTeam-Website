@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 formData.append('file', file);
                 formData.append('tags', JSON.stringify(tags));
 
-                const response = await fetch('http://api.cookieattack.de:3671/upload', {
+                const response = await fetch('https://api.cookieattack.de:3671/upload', {
                     method: 'POST',
                     body: formData,
                     onUploadProgress: (progressEvent) => {

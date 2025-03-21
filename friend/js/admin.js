@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Medien laden
     async function loadMedia() {
         try {
-            const response = await fetch('http://api.cookieattack.de:3671/admin/media');
+            const response = await fetch('https://api.cookieattack.de:3671/admin/media');
             const mediaItems = await response.json();
             renderMediaList(mediaItems);
         } catch (error) {
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Genehmigung/Ablehnung verarbeiten
     async function handleApproval(mediaId, approved) {
         try {
-            const response = await fetch(`http://api.cookieattack.de:3671/admin/media/${mediaId}`, {
+            const response = await fetch(`https://api.cookieattack.de:3671/admin/media/${mediaId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
