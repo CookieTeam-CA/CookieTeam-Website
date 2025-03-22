@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let filesToUpload = [];
     let uploadInProgress = false;
 
-    // Drag & Drop Funktionen
     dropZone.addEventListener('dragover', (e) => {
         e.preventDefault();
         dropZone.classList.add('dragover');
@@ -33,14 +32,12 @@ document.addEventListener('DOMContentLoaded', () => {
         handleFiles(e.target.files);
     });
 
-    // Dateien verarbeiten
     function handleFiles(files) {
         filesToUpload = [...filesToUpload, ...files];
         updateStatus(`Hinzugefügt: ${files.length} Datei(en)`);
         updateUploadButton();
     }
 
-    // Upload-Funktion
     uploadBtn.addEventListener('click', async () => {
         if (uploadInProgress || filesToUpload.length === 0) return;
 
@@ -57,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 formData.append('file', file);
                 formData.append('tags', JSON.stringify(tags));
 
-                const response = await fetch('https://api.cookieattack.de:3671/upload', {
+                const response = await fetch('https://api.cookieattack.de/upload', {
                     method: 'POST',
                     body: formData,
                     onUploadProgress: (progressEvent) => {
@@ -83,7 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Hilfsfunktionen
     function updateStatus(message, type = 'info') {
         const messageDiv = document.createElement('div');
         messageDiv.className = `status-message ${type}`;

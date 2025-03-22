@@ -2,10 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const mediaList = document.getElementById('media-list');
     const statusMessages = document.getElementById('status-messages');
 
-    // Medien laden
     async function loadMedia() {
         try {
-            const response = await fetch('https://api.cookieattack.de:3671/admin/media');
+            const response = await fetch('https://api.cookieattack.de/admin/media');
             const mediaItems = await response.json();
             renderMediaList(mediaItems);
         } catch (error) {
@@ -13,23 +12,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Medienliste rendern
     function renderMediaList(mediaItems) {
         mediaList.innerHTML = '';
         mediaItems.forEach(media => {
             const mediaItem = document.createElement('div');
             mediaItem.className = 'media-item';
 
-            // Vorschau
             const preview = document.createElement(media.filetype === 'video' ? 'video' : 'img');
-            preview.src = `https://api.cookieattack.de:3671/uploads/${media.filename}`;
+            preview.src = `https://api.cookieattack.de/uploads/${media.filename}`;
             preview.className = 'media-preview';
             if (media.filetype === 'video') {
                 preview.controls = true;
                 preview.muted = true;
             }
 
-            // Informationen
             const info = document.createElement('div');
             info.className = 'media-info';
             info.innerHTML = `
@@ -38,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="tags">Tags: ${media.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>
             `;
 
-            // Aktionen
             const actions = document.createElement('div');
             actions.className = 'media-actions';
             actions.innerHTML = `
@@ -53,7 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
             mediaList.appendChild(mediaItem);
         });
 
-        // Event Listener für Buttons hinzufügen
         document.querySelectorAll('.approve-btn').forEach(btn => {
             btn.addEventListener('click', () => handleApproval(btn.dataset.id, true));
         });
@@ -67,10 +61,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Genehmigung/Ablehnung verarbeiten
     async function handleApproval(mediaId, approved) {
         try {
-            const response = await fetch(`https://api.cookieattack.de:3671/admin/media/${mediaId}`, {
+            const response = await fetch(`https://api.cookieattack.de/admin/media/${mediaId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -81,13 +74,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!response.ok) throw new Error('Fehler bei der Anfrage');
 
             showStatus(`Medien ${approved ? 'genehmigt' : 'abgelehnt'}`, 'success');
-            loadMedia(); // Liste aktualisieren
+            loadMedia();
         } catch (error) {
             showStatus('Fehler: ' + error.message, 'error');
         }
     }
 
-    // Statusmeldungen anzeigen
     function showStatus(message, type = 'info') {
         const statusDiv = document.createElement('div');
         statusDiv.className = `status-message ${type}`;
@@ -96,6 +88,5 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => statusDiv.remove(), 5000);
     }
 
-    // Initiales Laden
     loadMedia();
 });
