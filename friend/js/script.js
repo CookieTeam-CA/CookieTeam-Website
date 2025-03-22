@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let visibleItems = [];
     let currentIndex = 0;
 
-    const API_BASE_URL = 'https://api.cookieattack.de/';
+    const API_BASE_URL = 'https://api.cookieattack.de:10443/';
     const UPLOADS_URL = `${API_BASE_URL}/uploads`;
 
     const tagColors = {

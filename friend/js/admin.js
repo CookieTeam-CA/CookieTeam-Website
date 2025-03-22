@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadMedia() {
         try {
-            const response = await fetch('https://api.cookieattack.de/admin/media');
+            const response = await fetch('https://api.cookieattack.de:10443/admin/media');
             const mediaItems = await response.json();
             renderMediaList(mediaItems);
         } catch (error) {
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
             mediaItem.className = 'media-item';
 
             const preview = document.createElement(media.filetype === 'video' ? 'video' : 'img');
-            preview.src = `https://api.cookieattack.de/uploads/${media.filename}`;
+            preview.src = `https://api.cookieattack.de:10443/uploads/${media.filename}`;
             preview.className = 'media-preview';
             if (media.filetype === 'video') {
                 preview.controls = true;
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function handleApproval(mediaId, approved) {
         try {
-            const response = await fetch(`https://api.cookieattack.de/admin/media/${mediaId}`, {
+            const response = await fetch(`https://api.cookieattack.de:10443/admin/media/${mediaId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
