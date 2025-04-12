@@ -58,6 +58,10 @@ header.floating {
     backdrop-filter: blur(15px);
 }
 
+.headerspace {
+    height: 80px;
+}
+
 img {
     max-width: 100%;
     height: auto;
@@ -332,6 +336,7 @@ main {
 
 .info-box h2 {
     align-self: center;
+    font-size: 1.7em;
 }
 
 .info-box:hover {
