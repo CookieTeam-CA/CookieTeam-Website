@@ -300,7 +300,7 @@ button:hover::before {
   background-color: #1f1f2f;
   color: white;
   text-align: center;
-  width: 80%;
+  width: 70%;
   margin: 0 auto;
   border-radius: 15px;
 }
@@ -311,6 +311,8 @@ button:hover::before {
   justify-content: center;
   flex-wrap: wrap;
   margin-top: 1rem;
+  width: 80%;
+  margin: 0 auto;
 }
 
 .cape-preview {
@@ -690,9 +692,9 @@ button:hover::before {
   padding: 30px 20px;
   font-size: 0.9em;
   border-top: 3px solid #ffa500;
-  width: 100%; /* Nimmt volle Breite ein */
+  width: 100%;
   box-sizing: border-box;
-  flex-shrink: 0; /* Verhindert, dass der Footer schrumpft */
+  flex-shrink: 0;/
 }
 
 .footer-content {
