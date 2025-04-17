@@ -31,13 +31,13 @@
             <h1>CookieCapes</h1>
             <p>Die neue Generation von Minecraft Capes!</p>
             <p>THIS SITE IS CURRENTLY UNDER HEAVY DEVELOPMENT</p>
-            <a href="#capeUpload"><button>Capes hochladen</button></a>
+            <a href="#downloadSection"><button>Download</button></a>
         </div>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" width="70" height="70" stroke-width="1.3"><path d="M15 4v8h3.586a1 1 0 0 1 .707 1.707l-6.586 6.586a1 1 0 0 1 -1.414 0l-6.586 -6.586a1 1 0 0 1 .707 -1.707h3.586v-8a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1z"></path></svg>
     </div>
 
     <div class="cape-gallery">
-        <h2>Capes</h2>
+        <h2>Random Capes</h2>
         <div id="capeContainer" class="cape-container"></div>
     </div>    
     
@@ -52,7 +52,6 @@
             </div>
 
             <div id="multiStepForm">
-                <!-- Step 1: Minecraft Name -->
                 <div class="form-step active" id="step-1">
                     <p class="step-instruction">Bitte gib deinen genauen Minecraft In-Game Namen ein.</p>
                     <label for="minecraftName">Minecraft Name:</label>
@@ -61,7 +60,6 @@
                     <div class="input-feedback" id="minecraftNameFeedback"></div>
                 </div>
 
-                <!-- Step 2: Cape Name -->
                 <div class="form-step" id="step-2">
                      <p class="step-instruction">Wie soll dein Cape heißen? Dieser Name wird öffentlich angezeigt.</p>
                     <label for="capeName">Cape Name:</label>
@@ -69,7 +67,6 @@
                      <div class="input-feedback" id="capeNameFeedback"></div>
                 </div>
 
-                <!-- Step 3: Cape Upload -->
                 <div class="form-step" id="step-3">
                      <p class="step-instruction">Wähle dein Cape-Bild aus. Es muss eine PNG-Datei sein.</p>
                     <label for="capeUploadInput" class="file-label">Cape auswählen</label>
@@ -78,7 +75,6 @@
                     <div class="input-feedback" id="capeFileFeedback"></div>
                 </div>
 
-                <!-- Step 4: Preview & Submit -->
                 <div class="form-step" id="step-4">
                      <p class="step-instruction">Überprüfe deine Angaben und die Vorschau.</p>
                      <div class="preview-container">
@@ -121,6 +117,11 @@
                 <button id="submitBtn" class="step-button" style="display: none;">Cape Hochladen</button>
             </div>
         </div>
+        <div class="downloadSection" id="downloadSection">
+            <h2>Download CookieCapes</h2>
+            <p>Downloade CookiesCapes jetzt kostenlos über Modrinth.</p>    
+            <a href="https://modrinth.com/mod/cookiecapes" target="_blank"><button>Jetzt herunterladen</button></a>
+        </div>
     </div>
     <footer class="footer">
         <div class="footer-content">
@@ -161,6 +162,33 @@
             </div>
             <div class="footer-copyright">
                 <p>© 2025 CookieTeam. Alle Rechte vorbehalten.</p>
+                <p>NOT AN OFFICIAL MINECRAFT SERVICE. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.</p>
+            </div>
+        </div>
+        <div id="capeModal" class="modal hidden">
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <button id="closeModalButton" class="close-button" aria-label="Schließen">×</button>
+                <h2 id="modalCapeName">Cape Name</h2>
+                <div class="modal-viewer-container">
+                    <canvas id="modalCanvas" width="300" height="400"></canvas>
+                </div>
+                <div class="modal-info">
+                    <p><strong>Cape ID:</strong> <span id="modalCapeId">N/A</span></p>
+                </div>
+                <div class="modal-controls">
+                    <div class="control-group">
+                        <label for="modalSkinToggle">Skin anzeigen:</label>
+                        <input type="checkbox" id="modalSkinToggle" checked>
+                    </div>
+                    <div class="control-group">
+                        <label for="modalPanoramaSelect">Hintergrund:</label>
+                        <select id="modalPanoramaSelect">
+                            <option value="none">Standard</option>
+                            <option value="panorama1">Panorama 1</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
     </footer>

@@ -1,30 +1,28 @@
 html {
-  height: 100%; /* Erlaubt Body, volle Höhe zu nutzen */
+  height: 100%;
 }
 
 body {
-  min-height: 100%; /* Stellt sicher, dass Body mindestens volle Höhe hat */
-  display: flex; /* Aktiviert Flexbox */
-  flex-direction: column; /* Stapelt Kinder (Wrapper, Footer) vertikal */
-  margin: 0; /* Entfernt Standard-Body-Margin */
-  /* Dein bestehendes Body-Styling (font, background etc.) bleibt hier */
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
   font-family: __saans_cd5095, __saans_Fallback_cd5095, sans-serif;
   background-color: #121214;
   color: #000000;
   font-size: 16px;
   line-height: 1.5;
-  overflow-x: hidden; /* Verhindert horizontalen Scrollbalken */
+  overflow-x: hidden;
 }
 
 .page-wrapper {
-  flex: 1 0 auto; /* Wächst, um verfügbaren Platz zu füllen, schrumpft nicht, Basis ist automatisch */
-  /* Füge hier das Padding/Margin hinzu, das vorher im Body war, um den Inhalt zu zentrieren/abzusetzen */
+  flex: 1 0 auto;
   width: 90%;
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  padding-top: 30px; /* Beispiel - Passe dies an dein vorheriges Body-Padding an */
-  padding-bottom: 50px; /* Platz unter dem Hauptinhalt, bevor der Footer kommt */
+  padding-top: 30px;
+  padding-bottom: 50px;
 }
 
 .main-content {
@@ -228,13 +226,12 @@ button:hover::before {
 }
 
 .content {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
   margin-top: 20px;
   line-height: 1.6;
-  justify-content: space-between;
-  align-items: stretch;
+}
+
+.step-wizard-container + .downloadSection {
+    margin-top: 60px;
 }
 
 .info-box {
@@ -300,7 +297,7 @@ button:hover::before {
   background-color: #1f1f2f;
   color: white;
   text-align: center;
-  width: 70%;
+  width: 55%;
   margin: 0 auto;
   border-radius: 15px;
 }
@@ -683,6 +680,111 @@ button:hover::before {
   }
 }
 
+#downloadSection {
+  background: linear-gradient(140deg, rgba(255, 165, 0, 0.08), rgba(255, 114, 24, 0.05)); /* Subtle orange gradient background */
+  color: #e0e0e0;
+  padding: 40px 50px; /* Generous padding */
+  border-radius: 15px; /* Rounded corners */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), /* Main shadow */
+              inset 0 1px 1px rgba(255, 255, 255, 0.05); /* Subtle inner highlight */
+  border: 1px solid rgba(255, 165, 0, 0.3); /* Clear orange border */
+  margin: 60px auto; /* Space above/below and center horizontally */
+  width: 90%; /* Responsive width */
+  max-width: 750px; /* Maximum width */
+  text-align: center; /* Center text and button */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Ensure content is above pseudo-elements */
+#downloadSection h2,
+#downloadSection p,
+#downloadSection a {
+  position: relative;
+  z-index: 1;
+}
+
+
+#downloadSection h2 {
+  color: #ffa500; /* Bright brand orange for heading */
+  font-size: 2.2em; /* Larger heading */
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-weight: 700;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); /* Subtle text shadow */
+}
+
+#downloadSection p {
+  color: #ccc; /* Slightly dimmer text for description */
+  font-size: 1.15em; /* Slightly larger paragraph text */
+  line-height: 1.7; /* Better readability */
+  max-width: 90%; /* Prevent text stretching too wide */
+  margin-bottom: 30px; /* More space before the button */
+}
+
+/* Style the link containing the button if needed, but focus on the button */
+#downloadSection a {
+  display: inline-block; /* Allows margin/padding */
+  text-decoration: none;
+}
+
+/* Style the download button specifically */
+#downloadSection button {
+  /* Override general button styles if necessary */
+  background: linear-gradient(135deg, #ff8c00, #ff7218); /* Vibrant orange gradient */
+  color: #ffffff;
+  font-size: 1.3em; /* Larger font size for CTA */
+  font-weight: bold;
+  padding: 16px 35px; /* Larger padding */
+  border-radius: 30px; /* Pill shape */
+  border: none;
+  box-shadow: 0 5px 15px rgba(255, 114, 24, 0.3); /* Orange glow */
+  cursor: pointer;
+  transition: all 0.3s ease; /* Smooth transition for all properties */
+  margin-top: 10px; /* Space from paragraph */
+  position: relative;
+  overflow: hidden; /* Needed for pseudo-element shine */
+  text-transform: uppercase; /* Optional: Uppercase text */
+  letter-spacing: 0.5px; /* Optional: Slight letter spacing */
+}
+
+/* Override general button hover shine if it exists */
+#downloadSection button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -85%; /* Start further left */
+  width: 60%; /* Wider shine */
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-25deg); /* Angle the shine */
+  transition: left 0.6s ease; /* Slower, smoother shine animation */
+}
+
+#downloadSection button:hover::before {
+  left: 125%; /* Move across the button */
+}
+
+
+#downloadSection button:hover {
+  background: linear-gradient(135deg, #ffa500, #e05a00); /* Slightly darker/brighter hover gradient */
+  transform: translateY(-4px) scale(1.02); /* Lift and slight scale */
+  box-shadow: 0 8px 20px rgba(255, 114, 24, 0.4); /* Stronger glow on hover */
+}
+
+#downloadSection button:active {
+    transform: translateY(-1px) scale(0.98); /* Press down effect */
+    box-shadow: 0 3px 10px rgba(255, 114, 24, 0.3);
+}
+
 /* footer */
 
 .footer {
@@ -691,7 +793,7 @@ button:hover::before {
   text-align: center;
   padding: 30px 20px;
   font-size: 0.9em;
-  border-top: 3px solid #ffa500;
+  border-top: 2px solid #ffa500;
   width: 100%;
   box-sizing: border-box;
   flex-shrink: 0;/
@@ -703,18 +805,18 @@ button:hover::before {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
 }
 
 .footer-links {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .footer-nav {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 12px;
 }
 
 .footer-nav a {
@@ -732,7 +834,7 @@ button:hover::before {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 25px;
+  gap: 23px;
 }
 
 .footer-social a {
@@ -775,4 +877,173 @@ button:hover::before {
   font-size: 2.5rem;
   color: #ffa500;
   margin-bottom: 10px;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  position: relative;
+  background: linear-gradient(145deg, #3a3a4a, #2a2a3a);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  z-index: 2001;
+  color: #e0e0e0;
+  max-width: 90%;
+  width: 500px; /* Adjust as needed */
+  text-align: center;
+  transform: scale(1);
+  transition: transform 0.3s ease;
+}
+
+.modal.hidden .modal-content {
+   transform: scale(0.9);
+}
+
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 2.5rem;
+  font-weight: bold;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 5px;
+  transition: color 0.2s ease;
+}
+
+.close-button:hover {
+  color: #ffa500;
+  background: none; /* Override general button hover */
+  transform: none; /* Override general button hover */
+}
+.close-button::before {
+    content: none; /* Override ::before from general button */
+}
+
+
+.modal-content h2 {
+  color: #ffa500;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.8em;
+}
+
+.modal-viewer-container {
+  margin-bottom: 20px;
+  background-color: rgba(0,0,0,0.1);
+  border-radius: 10px;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: inline-block; /* Center the canvas */
+}
+
+#modalCanvas {
+  display: block; /* Remove extra space below canvas */
+  margin: 0 auto; /* Center canvas */
+  border-radius: 8px;
+  background-color: #2a2a3a; /* Default background inside canvas area */
+}
+
+.modal-info {
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: left;
+  font-size: 0.95em;
+}
+
+.modal-info p {
+  margin: 5px 0;
+  color: #ccc;
+}
+
+.modal-info strong {
+  color: #ffa500;
+  margin-right: 5px;
+}
+
+.modal-controls {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 165, 0, 0.1);
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal-controls label {
+  color: #ccc;
+  font-size: 0.9em;
+}
+
+.modal-controls input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #ffa500;
+  cursor: pointer;
+}
+
+.modal-controls select {
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: 1px solid #555;
+  background-color: #333;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+
+.modal-controls select:focus {
+  outline: none;
+  border-color: #ffa500;
+}
+
+header {
+  z-index: 1000;
+}
+
+.hidden {
+    display: none !important;
 }

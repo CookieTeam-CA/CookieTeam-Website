@@ -1,0 +1,136 @@
+body {
+    font-family: sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    color: #333;
+}
+
+h1 {
+    color: #e67e22; /* Orange */
+}
+
+.banana-container {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    min-height: 250px; /* Platzhalter, damit die Seite nicht springt */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#banana-image {
+    max-width: 200px; /* Passe die Grösse nach Bedarf an */
+    height: auto;
+    transition: transform 0.2s ease-in-out; /* Kleine Animation beim Wechsel */
+}
+
+#banana-image.talking {
+    transform: scale(1.05); /* Etwas grösser beim Sprechen */
+}
+
+
+#status-message {
+    margin-top: 20px;
+    font-style: italic;
+    color: #555;
+    min-height: 1.2em; /* Verhindert Springen bei Textänderung */
+    text-align: center;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: #e67e22; /* Orange */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #d35400; /* Dunkleres Orange */
+}
+
+button:disabled {
+    background-color: #bdc3c7; /* Grau */
+    cursor: not-allowed;
+}
+
+#ai-output-container {
+    margin-top: 25px; /* Abstand nach oben */
+    padding: 15px;
+    background-color: #ffffff; /* Weißer Hintergrund */
+    border-radius: 8px; /* Abgerundete Ecken */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Leichter Schatten */
+    width: 80%; /* Breite begrenzen */
+    max-width: 600px; /* Maximale Breite */
+    min-height: 4em; /* Mindesthöhe, damit es nicht springt */
+    text-align: center;
+    transition: opacity 0.5s ease-in-out; /* Sanftes Einblenden (optional) */
+}
+
+#ai-output-container strong {
+    display: block; /* Eigene Zeile für den Titel */
+    margin-bottom: 8px;
+    color: #555; /* Etwas dunkleres Grau */
+    font-size: 0.9em;
+}
+
+#ai-output {
+    color: #333; /* Haupttextfarbe */
+    font-size: 1.1em; /* Etwas größerer Text */
+    line-height: 1.4; /* Guter Zeilenabstand */
+    margin: 0; /* Standard-Absatzabstand entfernen */
+}
+
+/* Optional: Stil für leeren Output */
+#ai-output:empty::before {
+    content: "..."; /* Platzhalter, wenn leer */
+    color: #aaa;
+    font-style: italic;
+}
+
+#speak-to-banani-button {
+    background-color: #3498db; /* Blau */
+    margin-left: 10px; /* Kleiner Abstand zum anderen Button */
+}
+
+#speak-to-banani-button:hover {
+    background-color: #2980b9; /* Dunkleres Blau */
+}
+
+#speak-to-banani-button:disabled {
+    background-color: #bdc3c7; /* Grau */
+    cursor: not-allowed;
+}
+
+#speak-to-banani-button.listening {
+    background-color: #e74c3c; /* Rot beim Zuhören */
+    animation: pulse 1.5s infinite; /* Pulsierender Effekt */
+}
+
+.speech-status {
+    margin-top: 5px;
+    font-size: 0.9em;
+    color: #555;
+    min-height: 1.1em; /* Platzhalter */
+    font-style: italic;
+}
+
+/* Animation für pulsierenden Button */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(231, 76, 60, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(231, 76, 60, 0);
+    }
+}

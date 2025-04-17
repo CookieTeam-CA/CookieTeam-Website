@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitch Banani Reaktor</title>
+    <link rel="stylesheet" href="css/lado.css">
+</head>
+<body>
+
+    <h1>Twitch Banani Reaktor</h1>
+
+    <div class="banana-container">
+        <img id="banana-image" src="img/lado/bananiidle.png" alt="Banani">
+    </div>
+
+    <!-- Button zum Aktivieren von TTS und Twitch -->
+    <button id="enable-audio-button">Audio aktivieren & Verbinden</button>
+
+    <!-- NEU: Button für Spracheingabe -->
+    <button id="speak-to-banani-button" disabled>🎤 Mit Banani sprechen</button>
+    <div id="speech-status" class="speech-status"></div> <!-- Optional: Statusanzeige -->
+
+
+    <!-- Statusanzeige -->
+    <div id="status-message">Bitte klicke auf "Audio aktivieren", um zu starten.</div>
+
+    <!-- Container für die KI-Textausgabe -->
+    <div id="ai-output-container">
+        <strong>Banani sagt:</strong>
+        <p id="ai-output"></p>
+    </div>
+
+    <!-- Puter.js Bibliothek -->
+    <script src="https://js.puter.com/v2/"></script>
+
+    <!-- TMI.js Bibliothek für Twitch Chat -->
+    <script src="https://cdn.jsdelivr.net/npm/tmi.js/dist/tmi.min.js"></script>
+    <!-- Unser eigenes Skript -->
+    <script src="js/lado.js"></script>
+
+</body>
+</html>

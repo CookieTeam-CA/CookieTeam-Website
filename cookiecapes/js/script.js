@@ -1,3 +1,8 @@
+let modalSkinViewer = null;
+let capeModal, modalCanvas, closeModalButton, modalCapeName, modalCapeId, modalSkinToggle, modalPanoramaSelect, modalOverlay;
+const defaultSkinPath = "/img/skin.png";
+const defaultModalBackgroundColor = 0x2a2a3a;
+
 window.addEventListener("scroll", () => {
     const header = document.querySelector("header");
     if (header) {
@@ -9,12 +14,6 @@ window.addEventListener("scroll", () => {
     }
 });
 
-/**
- * Sets a cookie.
- * @param {string} name - The name of the cookie.
- * @param {string} value - The value of the cookie.
- * @param {number} days - The number of days until the cookie expires (sets expiry to end of current day if 1).
- */
 function setCookie(name, value, days) {
     let expires = "";
     if (days) {
@@ -25,11 +24,6 @@ function setCookie(name, value, days) {
     document.cookie = name + "=" + (value || "") + expires + "; path=/; SameSite=Lax";
 }
 
-/**
- * Gets a cookie value by name.
- * @param {string} name - The name of the cookie.
- * @returns {string|null} The cookie value or null if not found.
- */
 function getCookie(name) {
     const nameEQ = name + "=";
     const ca = document.cookie.split(';');
@@ -41,20 +35,10 @@ function getCookie(name) {
     return null;
 }
 
-/**
- * Erases a cookie by name.
- * @param {string} name - The name of the cookie to erase.
- */
 function eraseCookie(name) {
     document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
 
-/**
- * Debounce function: Limits the rate at which a function can fire.
- * @param {Function} func - The function to debounce.
- * @param {number} delay - The delay in milliseconds.
- * @returns {Function} The debounced function.
- */
 function debounce(func, delay) {
   let timeoutId;
   return function(...args) {
@@ -65,11 +49,6 @@ function debounce(func, delay) {
   };
 }
 
-/**
- * Constructs the correct HTTPS image URL for a given original URL from the API.
- * @param {string} originalUrl - The URL received from the API (e.g., http://...:8000/capes/1.png)
- * @returns {string|null} The corrected HTTPS URL or null if the original URL is invalid.
- */
 function getCorrectCapeImageUrl(originalUrl) {
     if (!originalUrl || typeof originalUrl !== 'string') {
         return null;
@@ -83,7 +62,6 @@ function getCorrectCapeImageUrl(originalUrl) {
         return null;
     }
 }
-
 
 async function fetchRandomCapes() {
     try {
@@ -126,13 +104,18 @@ async function fetchRandomCapes() {
             canvas.height = 200;
             previewDiv.appendChild(canvas);
 
-            const name = document.createElement("p");
-            name.textContent = cape.cape_name || "Unbenanntes Cape";
-            previewDiv.appendChild(name);
+            const nameP = document.createElement("p");
+            const capeNameText = cape.cape_name || "Unbenanntes Cape";
+            nameP.textContent = capeNameText;
+            previewDiv.appendChild(nameP);
 
             container.appendChild(previewDiv);
 
             const correctedImageUrl = getCorrectCapeImageUrl(cape.cape_image_url);
+            const capeId = cape.cape_id;
+            previewDiv.dataset.capeId = capeId;
+            previewDiv.dataset.capeUrl = correctedImageUrl;
+            previewDiv.dataset.capeName = capeNameText;
 
             if (!correctedImageUrl) {
                 console.warn(`Could not generate correct image URL for cape ID ${cape.cape_id} (random)`);
@@ -140,14 +123,13 @@ async function fetchRandomCapes() {
                 return;
             }
 
-
             try {
                 const viewer = new skinview3d.SkinViewer({
                     canvas: canvas,
                     width: canvas.width,
                     height: canvas.height,
-                    skin: "/img/skin.png",
-                    background: 0x2a2a3a
+                    skin: defaultSkinPath,
+                    background: 0x181818
                 });
 
                 viewer.loadCape(correctedImageUrl, { backEquipment: 'cape' })
@@ -159,22 +141,22 @@ async function fetchRandomCapes() {
                 viewer.cameraLight.intensity = 3;
                 viewer.autoRotate = true;
                 viewer.autoRotateSpeed = 0.8;
-                viewer.animation = new skinview3d.WalkingAnimation();
-                viewer.animation.speed = 0.5;
-
                  previewDiv.addEventListener('click', () => {
-                     if (previewSkinViewer) {
-                         console.log(`Loading random cape into main preview: ${correctedImageUrl}`);
-                         previewSkinViewer.loadCape(correctedImageUrl, { backEquipment: 'cape' })
-                             .catch(err => console.error(`Failed to load cape ${correctedImageUrl} into main preview:`, err));
-                     } else {
-                          console.warn("Main preview viewer (previewSkinViewer) not found when clicking random cape.");
-                     }
+                    const id = previewDiv.dataset.capeId;
+                    const url = previewDiv.dataset.capeUrl;
+                    const name = previewDiv.dataset.capeName;
+
+                    if (url && id !== undefined) {
+                        openCapeModal(id, url, name);
+                    } else {
+                        console.error("Missing data needed to open modal", previewDiv.dataset);
+                        alert("Fehler: Details für dieses Cape konnten nicht geladen werden.");
+                    }
                  });
 
             } catch (viewerError) {
                  console.error("Error initializing random gallery SkinViewer:", viewerError);
-                 previewDiv.innerHTML = `<p>Vorschaufehler für ${cape.cape_name || 'Cape'}</p>`;
+                 previewDiv.innerHTML = `<p>${capeNameText}</p><p style="font-size: 0.8em; color: red;">Vorschaufehler</p>`;
             }
         });
 
@@ -185,11 +167,162 @@ async function fetchRandomCapes() {
     }
 }
 
+function initializeModalViewer() {
+    if (!modalSkinViewer && modalCanvas) {
+        try {
+            modalSkinViewer = new skinview3d.SkinViewer({
+                canvas: modalCanvas,
+                width: modalCanvas.width,
+                height: modalCanvas.height,
+                skin: defaultSkinPath,
+                background: defaultModalBackgroundColor
+            });
+            modalSkinViewer.fov = 65;
+            modalSkinViewer.zoom = 0.8;
+            modalSkinViewer.globalLight.intensity = 2.5;
+            modalSkinViewer.cameraLight.intensity = 1.0;
+            modalSkinViewer.autoRotate = false;
+            modalSkinViewer.autoRotateSpeed = 0;
+            modalSkinViewer.animation = new skinview3d.WalkingAnimation();
+            modalSkinViewer.animation.speed = 0;
+            modalSkinViewer.animation.paused = true;
+
+            console.log("Modal SkinViewer initialized.");
+
+        } catch (e) {
+            console.error("Failed to initialize modal SkinViewer:", e);
+            if (modalCanvas.parentElement) {
+                modalCanvas.parentElement.innerHTML = "<p style='color: #ff6b6b;'>3D-Vorschau konnte nicht geladen werden.</p>";
+            }
+        }
+    }
+}
+
+/**
+ * Opens the cape detail modal and loads the specified cape.
+ * @param {string|number} capeId The ID of the cape.
+ * @param {string} capeUrl The URL of the cape image.
+ * @param {string} capeName The name of the cape.
+ */
+function openCapeModal(capeId, capeUrl, capeName) {
+    if (!capeModal) {
+        console.error("Modal elements not ready.");
+        return;
+    }
+    if (!modalSkinViewer) {
+        initializeModalViewer();
+        if (!modalSkinViewer) {
+             alert("Fehler: 3D-Vorschau konnte nicht initialisiert werden.");
+             return;
+        }
+    }
+
+    modalCapeName.textContent = capeName || "Unbenanntes Cape";
+    modalCapeId.textContent = capeId !== undefined ? capeId : "N/A";
+
+    modalSkinToggle.checked = true;
+    modalPanoramaSelect.value = 'none';
+
+    modalSkinViewer.loadSkin(defaultSkinPath)
+        .catch(err => console.error("Modal: Failed to load default skin:", err));
+
+    modalSkinViewer.loadCape(capeUrl, { backEquipment: 'cape' })
+        .then(() => console.log(`Modal: Loaded cape ${capeId} from ${capeUrl}`))
+        .catch(err => {
+            console.error(`Modal: Failed to load cape ${capeUrl}:`, err);
+            modalCapeName.textContent += " (Ladefehler)";
+        });
+
+    modalSkinViewer.loadPanorama(null);
+    modalSkinViewer.background = defaultModalBackgroundColor;
+
+    modalSkinViewer.autoRotate = true;
+    if (modalSkinViewer.animation) modalSkinViewer.animation.paused = false;
+
+    capeModal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeCapeModal() {
+    if (!capeModal || !modalSkinViewer) return;
+
+    capeModal.classList.add('hidden');
+    document.body.style.overflow = '';
+
+    modalSkinViewer.autoRotate = false;
+    if (modalSkinViewer.animation) modalSkinViewer.animation.paused = true;
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
     fetchRandomCapes();
 
-    const capeUpload = document.getElementById('capeUpload');
-    if (!capeUpload) {
+    capeModal = document.getElementById('capeModal');
+    modalCanvas = document.getElementById('modalCanvas');
+    closeModalButton = document.getElementById('closeModalButton');
+    modalCapeName = document.getElementById('modalCapeName');
+    modalCapeId = document.getElementById('modalCapeId');
+    modalSkinToggle = document.getElementById('modalSkinToggle');
+    modalPanoramaSelect = document.getElementById('modalPanoramaSelect');
+    modalOverlay = capeModal ? capeModal.querySelector('.modal-overlay') : null;
+
+    if (closeModalButton) {
+        closeModalButton.addEventListener('click', closeCapeModal);
+    }
+    if (modalOverlay) {
+        modalOverlay.addEventListener('click', closeCapeModal);
+    }
+    if (modalSkinToggle) {
+        modalSkinToggle.addEventListener('change', () => {
+            if (!modalSkinViewer) return;
+            if (modalSkinToggle.checked) {
+                modalSkinViewer.loadSkin(defaultSkinPath)
+                    .catch(err => console.error("Modal: Failed to load skin:", err));
+            } else {
+                modalSkinViewer.loadSkin(null)
+                    .catch(err => console.error("Modal: Failed to unload skin:", err));
+            }
+        });
+    }
+    if (modalPanoramaSelect) {
+        modalPanoramaSelect.addEventListener('change', () => {
+            if (!modalSkinViewer) return;
+            const selection = modalPanoramaSelect.value;
+            let panoramaPath = null;
+
+            if (selection === 'panorama1') {
+                panoramaPath = '/img/panorama1.png';
+            } else if (selection === 'panorama2') {
+                 panoramaPath = '/img/panorama2.png';
+            }
+
+            if (panoramaPath) {
+                modalSkinViewer.loadPanorama(panoramaPath)
+                    .then(() => console.log("Modal: Loaded panorama", panoramaPath))
+                    .catch(err => {
+                        console.error("Modal: Failed to load panorama:", err);
+                        alert("Panorama konnte nicht geladen werden.");
+                        modalSkinViewer.loadPanorama(null);
+                        modalSkinViewer.background = defaultModalBackgroundColor;
+                        modalPanoramaSelect.value = 'none';
+                    });
+            } else {
+                modalSkinViewer.loadPanorama(null);
+                modalSkinViewer.background = defaultModalBackgroundColor;
+                console.log("Modal: Reset to default background.");
+            }
+        });
+    }
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && capeModal && !capeModal.classList.contains('hidden')) {
+            closeCapeModal();
+        }
+    });
+
+    const capeUploadSection = document.getElementById('capeUpload');
+    if (!capeUploadSection) {
+        console.log("Cape upload section not found, skipping form initialization.");
         return;
     }
 
@@ -208,10 +341,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const minecraftNameInput = document.getElementById('minecraftName');
     const capeNameInput = document.getElementById('capeName');
-    const skinUploadInput = document.getElementById('skinUploadInput');
     const capeUploadInput = document.getElementById('capeUploadInput');
 
-    const skinFileNameDisplay = document.getElementById('skinFileName');
     const capeFileNameDisplay = document.getElementById('capeFileName');
     const previewMinecraftName = document.getElementById('previewMinecraftName');
     const previewCapeName = document.getElementById('previewCapeName');
@@ -256,7 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     canvas: previewCanvas,
                     width: previewCanvas.width,
                     height: previewCanvas.height,
-                    skin: "/img/skin.png",
+                    skin: defaultSkinPath,
                     background: 0x00000000
                 });
                 previewSkinViewer.fov = 60;
@@ -264,11 +395,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 previewSkinViewer.globalLight.intensity = 3;
                 previewSkinViewer.cameraLight.intensity = 3;
                 previewSkinViewer.autoRotate = true;
-                previewSkinViewer.autoRotateSpeed = 1.2;
+                previewSkinViewer.autoRotateSpeed = 0.5;
                 previewSkinViewer.animation = new skinview3d.WalkingAnimation();
-                previewSkinViewer.animation.speed = 0.7;
+                previewSkinViewer.animation.speed = 0.4;
+
+                console.log("Form Preview SkinViewer initialized.");
             } catch (e) {
-                console.error("Failed to initialize main preview SkinViewer:", e);
+                console.error("Failed to initialize form preview SkinViewer:", e);
                 if (previewCanvas.parentElement) {
                     previewCanvas.parentElement.innerHTML = "<p style='color: #ff6b6b;'>Vorschau konnte nicht geladen werden.</p>";
                 }
@@ -279,17 +412,21 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateButtons() {
         if (!prevBtn || !nextBtn || !submitBtn) return;
         prevBtn.style.display = currentStep > 1 ? 'inline-block' : 'none';
-        nextBtn.disabled = (currentStep === 1 && !formData.nameValidated);
         nextBtn.style.display = currentStep < totalSteps ? 'inline-block' : 'none';
         submitBtn.style.display = currentStep === totalSteps ? 'inline-block' : 'none';
+
+        nextBtn.disabled = (currentStep === 1 && !formData.nameValidated);
+
         updateProgressBar();
         updateStepTitle();
     }
+
     function updateProgressBar() {
         if (!progressBar) return;
         const progress = totalSteps > 1 ? ((currentStep -1) / (totalSteps - 1)) * 100 : 0;
         progressBar.style.width = `${progress}%`;
     }
+
      function updateStepTitle() {
          if (!stepTitle) return;
          const titles = [
@@ -305,8 +442,10 @@ document.addEventListener('DOMContentLoaded', () => {
              stepTitle.style.opacity = 1;
          }, 300);
     }
+
     function showStep(stepNumber) {
         if (stepNumber < 1 || stepNumber > totalSteps) return;
+
         const currentActive = document.querySelector('.form-step.active');
         if (currentActive) {
             currentActive.classList.add('exiting');
@@ -314,12 +453,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentActive.classList.remove('active', 'exiting');
              }, 500);
         }
+
         setTimeout(() => {
             const nextStep = document.getElementById(`step-${stepNumber}`);
             if (nextStep) {
                 nextStep.classList.add('active');
                 currentStep = stepNumber;
                 updateButtons();
+
                 if (currentStep === totalSteps) {
                     initializePreviewViewer();
                     updatePreview();
@@ -327,7 +468,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 50);
     }
-
 
     async function checkMinecraftName(name) {
         formData.nameValidated = false;
@@ -356,6 +496,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const response = await fetch(apiUrl);
+
             if (response.ok && response.headers.get('content-type')?.startsWith('image/')) {
                 console.log("Debounced Check - Success (Image found)");
                 minecraftNameFeedback.textContent = 'Minecraft-Name gültig!';
@@ -366,7 +507,9 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                  console.log("Debounced Check - Not an image, checking for JSON error");
                  let errorJson = null;
-                 try { errorJson = await response.clone().json(); } catch (e) { /* Ignore */ }
+                 try {
+                    errorJson = await response.clone().json();
+                 } catch (e) { /* Ignore if response isn't valid JSON */ }
 
                  if (errorJson && errorJson.error === "Unknown player username/uuid.") {
                     minecraftNameFeedback.textContent = 'Minecraft-Name nicht gefunden.';
@@ -392,105 +535,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     const debouncedCheckMinecraftName = debounce(checkMinecraftName, 500);
 
-    if (minecraftNameInput) {
-        minecraftNameInput.addEventListener('input', () => {
-             const name = minecraftNameInput.value.trim();
-            if (name && !/^[a-zA-Z0-9_]{1,16}$/.test(name)) {
-                 minecraftNameFeedback.textContent = 'Ungültige Zeichen oder Name zu lang.';
-                 minecraftNameFeedback.className = 'input-feedback';
-                 formData.nameValidated = false;
-                 updateButtons();
-                 nameCheckLoader.style.display = 'none';
-                 return;
-             } else if (name.length > 0 && name.length < 3) {
-                 minecraftNameFeedback.textContent = 'Name muss mindestens 3 Zeichen lang sein.';
-                 minecraftNameFeedback.className = 'input-feedback';
-                 formData.nameValidated = false;
-                 updateButtons();
-                 nameCheckLoader.style.display = 'none';
-                 return;
-             } else {
-                  if(minecraftNameFeedback.textContent.includes('Ungültige Zeichen') || minecraftNameFeedback.textContent.includes('mindestens 3 Zeichen')) {
-                      minecraftNameFeedback.textContent = '';
-                  }
-             }
-            formData.nameValidated = false;
-            updateButtons();
-            if (name.length >= 3) {
-                 debouncedCheckMinecraftName(name);
-            } else {
-                if (!minecraftNameFeedback.textContent.includes('mindestens 3 Zeichen')) {
-                     minecraftNameFeedback.textContent = '';
-                }
-                minecraftNameFeedback.className = 'input-feedback';
-                nameCheckLoader.style.display = 'none';
-            }
-        });
-    }
-    if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-            clearFeedback();
-            if (validateStep(currentStep)) {
-                showStep(currentStep + 1);
-            }
-        });
-    }
-    if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
-            if (currentStep > 1) {
-                showStep(currentStep - 1);
-            }
-        });
-    }
-    if (skinUploadInput) {
-        skinUploadInput.addEventListener("change", function(event) {
-            const file = event.target.files[0];
-            if (file && file.type === "image/png") {
-                formData.skinFile = file;
-                if (skinFileNameDisplay) skinFileNameDisplay.textContent = `Skin: ${file.name}`;
-                if (currentStep === totalSteps && previewSkinViewer) {
-                    const url = URL.createObjectURL(file);
-                    previewSkinViewer.loadSkin(url).then(() => URL.revokeObjectURL(url));
-                }
-            } else {
-                formData.skinFile = null;
-                if (skinFileNameDisplay) skinFileNameDisplay.textContent = '';
-                if(file) alert("Bitte nur PNG-Dateien für Skins auswählen.");
-                if (currentStep === totalSteps && previewSkinViewer) {
-                    const skinToLoad = formData.fetchedSkinUrl || "/img/skin.png";
-                    previewSkinViewer.loadSkin(skinToLoad);
-                }
-            }
-        });
-    }
-    if (capeUploadInput) {
-         capeUploadInput.addEventListener("change", function(event) {
-            const file = event.target.files[0];
-            if (file && file.type === "image/png") {
-                formData.capeFile = file;
-                if (capeFileNameDisplay) capeFileNameDisplay.textContent = `Cape: ${file.name}`;
-                if (capeFileFeedback) capeFileFeedback.textContent = '';
-                 if (currentStep === totalSteps && previewSkinViewer) {
-                    const url = URL.createObjectURL(file);
-                     previewSkinViewer.loadCape(url, { backEquipment: 'cape' }).then(() => URL.revokeObjectURL(url));
-                }
-            } else {
-                formData.capeFile = null;
-                if (capeFileNameDisplay) capeFileNameDisplay.textContent = '';
-                 if (file && capeFileFeedback) {
-                     capeFileFeedback.textContent = "Ungültiger Dateityp. Bitte PNG auswählen.";
-                 } else if (capeFileFeedback) {
-                     capeFileFeedback.textContent = '';
-                 }
-                 if (currentStep === totalSteps && previewSkinViewer) {
-                     previewSkinViewer.loadCape(null);
-                 }
-            }
-        });
-    }
 
     function validateStep(step) {
         let isValid = true;
+        clearFeedback();
+
         if (step === 1) {
              const name = minecraftNameInput ? minecraftNameInput.value.trim() : '';
              isValid = false;
@@ -510,8 +559,8 @@ document.addEventListener('DOMContentLoaded', () => {
              const capeNameValue = capeNameInput ? capeNameInput.value.trim() : '';
              if (!capeNameValue) {
                  if (capeNameFeedback) capeNameFeedback.textContent = 'Bitte gib einen Namen für das Cape ein.';
-             } else if (capeNameValue.length > 30) {
-                 if (capeNameFeedback) capeNameFeedback.textContent = 'Der Cape-Name darf maximal 30 Zeichen lang sein.';
+             } else if (capeNameValue.length > 20) {
+                 if (capeNameFeedback) capeNameFeedback.textContent = 'Der Cape-Name darf maximal 20 Zeichen lang sein.';
               } else {
                  formData.capeName = capeNameValue;
                  isValid = true;
@@ -540,32 +589,116 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updatePreview() {
          if (!previewSkinViewer) return;
+
         if (previewMinecraftName) previewMinecraftName.textContent = formData.minecraftName || 'Nicht angegeben';
         if (previewCapeName) previewCapeName.textContent = formData.capeName || 'Nicht angegeben';
-        let skinSource = "/img/skin.png";
-        if (formData.fetchedSkinUrl) {
-             skinSource = formData.fetchedSkinUrl;
-        }
-        if (formData.skinFile) {
-            skinSource = URL.createObjectURL(formData.skinFile);
-            previewSkinViewer.loadSkin(skinSource).then(() => {
-                if (skinSource.startsWith('blob:')) { URL.revokeObjectURL(skinSource); }
-            }).catch(err => console.error("Error loading manually uploaded skin:", err));
-        } else {
-             previewSkinViewer.loadSkin(skinSource).catch(err => {
-                 console.error("Error loading fetched/default skin:", skinSource, err);
-                 if (skinSource !== "/img/skin.png") {
-                     previewSkinViewer.loadSkin("/img/skin.png");
-                 }
-             });
-         }
+
+        let skinSource = formData.fetchedSkinUrl || defaultSkinPath;
+
+        previewSkinViewer.loadSkin(skinSource).catch(err => {
+             console.error("Error loading skin into form preview:", skinSource, err);
+             if (skinSource !== defaultSkinPath) {
+                 previewSkinViewer.loadSkin(defaultSkinPath);
+             }
+         });
+
         if (formData.capeFile) {
             const capeUrl = URL.createObjectURL(formData.capeFile);
              previewSkinViewer.loadCape(capeUrl, { backEquipment: 'cape' })
                .then(() => URL.revokeObjectURL(capeUrl))
-               .catch(err => console.error("Error loading cape:", err));
+               .catch(err => {
+                   console.error("Error loading cape into form preview:", err);
+                   URL.revokeObjectURL(capeUrl);
+                   if (capeFileFeedback) capeFileFeedback.textContent = "Fehler beim Laden der Cape-Vorschau.";
+               });
         } else {
             previewSkinViewer.loadCape(null);
+        }
+    }
+
+    if (minecraftNameInput) {
+        minecraftNameInput.addEventListener('input', () => {
+             const name = minecraftNameInput.value.trim();
+            if (name && !/^[a-zA-Z0-9_]{1,16}$/.test(name)) {
+                 minecraftNameFeedback.textContent = 'Ungültige Zeichen oder Name zu lang.';
+                 minecraftNameFeedback.className = 'input-feedback';
+                 formData.nameValidated = false;
+                 updateButtons();
+                 nameCheckLoader.style.display = 'none';
+                 return;
+             }
+             else if (name.length > 0 && name.length < 3) {
+                 minecraftNameFeedback.textContent = 'Name muss mindestens 3 Zeichen lang sein.';
+                 minecraftNameFeedback.className = 'input-feedback';
+                 formData.nameValidated = false;
+                 updateButtons();
+                 nameCheckLoader.style.display = 'none';
+                 return;
+             }
+             else {
+                  if(minecraftNameFeedback.textContent.includes('Ungültige Zeichen') || minecraftNameFeedback.textContent.includes('mindestens 3 Zeichen')) {
+                      minecraftNameFeedback.textContent = '';
+                  }
+             }
+
+            formData.nameValidated = false;
+            updateButtons();
+
+            if (name.length >= 3) {
+                 debouncedCheckMinecraftName(name);
+            } else {
+                if (!minecraftNameFeedback.textContent.includes('mindestens 3 Zeichen')) {
+                     minecraftNameFeedback.textContent = '';
+                }
+                minecraftNameFeedback.className = 'input-feedback';
+                nameCheckLoader.style.display = 'none';
+            }
+        });
+    }
+
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            if (validateStep(currentStep)) {
+                showStep(currentStep + 1);
+            }
+        });
+    }
+
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            if (currentStep > 1) {
+                showStep(currentStep - 1);
+            }
+        });
+    }
+
+    if (capeUploadInput) {
+         capeUploadInput.addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            if (file && file.type === "image/png") {
+                formData.capeFile = file;
+                if (capeFileNameDisplay) capeFileNameDisplay.textContent = `Cape: ${file.name}`;
+                if (capeFileFeedback) capeFileFeedback.textContent = '';
+                if (currentStep === totalSteps) {
+                   updatePreview();
+                }
+            } else {
+                formData.capeFile = null;
+                if (capeFileNameDisplay) capeFileNameDisplay.textContent = '';
+                 if (file && capeFileFeedback) {
+                     capeFileFeedback.textContent = "Ungültiger Dateityp. Bitte PNG auswählen.";
+                 } else if (capeFileFeedback) {
+                     capeFileFeedback.textContent = '';
+                 }
+                 if (currentStep === totalSteps && previewSkinViewer) {
+                     previewSkinViewer.loadCape(null);
+                 }
+            }
+        });
+
+        const fileLabel = document.querySelector('label[for="capeUploadInput"]');
+        if (fileLabel) {
+            fileLabel.addEventListener('click', () => capeUploadInput.click());
         }
     }
 
@@ -578,8 +711,10 @@ document.addEventListener('DOMContentLoaded', () => {
                  else if (!validateStep(3)) showStep(3);
                  return;
              }
+
             submitBtn.disabled = true;
             submitBtn.textContent = 'Lade hoch...';
+
             const apiFormData = new FormData();
             apiFormData.append('minecraft_name', formData.minecraftName);
             apiFormData.append('cape_name', formData.capeName);
@@ -592,18 +727,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 submitBtn.textContent = 'Cape Hochladen';
                 return;
             }
+
             const workerUrl = 'https://cloudcookieapi.leonmt12345.workers.dev/web_add_cape';
+
             try {
                  const response = await fetch(workerUrl, {
                      method: 'POST',
                      body: apiFormData
                  });
+
                 let result = {};
                 try { result = await response.json(); }
                 catch (jsonError) {
                     console.warn("Could not parse JSON response:", jsonError);
-                    if (!response.ok) { result = { detail: `Serverfehler: ${response.status} ${response.statusText}`}; }
+                    if (!response.ok) {
+                        result = { detail: `Serverfehler: ${response.status} ${response.statusText}`};
+                    }
                 }
+
                 if (response.ok) {
                      setCookie("capeUploadedToday", "true", 1);
                      if (formContainer) formContainer.style.display = 'none';
@@ -612,6 +753,7 @@ document.addEventListener('DOMContentLoaded', () => {
                      if (stepTitle) stepTitle.textContent = "Fertig!";
                      if (progressBar) progressBar.style.width = '100%';
                      console.log(`Cape '${formData.capeName}' uploaded successfully! ID: ${result.cape_id || 'N/A'}`);
+                     fetchRandomCapes();
                 } else {
                      const errorDetail = result.detail || `Fehler ${response.status}`;
                      alert(`Fehler beim Hochladen: ${errorDetail}`);
@@ -628,4 +770,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     updateButtons();
+
 });
