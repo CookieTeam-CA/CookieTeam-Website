@@ -1,8 +1,12 @@
-// --- START OF FILE capes.js ---
+const defaultSkinPath = "/img/skin.png";
+const defaultModalBackgroundColor = 0x2a2a3a;
+const galleryBackgroundColor = 0x2a2a3a;
+
+let modalSkinViewer = null;
+let capeModal, modalCanvas, closeModalButton, modalCapeName, modalCapeId, modalSkinToggle, modalPanoramaSelect, modalOverlay;
 
 window.addEventListener("scroll", () => {
     const header = document.querySelector("header");
-    // Safety check if header exists
     if (header) {
         if (window.scrollY > 50) {
             header.classList.add("floating");
@@ -12,20 +16,13 @@ window.addEventListener("scroll", () => {
     }
 });
 
-/**
- * Constructs the correct HTTPS image URL for a given original URL from the API.
- * @param {string} originalUrl - The URL received from the API (e.g., http://...:8000/capes/1.png)
- * @returns {string|null} The corrected HTTPS URL or null if the original URL is invalid.
- */
 function getCorrectCapeImageUrl(originalUrl) {
     if (!originalUrl || typeof originalUrl !== 'string') {
         return null;
     }
     try {
-        // Extract the filename (e.g., "1.png")
         const filename = originalUrl.substring(originalUrl.lastIndexOf('/') + 1);
-        if (!filename) return null; // No filename found
-        // Construct the new URL
+        if (!filename) return null;
         return `https://api.cookieattack.de:8989/capes/${filename}`;
     } catch (e) {
         console.error("Error constructing correct cape image URL from:", originalUrl, e);
@@ -33,24 +30,107 @@ function getCorrectCapeImageUrl(originalUrl) {
     }
 }
 
+function initializeModalViewer() {
+    if (!modalSkinViewer && modalCanvas) {
+        try {
+            modalSkinViewer = new skinview3d.SkinViewer({
+                canvas: modalCanvas,
+                width: modalCanvas.width,
+                height: modalCanvas.height,
+                skin: defaultSkinPath,
+                background: defaultModalBackgroundColor
+            });
+            modalSkinViewer.fov = 65;
+            modalSkinViewer.zoom = 0.8;
+            modalSkinViewer.globalLight.intensity = 2.5;
+            modalSkinViewer.cameraLight.intensity = 1.0;
+            modalSkinViewer.autoRotate = false;
+            modalSkinViewer.autoRotateSpeed = 0;
+            modalSkinViewer.animation = new skinview3d.WalkingAnimation(); 
+            modalSkinViewer.animation.speed = 0;
+            modalSkinViewer.animation.paused = true;
+
+            console.log("Modal SkinViewer initialized.");
+
+        } catch (e) {
+            console.error("Failed to initialize modal SkinViewer:", e);
+            if (modalCanvas.parentElement) {
+                modalCanvas.parentElement.innerHTML = "<p style='color: #ff6b6b;'>3D-Vorschau konnte nicht geladen werden.</p>";
+            }
+        }
+    }
+}
+
+function openCapeModal(capeId, capeUrl, capeName) {
+    if (!capeModal || !modalCanvas || !modalCapeName || !modalCapeId || !modalSkinToggle || !modalPanoramaSelect) {
+        console.error("Modal elements not ready or found. Ensure DOMContentLoaded has run and IDs are correct.");
+        alert("Fehler: Modal konnte nicht geöffnet werden, Elemente fehlen.");
+        return;
+    }
+
+    if (!modalSkinViewer) {
+        initializeModalViewer();
+        if (!modalSkinViewer) {
+             alert("Fehler: 3D-Vorschau konnte nicht initialisiert werden.");
+             return;
+        }
+    }
+
+    modalCapeName.textContent = capeName || "Unbenanntes Cape";
+    modalCapeId.textContent = capeId !== undefined ? `ID: ${capeId}` : "ID: N/A";
+    modalSkinToggle.checked = true;
+    modalPanoramaSelect.value = 'none';
+
+    modalSkinViewer.loadSkin(defaultSkinPath)
+        .catch(err => console.error("Modal: Failed to load default skin:", err));
+
+    modalSkinViewer.loadCape(capeUrl, { backEquipment: 'cape' })
+        .then(() => console.log(`Modal: Loaded cape ${capeId} from ${capeUrl}`))
+        .catch(err => {
+            console.error(`Modal: Failed to load cape ${capeUrl}:`, err);
+            modalCapeName.textContent += " (Cape Ladefehler)";
+        });
+
+    modalSkinViewer.loadPanorama(null);
+    modalSkinViewer.background = defaultModalBackgroundColor;
+
+    modalSkinViewer.autoRotate = true;
+    if (modalSkinViewer.animation) {
+        modalSkinViewer.animation.paused = false;
+        modalSkinViewer.animation.speed = 1.0;
+    }
+
+    capeModal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeCapeModal() {
+    if (!capeModal || !modalSkinViewer) return;
+
+    capeModal.classList.add('hidden');
+    document.body.style.overflow = '';
+
+    modalSkinViewer.autoRotate = false;
+    if (modalSkinViewer.animation) {
+        modalSkinViewer.animation.paused = true;
+        modalSkinViewer.animation.speed = 0;
+    }
+}
 
 async function fetchAllCapes() {
     try {
-        // Using the correct API endpoint provided in the original script.js
         const response = await fetch("https://api.cookieattack.de:8989/list_capes");
 
         if (!response.ok) {
             const text = await response.text();
             console.error("API-Fehler (fetchAllCapes):", response.status, text);
-            // Optionally display user-friendly error
             const container = document.getElementById("capeContainer");
             if(container) container.innerHTML = '<p style="color: #ff6b6b;">Fehler beim Laden der Capes.</p>';
             return;
         }
 
         const result = await response.json();
-        const capes = result.capes || []; // Default to empty array if 'capes' is missing
-
+        const capes = result.capes || [];
         const validCapes = capes.filter(cape => cape.cape_image_url && cape.cape_image_url.trim() !== "");
 
         const container = document.getElementById("capeContainer");
@@ -65,32 +145,35 @@ async function fetchAllCapes() {
             return;
         }
 
-        container.innerHTML = ""; // Clear previous content
+        container.innerHTML = "";
 
         validCapes.forEach((cape) => {
             const previewDiv = document.createElement("div");
             previewDiv.className = "cape-preview";
 
             const canvas = document.createElement("canvas");
-            // Adjust size as needed for the full capes page
-            canvas.width = 200; // Example size
-            canvas.height = 280; // Example size
+            canvas.width = 200;
+            canvas.height = 280;
             previewDiv.appendChild(canvas);
 
-            const name = document.createElement("p");
-            name.textContent = cape.cape_name || "Unbenanntes Cape"; // Use default name if missing
-            previewDiv.appendChild(name);
+            const nameP = document.createElement("p");
+            const capeNameText = cape.cape_name || "Unbenanntes Cape";
+            nameP.textContent = capeNameText;
+            previewDiv.appendChild(nameP);
 
             container.appendChild(previewDiv);
 
-            // --- *** URL KORREKTUR *** ---
             const correctedImageUrl = getCorrectCapeImageUrl(cape.cape_image_url);
-            // --- *** URL KORREKTUR *** ---
+            const capeId = cape.cape_id;
 
             if (!correctedImageUrl) {
-                console.warn(`Could not generate correct image URL for cape ID ${cape.cape_id}`);
-                previewDiv.innerHTML += '<p style="font-size: 0.8em; color: red;">Bild-URL ungültig</p>';
-                return; // Skip initializing viewer if URL is bad
+                console.warn(`Could not generate correct image URL for cape ID ${capeId}`);
+                 const errorP = document.createElement("p");
+                 errorP.style.fontSize = "0.8em";
+                 errorP.style.color = "red";
+                 errorP.textContent = "Bild-URL ungültig";
+                 previewDiv.appendChild(errorP);
+                return;
             }
 
             try {
@@ -98,56 +181,99 @@ async function fetchAllCapes() {
                     canvas: canvas,
                     width: canvas.width,
                     height: canvas.height,
-                    skin: "/img/skin.png", // Default skin for gallery display
-                    background: 0x2a2a3a // Match preview background
+                    skin: defaultSkinPath,
+                    background: galleryBackgroundColor
                 });
 
-                // --- *** VERWENDE KORRIGIERTE URL *** ---
                 viewer.loadCape(correctedImageUrl, { backEquipment: 'cape' })
-                    .catch(err => console.error(`Failed to load cape ${correctedImageUrl} for preview:`, err));
-                // --- *** VERWENDE KORRIGIERTE URL *** ---
+                    .catch(err => console.error(`Failed to load cape ${correctedImageUrl} for preview (ID: ${capeId}):`, err));
 
                 viewer.fov = 70;
                 viewer.zoom = 0.85;
-                viewer.globalLight.intensity = 3; // Slightly brighter lights
+                viewer.globalLight.intensity = 3;
                 viewer.cameraLight.intensity = 3;
                 viewer.autoRotate = true;
                 viewer.animation = new skinview3d.WalkingAnimation();
                 viewer.animation.speed = 0.5;
 
-                // --- Click Listener Correction ---
-                // This listener seems problematic as `skinViewer` is not defined in this scope.
-                // Assuming it should reload the cape in *this specific* viewer instance (`viewer`).
-                // If it's meant to interact with a *different* main viewer, that logic needs adjustment.
                 previewDiv.addEventListener("click", () => {
-                    // Load the cape into the clicked preview's viewer instance
-                     console.log(`Clicked cape preview, attempting to load: ${correctedImageUrl}`);
-                     viewer.loadCape(correctedImageUrl, { backEquipment: 'cape' })
-                         .catch(err => console.error(`Failed to reload cape ${correctedImageUrl} on click:`, err));
-                    // If you have a main viewer elsewhere (e.g., called `mainSkinViewer`):
-                    // if (typeof mainSkinViewer !== 'undefined' && mainSkinViewer) {
-                    //     mainSkinViewer.loadCape(correctedImageUrl);
-                    // }
+                    console.log(`Clicked cape preview ID: ${capeId}, Name: ${capeNameText}`);
+                    openCapeModal(capeId, correctedImageUrl, capeNameText);
                 });
-                // --- End Click Listener Correction ---
 
             } catch (viewerError) {
-                 console.error("Error initializing gallery SkinViewer:", viewerError);
-                 previewDiv.innerHTML = `<p>Vorschaufehler für ${cape.cape_name || 'Cape'}</p>`;
+                 console.error(`Error initializing gallery SkinViewer for cape ID ${capeId}:`, viewerError);
+                 previewDiv.innerHTML = `<p>${capeNameText}</p><p style="font-size: 0.8em; color: red;">Vorschaufehler</p>`;
             }
         });
 
     } catch (err) {
         console.error("Fehler beim Laden der Capes (fetchAllCapes):", err);
         const container = document.getElementById("capeContainer");
-        if(container) container.innerHTML = '<p style="color: #ff6b6b;">Ein Fehler ist aufgetreten.</p>';
+        if(container) container.innerHTML = '<p style="color: #ff6b6b;">Ein Fehler ist aufgetreten beim Laden der Capes.</p>';
     }
 }
 
-// Ensure the function runs after the DOM is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', fetchAllCapes);
-} else {
-    fetchAllCapes(); // DOM is already ready
-}
-// --- END OF FILE capes.js ---
+document.addEventListener('DOMContentLoaded', () => {
+    capeModal = document.getElementById('capeModal');
+    modalCanvas = document.getElementById('modalCanvas');
+    closeModalButton = document.getElementById('closeModalButton');
+    modalCapeName = document.getElementById('modalCapeName');
+    modalCapeId = document.getElementById('modalCapeId');
+    modalSkinToggle = document.getElementById('modalSkinToggle');
+    modalPanoramaSelect = document.getElementById('modalPanoramaSelect');
+    modalOverlay = capeModal ? capeModal.querySelector('.modal-overlay') : null;
+
+    if (!capeModal || !modalCanvas || !closeModalButton || !modalCapeName || !modalCapeId || !modalSkinToggle || !modalPanoramaSelect || !modalOverlay) {
+        console.warn("One or more modal elements could not be found. Modal functionality might be impaired.");
+    } else {
+        closeModalButton.addEventListener('click', closeCapeModal);
+
+        modalOverlay.addEventListener('click', closeCapeModal);
+
+        modalSkinToggle.addEventListener('change', () => {
+            if (!modalSkinViewer) return;
+            if (modalSkinToggle.checked) {
+                modalSkinViewer.loadSkin(defaultSkinPath)
+                    .catch(err => console.error("Modal: Failed to load skin:", err));
+            } else {
+                modalSkinViewer.loadSkin(null)
+                    .catch(err => console.error("Modal: Failed to unload skin:", err));
+            }
+        });
+
+        modalPanoramaSelect.addEventListener('change', () => {
+            if (!modalSkinViewer) return;
+            const selection = modalPanoramaSelect.value;
+            let panoramaPath = null;
+
+            if (selection === 'panorama1') {
+                panoramaPath = '/img/panorama1.png';
+            } else if (selection === 'panorama2') {
+                 panoramaPath = '/img/panorama2.png';
+            }
+
+            if (panoramaPath) {
+                modalSkinViewer.loadPanorama(panoramaPath)
+                    .then(() => console.log("Modal: Loaded panorama", panoramaPath))
+                    .catch(err => {
+                        console.error("Modal: Failed to load panorama:", err);
+                        alert("Panorama konnte nicht geladen werden.");
+                        modalSkinViewer.loadPanorama(null);
+                        modalSkinViewer.background = defaultModalBackgroundColor;
+                        modalPanoramaSelect.value = 'none';
+                    });
+            } else {
+                modalSkinViewer.loadPanorama(null);
+                modalSkinViewer.background = defaultModalBackgroundColor;
+                console.log("Modal: Reset to default background.");
+            }
+        });
+    }
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && capeModal && !capeModal.classList.contains('hidden')) {
+            closeCapeModal();
+        }
+    });
+    fetchAllCapes();
+});

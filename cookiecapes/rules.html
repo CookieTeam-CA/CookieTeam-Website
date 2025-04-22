@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="de"></html>
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CookieCapes</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="https://unpkg.com/skinview3d/bundles/skinview3d.bundle.js"></script>
-    <script src="js/capes.js" defer></script>
+    <script src="js/script.js" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
@@ -22,39 +22,24 @@
         <div class="nav-container">
             <nav>
                 <a href="player.html">Spieler</a>
-                <a href="index.html">Home</a>
+                <a href="capes.html">Capes</a>
             </nav>
         </div>
     </header>
-    <div class="intro">
-        <h1>Alle Capes</h1>
-    </div>
-
-    <div class="all-capes">
-        <div id="capeContainer" class="cape-container"></div>
-    </div>
-
-    <div id="capeModal" class="modal hidden">
-        <div class="modal-overlay"></div>
-        <div class="modal-content">
-            <button id="closeModalButton" class="modal-close-button">&times;</button>
-            <h3 id="modalCapeName">Cape Name</h3>
-            <p id="modalCapeId">ID: N/A</p>
-            <canvas id="modalCanvas" width="300" height="400"></canvas>
-            <div class="modal-controls">
-                <label>
-                    <input type="checkbox" id="modalSkinToggle" checked> Skin anzeigen
-                </label>
-                <label>
-                    Panorama:
-                    <select id="modalPanoramaSelect">
-                        <option value="none">Standard</option>
-                        <option value="panorama1">Panorama 1</option>
-                        <option value="panorama2">Panorama 2</option>
-                    </select>
-                </label>
-            </div>
+    <div class="hero">
+        <div class="hero-text">
+            <h1>CookieCapes Regeln</h1>
         </div>
+    </div>
+
+    <div class="rules">
+        <h1>Regeln</h1>
+        Diese gelten für jeden der Capes hochlädt oder die CookieCapes Mod benutzt wir behalten uns das Recht vor diese Regeln ohne Ankündigung zu ändern 
+        <h2>Capes hochladen</h2>
+        <ul>
+            <li>Die Capes dürfen folgende Sachen nicht zeigen/beinhalten: Nacktheit, </li>
+            <li>Solltest du Bilder oder sonstigest gefunden haben das dein geistiges Eigentum ist Kontakiere uns bitte so dass wir diese Capes runternehmen können</li>
+        </ul>
     </div>
 
     <footer class="footer">
@@ -96,6 +81,33 @@
             </div>
             <div class="footer-copyright">
                 <p>© 2025 CookieTeam. Alle Rechte vorbehalten.</p>
+                <p>NOT AN OFFICIAL MINECRAFT SERVICE. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.</p>
+            </div>
+        </div>
+        <div id="capeModal" class="modal hidden">
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <button id="closeModalButton" class="close-button" aria-label="Schließen">×</button>
+                <h2 id="modalCapeName">Cape Name</h2>
+                <div class="modal-viewer-container">
+                    <canvas id="modalCanvas" width="300" height="400"></canvas>
+                </div>
+                <div class="modal-info">
+                    <p><strong>Cape ID:</strong> <span id="modalCapeId">N/A</span></p>
+                </div>
+                <div class="modal-controls">
+                    <div class="control-group">
+                        <label for="modalSkinToggle">Skin anzeigen:</label>
+                        <input type="checkbox" id="modalSkinToggle" checked>
+                    </div>
+                    <div class="control-group">
+                        <label for="modalPanoramaSelect">Hintergrund:</label>
+                        <select id="modalPanoramaSelect">
+                            <option value="none">Standard</option>
+                            <option value="panorama1">Panorama 1</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
     </footer>
