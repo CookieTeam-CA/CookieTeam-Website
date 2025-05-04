@@ -863,6 +863,59 @@ button:hover::before {
 
 /* capes.html */
 
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px; /* Spacing between elements */
+  margin-top: 30px; /* Space above the controls */
+  margin-bottom: 20px; /* Space below the controls */
+  padding: 10px;
+}
+
+.pagination-controls button {
+  /* Use existing button styles or customize */
+  padding: 8px 15px;
+  font-size: 0.9em;
+  background-color: #363636;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.pagination-controls button:hover:not(:disabled) {
+  background-color: #585858;
+}
+
+.pagination-controls button:disabled {
+  background-color: #555;
+  color: #999;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+.pagination-controls button:disabled::before { /* Prevent shine effect on disabled */
+  content: none;
+}
+
+.pagination-info {
+  color: #ccc;
+  font-size: 0.95em;
+  margin: 0 10px; /* Add some space around the text */
+}
+
+/* Optional: Styling for page number buttons if you add them later */
+.page-number {
+  padding: 5px 10px;
+  /* ... other styles ... */
+}
+.page-number.active {
+  background-color: #ffa500;
+  color: #1f1f2f;
+  font-weight: bold;
+}
+
 .intro {
   display: flex;
   flex-direction: column;
@@ -1046,4 +1099,55 @@ header {
 
 .hidden {
     display: none !important;
+}
+
+/* --- Player List Page Styles --- */
+
+.all-players {
+  /* Similar to .all-capes if desired */
+  padding: 20px;
+  max-width: 1200px; /* Adjust as needed */
+  margin: 20px auto;
+}
+
+.player-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem; /* Spacing between player cards */
+  justify-content: center; /* Center cards horizontally */
+  align-items: flex-start; /* Align cards at the top */
+}
+
+.player-card {
+  background: #2a2a3a; /* Slightly different or same as cape previews */
+  padding: 1.2rem;
+  border-radius: 12px;
+  text-align: center;
+  width: 220px; /* Fixed width for cards */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.player-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+}
+
+.player-card canvas {
+  display: block; /* Remove extra space below canvas */
+  margin: 0 auto 1rem auto; /* Center canvas and add space below */
+  border-radius: 8px;
+  /* background set by JS */
+}
+
+.player-card p {
+  margin: 0.3rem 0;
+  color: #e0e0e0; /* Player name color */
+  font-weight: 500;
+  word-wrap: break-word; /* Prevent long names from overflowing */
+}
+
+.player-card p:last-of-type { /* Style for the Cape ID/Info text */
+   font-size: 0.8em;
+   color: #aaa;
 }
