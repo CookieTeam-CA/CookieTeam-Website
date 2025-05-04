@@ -54,14 +54,22 @@ function getCorrectCapeImageUrl(originalUrl) {
         return null;
     }
     try {
-        const filename = originalUrl.substring(originalUrl.lastIndexOf('/') + 1);
-        if (!filename) return null;
-        return `https://api.cookieattack.de:8989/capes/${filename}`;
+        let correctedUrl = originalUrl;
+        if (correctedUrl && correctedUrl.startsWith('http://')) {
+             const urlObj = new URL(correctedUrl);
+             if (urlObj.protocol === 'http:' && urlObj.hostname === 'api.cookieattack.de' && urlObj.port === '8000') {
+                 urlObj.protocol = 'https:';
+                 urlObj.port = '8989';
+                 correctedUrl = urlObj.toString();
+             }
+        }
+        return correctedUrl; // Return corrected or original URL
     } catch (e) {
-        console.error("Error constructing correct cape image URL from:", originalUrl, e);
+        console.error("Error constructing/correcting cape image URL from:", originalUrl, e);
         return null;
     }
 }
+
 
 async function fetchRandomCapes() {
     try {
@@ -77,7 +85,7 @@ async function fetchRandomCapes() {
 
         const result = await response.json();
         const capes = result.capes || [];
-        const validCapes = capes.filter(cape => cape.cape_image_url && cape.cape_image_url.trim() !== "");
+        const validCapes = capes.filter(cape => cape.cape_image_url && cape.cape_image_url.trim() !== "" && cape.minecraft_name);
 
         const container = document.getElementById("capeContainer");
         if (!container) {
@@ -198,12 +206,6 @@ function initializeModalViewer() {
     }
 }
 
-/**
- * Opens the cape detail modal and loads the specified cape.
- * @param {string|number} capeId The ID of the cape.
- * @param {string} capeUrl The URL of the cape image.
- * @param {string} capeName The name of the cape.
- */
 function openCapeModal(capeId, capeUrl, capeName) {
     if (!capeModal) {
         console.error("Modal elements not ready.");
@@ -253,7 +255,6 @@ function closeCapeModal() {
     if (modalSkinViewer.animation) modalSkinViewer.animation.paused = true;
 }
 
-
 document.addEventListener('DOMContentLoaded', () => {
     fetchRandomCapes();
 
@@ -291,9 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let panoramaPath = null;
 
             if (selection === 'panorama1') {
-                panoramaPath = '/img/panorama1.png';
-            } else if (selection === 'panorama2') {
-                 panoramaPath = '/img/panorama2.png';
+                panoramaPath = '../img/panorama1.png';
             }
 
             if (panoramaPath) {
@@ -320,6 +319,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // --- START WIZARD LOGIC ---
+
     const capeUploadSection = document.getElementById('capeUpload');
     if (!capeUploadSection) {
         console.log("Cape upload section not found, skipping form initialization.");
@@ -340,6 +341,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const stepTitle = document.getElementById('stepTitle');
 
     const minecraftNameInput = document.getElementById('minecraftName');
+    const rulesAgreeCheckbox = document.getElementById('rulesAgreeCheckbox'); // New Element
     const capeNameInput = document.getElementById('capeName');
     const capeUploadInput = document.getElementById('capeUploadInput');
 
@@ -348,6 +350,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const previewCapeName = document.getElementById('previewCapeName');
 
     const minecraftNameFeedback = document.getElementById('minecraftNameFeedback');
+    const rulesAgreeFeedback = document.getElementById('rulesAgreeFeedback'); // New Element
     const capeNameFeedback = document.getElementById('capeNameFeedback');
     const capeFileFeedback = document.getElementById('capeFileFeedback');
     const nameCheckLoader = document.getElementById('nameCheckLoader');
@@ -356,14 +359,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let previewSkinViewer = null;
 
     let currentStep = 1;
-    const totalSteps = steps.length;
+    const totalSteps = 5; // Increased total steps
     const formData = {
         minecraftName: '',
         capeName: '',
         skinFile: null,
         capeFile: null,
         fetchedSkinUrl: null,
-        nameValidated: false
+        nameValidated: false,
+        rulesAgreed: false // Added state for rules agreement
     };
 
     const uploadCookie = getCookie("capeUploadedToday");
@@ -410,12 +414,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateButtons() {
-        if (!prevBtn || !nextBtn || !submitBtn) return;
+        if (!prevBtn || !nextBtn || !submitBtn || !rulesAgreeCheckbox) return;
         prevBtn.style.display = currentStep > 1 ? 'inline-block' : 'none';
         nextBtn.style.display = currentStep < totalSteps ? 'inline-block' : 'none';
         submitBtn.style.display = currentStep === totalSteps ? 'inline-block' : 'none';
 
-        nextBtn.disabled = (currentStep === 1 && !formData.nameValidated);
+        // Disable Next button based on current step validation
+        let nextDisabled = false;
+        if (currentStep === 1 && !formData.nameValidated) {
+            nextDisabled = true;
+        } else if (currentStep === 2 && !rulesAgreeCheckbox.checked) {
+            nextDisabled = true;
+        }
+        // Add other conditions if needed for later steps (though handled by validateStep on click)
+
+        nextBtn.disabled = nextDisabled;
 
         updateProgressBar();
         updateStepTitle();
@@ -429,11 +442,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
      function updateStepTitle() {
          if (!stepTitle) return;
+         // Adjusted titles array for 5 steps
          const titles = [
             "Schritt 1: Dein Minecraft-Name",
-            "Schritt 2: Name des Capes",
-            "Schritt 3: Cape Hochladen",
-            "Schritt 4: Vorschau & Bestätigung"
+            "Schritt 2: Regeln zustimmen",
+            "Schritt 3: Name des Capes",
+            "Schritt 4: Cape Hochladen",
+            "Schritt 5: Vorschau & Bestätigung"
          ];
          const titleText = titles[currentStep - 1] || `Schritt ${currentStep}`;
          stepTitle.style.opacity = 0;
@@ -455,18 +470,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         setTimeout(() => {
+            // Use the correct ID based on the stepNumber (e.g., step-1, step-2, etc.)
             const nextStep = document.getElementById(`step-${stepNumber}`);
             if (nextStep) {
                 nextStep.classList.add('active');
                 currentStep = stepNumber;
                 updateButtons();
 
+                // Initialize preview only on the *last* step (now step 5)
                 if (currentStep === totalSteps) {
                     initializePreviewViewer();
                     updatePreview();
                 }
             }
-        }, 50);
+        }, 50); // Slight delay to allow exit animation to start
     }
 
     async function checkMinecraftName(name) {
@@ -492,24 +509,19 @@ document.addEventListener('DOMContentLoaded', () => {
         nameCheckLoader.style.display = 'block';
 
         const apiUrl = `https://starlightskins.lunareclipse.studio/render/skin/${name}/default`;
-        console.log("Debounced Check - Checking Starlight API:", apiUrl);
 
         try {
             const response = await fetch(apiUrl);
 
             if (response.ok && response.headers.get('content-type')?.startsWith('image/')) {
-                console.log("Debounced Check - Success (Image found)");
                 minecraftNameFeedback.textContent = 'Minecraft-Name gültig!';
                 minecraftNameFeedback.className = 'input-feedback success';
                 formData.minecraftName = name;
                 formData.fetchedSkinUrl = apiUrl;
                 formData.nameValidated = true;
             } else {
-                 console.log("Debounced Check - Not an image, checking for JSON error");
                  let errorJson = null;
-                 try {
-                    errorJson = await response.clone().json();
-                 } catch (e) { /* Ignore if response isn't valid JSON */ }
+                 try { errorJson = await response.clone().json(); } catch (e) { /* Ignore */ }
 
                  if (errorJson && errorJson.error === "Unknown player username/uuid.") {
                     minecraftNameFeedback.textContent = 'Minecraft-Name nicht gefunden.';
@@ -517,10 +529,9 @@ document.addEventListener('DOMContentLoaded', () => {
                  } else {
                     minecraftNameFeedback.textContent = 'Fehler bei der Namensüberprüfung.';
                     minecraftNameFeedback.className = 'input-feedback';
-                    console.error("Debounced Check - Unknown error:", response.status, errorJson);
                  }
                  formData.fetchedSkinUrl = null;
-                 formData.minecraftName = name;
+                 formData.minecraftName = name; // Keep name but mark as not validated
             }
         } catch (error) {
             console.error("Debounced Check - Network error:", error);
@@ -538,7 +549,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function validateStep(step) {
         let isValid = true;
-        clearFeedback();
+        clearFeedback(); // Clear all feedback before validating current step
 
         if (step === 1) {
              const name = minecraftNameInput ? minecraftNameInput.value.trim() : '';
@@ -550,11 +561,22 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (!formData.nameValidated) {
                  if (minecraftNameFeedback && (minecraftNameFeedback.textContent === '' || minecraftNameFeedback.textContent.includes('Überprüfe'))) {
                     minecraftNameFeedback.textContent = 'Bitte warte auf die Namensüberprüfung oder korrigiere den Namen.';
+                 } else if (!minecraftNameFeedback.textContent.includes('gefunden')) {
+                    // Don't override "not found" message immediately
+                    minecraftNameFeedback.textContent = 'Name konnte nicht validiert werden.';
                  }
             } else {
-                 isValid = true;
+                 isValid = true; // Only valid if format matches AND validation passed
             }
         } else if (step === 2) {
+             isValid = false;
+             if (!rulesAgreeCheckbox || !rulesAgreeCheckbox.checked) {
+                 if (rulesAgreeFeedback) rulesAgreeFeedback.textContent = 'Du musst den Regeln zustimmen, um fortzufahren.';
+             } else {
+                 formData.rulesAgreed = true; // Update state
+                 isValid = true;
+             }
+        } else if (step === 3) { // Was step 2
              isValid = false;
              const capeNameValue = capeNameInput ? capeNameInput.value.trim() : '';
              if (!capeNameValue) {
@@ -565,23 +587,30 @@ document.addEventListener('DOMContentLoaded', () => {
                  formData.capeName = capeNameValue;
                  isValid = true;
              }
-        } else if (step === 3) {
+        } else if (step === 4) { // Was step 3
             isValid = false;
             if (!formData.capeFile) {
                 if (capeFileFeedback) capeFileFeedback.textContent = 'Bitte wähle eine Cape-Datei (PNG) aus.';
             } else {
                 isValid = true;
             }
+        } else if (step === 5) { // Preview step, usually doesn't need explicit validation here
+            isValid = true;
         }
+
         console.log(`ValidateStep result for step ${step}:`, isValid);
         return isValid;
     }
 
     function clearFeedback() {
         if (minecraftNameFeedback) {
-            minecraftNameFeedback.textContent = '';
-            minecraftNameFeedback.className = 'input-feedback';
+            // Don't clear if it shows success or checking
+            if (!minecraftNameFeedback.textContent.includes('gültig') && !minecraftNameFeedback.textContent.includes('Überprüfe')) {
+                 minecraftNameFeedback.textContent = '';
+            }
+             minecraftNameFeedback.className = minecraftNameFeedback.className.replace(' error', ''); // Remove potential error class if added
         }
+         if (rulesAgreeFeedback) rulesAgreeFeedback.textContent = '';
         if (capeNameFeedback) capeNameFeedback.textContent = '';
         if (capeFileFeedback) capeFileFeedback.textContent = '';
         if (nameCheckLoader) nameCheckLoader.style.display = 'none';
@@ -616,22 +645,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Event Listeners
     if (minecraftNameInput) {
         minecraftNameInput.addEventListener('input', () => {
              const name = minecraftNameInput.value.trim();
-            if (name && !/^[a-zA-Z0-9_]{1,16}$/.test(name)) {
+             // Reset validation state immediately on input
+             formData.nameValidated = false;
+             updateButtons();
+
+             if (name && !/^[a-zA-Z0-9_]{1,16}$/.test(name)) {
                  minecraftNameFeedback.textContent = 'Ungültige Zeichen oder Name zu lang.';
                  minecraftNameFeedback.className = 'input-feedback';
-                 formData.nameValidated = false;
-                 updateButtons();
                  nameCheckLoader.style.display = 'none';
                  return;
              }
              else if (name.length > 0 && name.length < 3) {
                  minecraftNameFeedback.textContent = 'Name muss mindestens 3 Zeichen lang sein.';
                  minecraftNameFeedback.className = 'input-feedback';
-                 formData.nameValidated = false;
-                 updateButtons();
                  nameCheckLoader.style.display = 'none';
                  return;
              }
@@ -640,9 +670,6 @@ document.addEventListener('DOMContentLoaded', () => {
                       minecraftNameFeedback.textContent = '';
                   }
              }
-
-            formData.nameValidated = false;
-            updateButtons();
 
             if (name.length >= 3) {
                  debouncedCheckMinecraftName(name);
@@ -656,8 +683,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Listener for the new rules checkbox
+     if (rulesAgreeCheckbox) {
+         rulesAgreeCheckbox.addEventListener('change', () => {
+            formData.rulesAgreed = rulesAgreeCheckbox.checked;
+            if (rulesAgreeCheckbox.checked) {
+                rulesAgreeFeedback.textContent = ''; // Clear feedback when checked
+            }
+            updateButtons(); // Update button state based on checkbox
+         });
+     }
+
+
     if (nextBtn) {
         nextBtn.addEventListener('click', () => {
+            clearFeedback(); // Clear previous errors before validating
             if (validateStep(currentStep)) {
                 showStep(currentStep + 1);
             }
@@ -666,6 +706,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (prevBtn) {
         prevBtn.addEventListener('click', () => {
+             clearFeedback(); // Clear feedback when going back too
             if (currentStep > 1) {
                 showStep(currentStep - 1);
             }
@@ -679,7 +720,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 formData.capeFile = file;
                 if (capeFileNameDisplay) capeFileNameDisplay.textContent = `Cape: ${file.name}`;
                 if (capeFileFeedback) capeFileFeedback.textContent = '';
-                if (currentStep === totalSteps) {
+                if (currentStep === totalSteps) { // Check if on preview step (now 5)
                    updatePreview();
                 }
             } else {
@@ -704,13 +745,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (submitBtn) {
         submitBtn.addEventListener('click', async () => {
-             if (currentStep !== totalSteps || !validateStep(1) || !validateStep(2) || !validateStep(3)) {
-                 alert("Bitte fülle alle erforderlichen Felder korrekt aus und stelle sicher, dass der Minecraft-Name gültig ist.");
-                 if (!validateStep(1)) showStep(1);
-                 else if (!validateStep(2)) showStep(2);
-                 else if (!validateStep(3)) showStep(3);
+             // Validate ALL steps before submitting
+             let allValid = true;
+             for (let i = 1; i < totalSteps; i++) { // Validate steps 1 through 4
+                 if (!validateStep(i)) {
+                     allValid = false;
+                     showStep(i); // Go to the first invalid step
+                     break;
+                 }
+             }
+
+             if (!allValid) {
+                 alert("Bitte fülle alle vorherigen Schritte korrekt aus.");
                  return;
              }
+              if (currentStep !== totalSteps) { // Extra check
+                  console.error("Submit clicked but not on the final step.");
+                  return;
+              }
 
             submitBtn.disabled = true;
             submitBtn.textContent = 'Lade hoch...';
@@ -756,7 +808,12 @@ document.addEventListener('DOMContentLoaded', () => {
                      fetchRandomCapes();
                 } else {
                      const errorDetail = result.detail || `Fehler ${response.status}`;
-                     alert(`Fehler beim Hochladen: ${errorDetail}`);
+                     // Handle specific moderation block status code
+                     if (response.status === 469) { // Use the code from your API (MODERATION_BLOCKED_STATUS_CODE)
+                         alert(`Fehler beim Hochladen: Das Bild wurde von der Moderation abgelehnt. Bitte überprüfe die Regeln.`);
+                     } else {
+                         alert(`Fehler beim Hochladen: ${errorDetail}`);
+                     }
                      submitBtn.disabled = false;
                      submitBtn.textContent = 'Cape Hochladen';
                 }
@@ -769,5 +826,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Initial setup
     updateButtons();
+
 });

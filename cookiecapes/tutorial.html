@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CookieCapes - Cape Erstellen Tutorial</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#5bbad5">
+
+    <style>
+        .tutorial-content {
+            background-color: #1f1f2f;
+            color: #e0e0e0;
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 165, 0, 0.2);
+            max-width: 950px;
+            margin: 120px auto 40px auto;
+            line-height: 1.7;
+        }
+
+        .tutorial-content h1 {
+            color: #ffa500;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        .tutorial-content h2 {
+            color: #ffa500;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid rgba(255, 165, 0, 0.2);
+            font-size: 1.8em;
+        }
+
+        .tutorial-content h3 {
+            color: #ffc966;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.4em;
+        }
+
+        .tutorial-content ul, .tutorial-content ol {
+            padding-left: 30px;
+            margin-bottom: 20px;
+        }
+
+         .tutorial-content ul li, .tutorial-content ol li {
+            margin-bottom: 12px;
+            color: #ccc;
+        }
+        .tutorial-content li strong {
+            color: #e0e0e0;
+            font-weight: 600;
+        }
+        .tutorial-content li code {
+             background-color: #2a2a3a;
+             padding: 2px 5px;
+             border-radius: 4px;
+             font-family: Consolas, monospace;
+             color: #ffcc80;
+        }
+
+        .tutorial-content a {
+            color: #ffa500;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .tutorial-content a:hover {
+            text-decoration: underline;
+        }
+
+        .tutorial-content button {
+            background-color: #ffa500;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+            align-self: center;
+            margin: 0 auto;
+        }
+
+        #capeTemplateImage {
+            display: block;
+            margin: 20px auto;
+            border: 1px solid #555;
+            max-width: 300px;
+            width: 100%;
+            image-rendering: pixelated;
+             background-color: #555;
+        }
+
+        .tool-recommendation {
+            background-color: rgba(255, 165, 0, 0.08);
+            border-left: 4px solid #ffa500;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .tool-recommendation strong {
+            color: #ffa500;
+        }
+
+        .warning {
+             color: #ff6b6b;
+             font-weight: bold;
+        }
+        .highlight {
+            color: #a6e22e;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/index.html"><img src="/img/logoteam.png" alt="CookieTeam Logo" class="logo"></a>
+        <div class="nav-container">
+            <nav>
+                <a href="player.html">Spieler</a>
+                <a href="index.html">Home</a>
+                <a href="capes.html">Capes</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="tutorial-content">
+        <h1>Minecraft Cape Erstellen - Tutorial</h1>
+
+        <p>Mit dieser Anleitung lernst du, wie du dein eigenes, Minecraft Cape erstellen kannst, das du dann über unsere Webseite hochladen kannst.</p>
+
+        <h2>Was du brauchst</h2>
+        <ul>
+            <li>
+                <strong>Bildbearbeitungsprogramm:</strong> Wir empfehlen <a href="https://www.getpaint.net/download.html" target="_blank">Paint.NET</a>. Es ist kostenlos, einfach zu bedienen und perfekt für Pixel-Art geeignet. Natürlich kannst du auch andere Programme verwenden. Diese Anleitung konzentriert sich aber auf Paint.NET.
+            </li>
+            <li>
+                <strong>Cape Template:</strong> Du benötigst eine Vorlage, die das korrekte Format und Layout hat. Lade dir unser Standard-Template herunter oder unser Elytra-Template, wenn du ein Cape mit Elytra-Design erstellen möchtest:
+                <br>
+                <img id="capeTemplateImage" src="../img/cape_template.png" alt="Minecraft Cape Template">
+                <a href="../img/cape_template.png" download="cape_template.png"><button >Download Cape Template</button></a>
+                <a href="../img/cape_template_elytra.png" download="cape_template_elytra.png"><button >Download Cape with Elytra Template</button></a>
+            </li>
+        </ul>
+
+        <h2>Schritt-für-Schritt Anleitung (mit Paint.NET)</h2>
+        <ol>
+            <li>
+                <strong>Paint.NET öffnen & Template laden:</strong> Starte Paint.NET. Gehe auf <code>Datei > Öffnen</code> und wähle dein heruntergeladenes Template.
+            </li>
+            <li>
+                <strong>Zoomen:</strong> Falls du Zoomen möchtest halte <code>Strg</code> gedrückt und scrolle mit dem Mausrad.
+            </li>
+            <li>
+                <strong>Designen:</strong> Füge nun Bilder auf die Template-Ebene ein oder zeichne dein Cape-Design.
+            <li>
+                <strong>Speichern:</strong> Gehe zu <code>Datei > Speichern unter...</code>.
+                <ul>
+                    <li>Wähle als Dateityp unbedingt <strong>PNG (*.png)</strong> aus. Andere Formate funktionieren nicht!</li>
+                    <li>Gib deinem Cape einen sinnvollen Namen (z.B. <code>mein_cooles_cape.png</code>).</li>
+                    <li>Im nächsten Dialogfenster (Speicherkonfiguration) kannst du meist die Standardeinstellungen (z.B. 32-Bit Tiefe, Auto-Erkennung für Interlacing) beibehalten. Klicke auf "OK".</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h2>Wichtige Tipps</h2>
+        <ul>
+            <li><strong>Format:</strong> Immer als <strong>PNG</strong> speichern! Nur PNG unterstützt Transparenz korrekt.</li>
+            <li><strong>Transparenz:</strong> Nutze sie für interessante Effekte, aber übertreibe es nicht. Komplett transparente Capes sind nicht sichtbar.</li>
+            <li><strong>Testen:</strong> Lade dein Cape auf der <a href="index.html#capeUpload">CookieCapes Hauptseite</a> hoch und nutze die Vorschau, um zu sehen, wie es aussieht!</li>
+            <li><strong>Regeln beachten:</strong> Stelle sicher, dass dein Design unseren <a href="rules.html" target="_blank">Regeln</a> entspricht! Keine verbotenen Inhalte.</li>
+        </ul>
+
+         <h2>Cape Hochladen</h2>
+         <p>Wenn dein Cape fertig ist, gehe zurück zur <a href="index.html#capeUpload">Startseite</a> und benutze den Cape-Upload-Assistenten, um dein Meisterwerk in Minecraft zu nutzen!</p>
+
+    </div>
+
+
+    <footer class="footer">
+         <div class="footer-content">
+             <div class="footer-links">
+                 <nav class="footer-nav">
+                     <a href="/impressum.html">Impressum</a>
+                     <a href="/datenschutz.html">Datenschutz</a>
+                     <a href="/kontakt.html">Kontakt</a>
+                     <a href="/rules.html">Regeln</a>
+                 </nav>
+             </div>
+             <div class="footer-social">
+                 <a href="https://www.youtube.com/@cookieteamca" target="_blank" aria-label="Besuche uns auf YouTube"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0C.904 3.407 0 4.956 0 12c0 7.044.904 8.593 4.385 8.816 3.6.245 11.626.246 15.23 0C23.096 20.593 24 19.044 24 12c0-7.044-.904-8.593-4.385-8.816zM9.75 15.3V8.7l6.5 3.3-6.5 3.3z"/></svg></a>
+                 <a href="https://www.tiktok.com/@cookieteamca" target="_blank" aria-label="Folge uns auf TikTok"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a>
+                 <a href="https://www.instagram.com/cookie.teamca/" target="_blank" aria-label="Finde uns auf Instagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+                 <a href="https://x.com/CookieTeamCA" target="_blank" aria-label="Folge uns auf X (ehemals Twitter)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.839L7.088 4.126H5.117z"/></svg></a>
+                 <a href="https://dc.cookieattack.de" target="_blank" aria-label="Tritt unserem Discord Server bei"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="48" height="48"><path d="M14.983 3l.123 .006c2.014 .214 3.527 .672 4.966 1.673a1 1 0 0 1 .371 .488c1.876 5.315 2.373 9.987 1.451 12.28c-1.003 2.005 -2.606 3.553 -4.394 3.553c-.732 0 -1.693 -.968 -2.328 -2.045a21.512 21.512 0 0 0 2.103 -.493a1 1 0 1 0 -.55 -1.924c-3.32 .95 -6.13 .95 -9.45 0a1 1 0 0 0 -.55 1.924c.717 .204 1.416 .37 2.103 .494c-.635 1.075 -1.596 2.044 -2.328 2.044c-1.788 0 -3.391 -1.548 -4.428 -3.629c-.888 -2.217 -.39 -6.89 1.485 -12.204a1 1 0 0 1 .371 -.488c1.439 -1.001 2.952 -1.459 4.966 -1.673a1 1 0 0 1 .935 .435l.063 .107l.651 1.285l.137 -.016a12.97 12.97 0 0 1 2.643 0l.134 .016l.65 -1.284a1 1 0 0 1 .754 -.54l.122 -.009zm-5.983 7a2 2 0 0 0 -1.977 1.697l-.018 .154l-.005 .149l.005 .15a2 2 0 1 0 1.995 -2.15zm6 0a2 2 0 0 0 -1.977 1.697l-.018 .154l-.005 .149l.005 .15a2 2 0 1 0 1.995 -2.15z"/></svg></a>
+             </div>
+             <div class="footer-copyright">
+                 <p>© 2025 CookieTeam. Alle Rechte vorbehalten.</p>
+                 <p>NOT AN OFFICIAL MINECRAFT SERVICE. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.</p>
+             </div>
+         </div>
+     </footer>
+
+</body>
+</html>

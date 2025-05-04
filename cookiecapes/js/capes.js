@@ -366,7 +366,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let panoramaPath = null;
 
             if (selection === 'panorama1') {
-                panoramaPath = '/img/panorama1.png';
+                panoramaPath = '../img/panorama1.png';
             }
 
             if (panoramaPath) {

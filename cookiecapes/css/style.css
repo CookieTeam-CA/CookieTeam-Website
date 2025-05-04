@@ -234,6 +234,107 @@ button:hover::before {
     margin-top: 60px;
 }
 
+.recommendation-box {
+  color: #e0e0e0;
+  padding: 30px 40px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  margin: 40px auto; /* Space above/below and center */
+  width: 90%; /* Responsive width */
+  max-width: 800px; /* Maximum width */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.recommendation-box h2 {
+  /* Use existing H2 styles or customize */
+  font-size: 1.8em;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.recommendation-box p {
+  color: #ccc;
+  font-size: 1.1em;
+  line-height: 1.7;
+  max-width: 95%;
+  margin-bottom: 25px;
+}
+
+.recommendation-box a {
+  display: inline-block;
+  text-decoration: none;
+}
+
+.recommendation-button {
+  /* Use existing button styles or customize */
+  font-size: 1.1em;
+  font-weight: bold;
+  padding: 12px 25px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 5px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* --- Purple Theme for Recommendation Box --- */
+.recommendation-box.purple-theme {
+  background: linear-gradient(140deg, rgba(139, 92, 246, 0.15), rgba(96, 51, 162, 0.2)); /* Purple gradient background */
+  border: 1px solid rgba(167, 139, 250, 0.4); /* Purple border */
+}
+
+.recommendation-box.purple-theme h2 {
+  color: #c4b5fd; /* Light purple heading */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.recommendation-box.purple-theme .recommendation-button {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed); /* Vibrant purple gradient */
+  color: #ffffff;
+  box-shadow: 0 5px 15px rgba(124, 58, 237, 0.3); /* Purple glow */
+}
+
+/* Override general button hover shine for purple button */
+.recommendation-box.purple-theme .recommendation-button::before {
+content: '';
+position: absolute;
+top: 0;
+left: -85%;
+width: 60%;
+height: 100%;
+background: linear-gradient(
+  to right,
+  rgba(255, 255, 255, 0) 0%,
+  rgba(255, 255, 255, 0.3) 50%, /* Lighter shine */
+  rgba(255, 255, 255, 0) 100%
+);
+transform: skewX(-25deg);
+transition: left 0.6s ease;
+}
+
+.recommendation-box.purple-theme .recommendation-button:hover::before {
+left: 125%;
+}
+
+.recommendation-box.purple-theme .recommendation-button:hover {
+  background: linear-gradient(135deg, #a78bfa, #8b5cf6); /* Slightly lighter hover gradient */
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(124, 58, 237, 0.4); /* Stronger glow */
+}
+
+.recommendation-box.purple-theme .recommendation-button:active {
+  transform: translateY(-1px) scale(0.98);
+  box-shadow: 0 3px 10px rgba(124, 58, 237, 0.3);
+}
+
 .info-box {
   background-color: rgba(255, 166, 0, 0.040);
   color: #fff;
