@@ -43,8 +43,7 @@ function displayCurrentPlayerPage() {
 
     console.log(`Displaying page ${currentPage}, players ${startIndex + 1} to ${Math.min(endIndex, allPlayersData.length)} of ${allPlayersData.length}`);
 
-    if (playersToShow.length === 0) {
-    } else {
+    if (playersToShow.length > 0) {
         playersToShow.forEach((player) => {
             const playerCard = document.createElement("div");
             playerCard.className = "player-card";
@@ -99,10 +98,10 @@ function displayCurrentPlayerPage() {
 
                 const capeId = player.current_cape_id;
                 if (capeId !== null && capeId !== undefined && capeDataMap.has(capeId)) {
-                    const capeUrl = capeDataMap.get(capeId);
-                    viewer.loadCape(capeUrl, { backEquipment: 'cape' })
+                    const correctedCapeUrl = capeDataMap.get(capeId);
+                    viewer.loadCape(correctedCapeUrl, { backEquipment: 'cape' })
                         .then(() => {})
-                        .catch(err => console.error(`Failed to load cape ${capeUrl}:`, err));
+                        .catch(err => console.error(`Failed to load cape ${correctedCapeUrl}:`, err));
                 } else {
                     viewer.loadCape(null);
                 }
@@ -186,13 +185,26 @@ async function fetchAllDataAndPaginate() {
         if (!capesResponse.ok) throw new Error(`Failed to fetch capes: ${capesResponse.status}`);
         const capesResult = await capesResponse.json();
         capeDataMap.clear();
+
         (capesResult.capes || []).forEach(cape => {
             if (cape.cape_id !== undefined && cape.cape_image_url) {
-                let imageUrl = cape.cape_image_url;
-                if (imageUrl && imageUrl.startsWith('http://')) {
-                     imageUrl = imageUrl.replace('http://api.cookieattack.de:8000', 'https://api.cookieattack.de:8989'); // Adjust port if needed
-                 }
-                capeDataMap.set(cape.cape_id, imageUrl);
+                let originalImageUrl = cape.cape_image_url;
+                let correctedImageUrl = originalImageUrl;
+
+                try {
+                    if (originalImageUrl && typeof originalImageUrl === 'string') {
+                        const urlObj = new URL(originalImageUrl);
+                        if (urlObj.protocol === 'http:' && urlObj.hostname === 'api.cookieattack.de' && urlObj.port === '8000') {
+                            urlObj.protocol = 'https:';
+                            urlObj.port = '8989';
+                            correctedImageUrl = urlObj.toString();
+                        }
+                    }
+                } catch (e) {
+                    console.error(`Error processing cape URL: ${originalImageUrl}`, e);
+                    correctedImageUrl = originalImageUrl;
+                }
+                capeDataMap.set(cape.cape_id, correctedImageUrl);
             }
         });
         console.log(`Created cape lookup map with ${capeDataMap.size} entries.`);
