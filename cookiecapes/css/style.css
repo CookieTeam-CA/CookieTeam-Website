@@ -62,11 +62,11 @@ header {
   justify-content: flex-start;
   z-index: 1000;
 }
-  
+
 header.floating {
   top: 21px;
 }
-  
+
 header button {
   position: absolute;
   top: 8.5px;
@@ -79,12 +79,12 @@ header button {
   transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
   margin-left: auto;
 }
-  
+
 header button.show-button {
   opacity: 1;
   transform: translateY(0);
 }
-  
+
 header a {
   font-family: __saans_cd5095, __saans_Fallback_cd5095, sans-serif;
   font-size: 19px;
@@ -103,13 +103,13 @@ header a {
   max-width: 100%;
   user-select: none;
 }
-  
+
 .nav-container {
   margin-left: auto;
   margin-right: 0;
   transition: margin-right 0.3s ease-in-out;
 }
-  
+
 .nav-container nav {
   display: flex;
   gap: 10px;
@@ -239,9 +239,9 @@ button:hover::before {
   padding: 30px 40px;
   border-radius: 15px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-  margin: 40px auto; /* Space above/below and center */
-  width: 90%; /* Responsive width */
-  max-width: 800px; /* Maximum width */
+  margin: 40px auto;
+  width: 90%;
+  max-width: 800px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -251,7 +251,6 @@ button:hover::before {
 }
 
 .recommendation-box h2 {
-  /* Use existing H2 styles or customize */
   font-size: 1.8em;
   margin-top: 0;
   margin-bottom: 15px;
@@ -272,7 +271,6 @@ button:hover::before {
 }
 
 .recommendation-button {
-  /* Use existing button styles or customize */
   font-size: 1.1em;
   font-weight: bold;
   padding: 12px 25px;
@@ -287,22 +285,21 @@ button:hover::before {
 
 /* --- Purple Theme for Recommendation Box --- */
 .recommendation-box.purple-theme {
-  background: linear-gradient(140deg, rgba(139, 92, 246, 0.15), rgba(96, 51, 162, 0.2)); /* Purple gradient background */
-  border: 1px solid rgba(167, 139, 250, 0.4); /* Purple border */
+  background: linear-gradient(140deg, rgba(139, 92, 246, 0.15), rgba(96, 51, 162, 0.2));
+  border: 1px solid rgba(167, 139, 250, 0.4);
 }
 
 .recommendation-box.purple-theme h2 {
-  color: #c4b5fd; /* Light purple heading */
+  color: #c4b5fd;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .recommendation-box.purple-theme .recommendation-button {
-  background: linear-gradient(135deg, #8b5cf6, #7c3aed); /* Vibrant purple gradient */
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
   color: #ffffff;
-  box-shadow: 0 5px 15px rgba(124, 58, 237, 0.3); /* Purple glow */
+  box-shadow: 0 5px 15px rgba(124, 58, 237, 0.3);
 }
 
-/* Override general button hover shine for purple button */
 .recommendation-box.purple-theme .recommendation-button::before {
 content: '';
 position: absolute;
@@ -313,7 +310,7 @@ height: 100%;
 background: linear-gradient(
   to right,
   rgba(255, 255, 255, 0) 0%,
-  rgba(255, 255, 255, 0.3) 50%, /* Lighter shine */
+  rgba(255, 255, 255, 0.3) 50%,
   rgba(255, 255, 255, 0) 100%
 );
 transform: skewX(-25deg);
@@ -325,9 +322,9 @@ left: 125%;
 }
 
 .recommendation-box.purple-theme .recommendation-button:hover {
-  background: linear-gradient(135deg, #a78bfa, #8b5cf6); /* Slightly lighter hover gradient */
+  background: linear-gradient(135deg, #a78bfa, #8b5cf6);
   transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 8px 20px rgba(124, 58, 237, 0.4); /* Stronger glow */
+  box-shadow: 0 8px 20px rgba(124, 58, 237, 0.4);
 }
 
 .recommendation-box.purple-theme .recommendation-button:active {
@@ -782,17 +779,17 @@ left: 125%;
 }
 
 #downloadSection {
-  background: linear-gradient(140deg, rgba(255, 165, 0, 0.08), rgba(255, 114, 24, 0.05)); /* Subtle orange gradient background */
+  background: linear-gradient(140deg, rgba(255, 165, 0, 0.08), rgba(255, 114, 24, 0.05));
   color: #e0e0e0;
-  padding: 40px 50px; /* Generous padding */
-  border-radius: 15px; /* Rounded corners */
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), /* Main shadow */
-              inset 0 1px 1px rgba(255, 255, 255, 0.05); /* Subtle inner highlight */
-  border: 1px solid rgba(255, 165, 0, 0.3); /* Clear orange border */
-  margin: 60px auto; /* Space above/below and center horizontally */
-  width: 90%; /* Responsive width */
-  max-width: 750px; /* Maximum width */
-  text-align: center; /* Center text and button */
+  padding: 40px 50px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4),
+              inset 0 1px 1px rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 165, 0, 0.3);
+  margin: 60px auto;
+  width: 90%;
+  max-width: 750px;
+  text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -800,7 +797,6 @@ left: 125%;
   position: relative;
 }
 
-/* Ensure content is above pseudo-elements */
 #downloadSection h2,
 #downloadSection p,
 #downloadSection a {
@@ -810,55 +806,51 @@ left: 125%;
 
 
 #downloadSection h2 {
-  color: #ffa500; /* Bright brand orange for heading */
-  font-size: 2.2em; /* Larger heading */
+  color: #ffa500;
+  font-size: 2.2em;
   margin-top: 0;
   margin-bottom: 15px;
   font-weight: 700;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); /* Subtle text shadow */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 #downloadSection p {
-  color: #ccc; /* Slightly dimmer text for description */
-  font-size: 1.15em; /* Slightly larger paragraph text */
-  line-height: 1.7; /* Better readability */
-  max-width: 90%; /* Prevent text stretching too wide */
-  margin-bottom: 30px; /* More space before the button */
+  color: #ccc;
+  font-size: 1.15em;
+  line-height: 1.7;
+  max-width: 90%;
+  margin-bottom: 30px;
 }
 
-/* Style the link containing the button if needed, but focus on the button */
 #downloadSection a {
-  display: inline-block; /* Allows margin/padding */
+  display: inline-block;
   text-decoration: none;
 }
 
-/* Style the download button specifically */
 #downloadSection button {
-  /* Override general button styles if necessary */
-  background: linear-gradient(135deg, #ff8c00, #ff7218); /* Vibrant orange gradient */
+  background: linear-gradient(135deg, #ff8c00, #ff7218);
   color: #ffffff;
-  font-size: 1.3em; /* Larger font size for CTA */
+  font-size: 1.3em;
   font-weight: bold;
-  padding: 16px 35px; /* Larger padding */
-  border-radius: 30px; /* Pill shape */
+  padding: 16px 35px;
+  border-radius: 30px;
   border: none;
-  box-shadow: 0 5px 15px rgba(255, 114, 24, 0.3); /* Orange glow */
+  box-shadow: 0 5px 15px rgba(255, 114, 24, 0.3);
   cursor: pointer;
-  transition: all 0.3s ease; /* Smooth transition for all properties */
-  margin-top: 10px; /* Space from paragraph */
+  transition: all 0.3s ease;
+  margin-top: 10px;
   position: relative;
-  overflow: hidden; /* Needed for pseudo-element shine */
-  text-transform: uppercase; /* Optional: Uppercase text */
-  letter-spacing: 0.5px; /* Optional: Slight letter spacing */
+  overflow: hidden;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-/* Override general button hover shine if it exists */
 #downloadSection button::before {
   content: '';
   position: absolute;
   top: 0;
-  left: -85%; /* Start further left */
-  width: 60%; /* Wider shine */
+  left: -85%;
+  width: 60%;
   height: 100%;
   background: linear-gradient(
     to right,
@@ -866,27 +858,26 @@ left: 125%;
     rgba(255, 255, 255, 0.4) 50%,
     rgba(255, 255, 255, 0) 100%
   );
-  transform: skewX(-25deg); /* Angle the shine */
-  transition: left 0.6s ease; /* Slower, smoother shine animation */
+  transform: skewX(-25deg);
+  transition: left 0.6s ease;
 }
 
 #downloadSection button:hover::before {
-  left: 125%; /* Move across the button */
+  left: 125%;
 }
 
 
 #downloadSection button:hover {
-  background: linear-gradient(135deg, #ffa500, #e05a00); /* Slightly darker/brighter hover gradient */
-  transform: translateY(-4px) scale(1.02); /* Lift and slight scale */
-  box-shadow: 0 8px 20px rgba(255, 114, 24, 0.4); /* Stronger glow on hover */
+  background: linear-gradient(135deg, #ffa500, #e05a00);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(255, 114, 24, 0.4);
 }
 
 #downloadSection button:active {
-    transform: translateY(-1px) scale(0.98); /* Press down effect */
+    transform: translateY(-1px) scale(0.98);
     box-shadow: 0 3px 10px rgba(255, 114, 24, 0.3);
 }
 
-/* footer */
 
 .footer {
   background-color: #1f1f2f;
@@ -897,7 +888,7 @@ left: 125%;
   border-top: 2px solid #ffa500;
   width: 100%;
   box-sizing: border-box;
-  flex-shrink: 0;/
+  flex-shrink: 0;
 }
 
 .footer-content {
@@ -968,14 +959,13 @@ left: 125%;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 15px; /* Spacing between elements */
-  margin-top: 30px; /* Space above the controls */
-  margin-bottom: 20px; /* Space below the controls */
+  gap: 15px;
+  margin-top: 30px;
+  margin-bottom: 20px;
   padding: 10px;
 }
 
 .pagination-controls button {
-  /* Use existing button styles or customize */
   padding: 8px 15px;
   font-size: 0.9em;
   background-color: #363636;
@@ -996,20 +986,18 @@ left: 125%;
   cursor: not-allowed;
   opacity: 0.6;
 }
-.pagination-controls button:disabled::before { /* Prevent shine effect on disabled */
+.pagination-controls button:disabled::before {
   content: none;
 }
 
 .pagination-info {
   color: #ccc;
   font-size: 0.95em;
-  margin: 0 10px; /* Add some space around the text */
+  margin: 0 10px;
 }
 
-/* Optional: Styling for page number buttons if you add them later */
 .page-number {
   padding: 5px 10px;
-  /* ... other styles ... */
 }
 .page-number.active {
   background-color: #ffa500;
@@ -1073,7 +1061,7 @@ left: 125%;
   z-index: 2001;
   color: #e0e0e0;
   max-width: 90%;
-  width: 500px; /* Adjust as needed */
+  width: 500px;
   text-align: center;
   transform: scale(1);
   transition: transform 0.3s ease;
@@ -1101,11 +1089,11 @@ left: 125%;
 
 .close-button:hover {
   color: #ffa500;
-  background: none; /* Override general button hover */
-  transform: none; /* Override general button hover */
+  background: none;
+  transform: none;
 }
 .close-button::before {
-    content: none; /* Override ::before from general button */
+    content: none;
 }
 
 
@@ -1122,14 +1110,14 @@ left: 125%;
   border-radius: 10px;
   padding: 10px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  display: inline-block; /* Center the canvas */
+  display: inline-block;
 }
 
 #modalCanvas {
-  display: block; /* Remove extra space below canvas */
-  margin: 0 auto; /* Center canvas */
+  display: block;
+  margin: 0 auto;
   border-radius: 8px;
-  background-color: #2a2a3a; /* Default background inside canvas area */
+  background-color: #2a2a3a;
 }
 
 .modal-info {
@@ -1205,26 +1193,25 @@ header {
 /* --- Player List Page Styles --- */
 
 .all-players {
-  /* Similar to .all-capes if desired */
   padding: 20px;
-  max-width: 1200px; /* Adjust as needed */
+  max-width: 1200px;
   margin: 20px auto;
 }
 
 .player-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 2rem; /* Spacing between player cards */
-  justify-content: center; /* Center cards horizontally */
-  align-items: flex-start; /* Align cards at the top */
+  gap: 2rem;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .player-card {
-  background: #2a2a3a; /* Slightly different or same as cape previews */
+  background: #2a2a3a;
   padding: 1.2rem;
   border-radius: 12px;
   text-align: center;
-  width: 220px; /* Fixed width for cards */
+  width: 220px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
@@ -1235,20 +1222,19 @@ header {
 }
 
 .player-card canvas {
-  display: block; /* Remove extra space below canvas */
-  margin: 0 auto 1rem auto; /* Center canvas and add space below */
+  display: block;
+  margin: 0 auto 1rem auto;
   border-radius: 8px;
-  /* background set by JS */
 }
 
 .player-card p {
   margin: 0.3rem 0;
-  color: #e0e0e0; /* Player name color */
+  color: #e0e0e0;
   font-weight: 500;
-  word-wrap: break-word; /* Prevent long names from overflowing */
+  word-wrap: break-word;
 }
 
-.player-card p:last-of-type { /* Style for the Cape ID/Info text */
+.player-card p:last-of-type {
    font-size: 0.8em;
    color: #aaa;
 }
@@ -1256,20 +1242,166 @@ header {
 /* rules.html */
 
 .rules {
-  background: linear-gradient(140deg, rgba(255, 165, 0, 0.08), rgba(255, 114, 24, 0.05)); /* Subtle orange gradient background */
+  background: linear-gradient(140deg, rgba(255, 165, 0, 0.08), rgba(255, 114, 24, 0.05));
   color: #e0e0e0;
-  padding: 40px 50px; /* Generous padding */
-  border-radius: 15px; /* Rounded corners */
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), /* Main shadow */
-              inset 0 1px 1px rgba(255, 255, 255, 0.05); /* Subtle inner highlight */
-  border: 1px solid rgba(255, 165, 0, 0.3); /* Clear orange border */
-  margin: 60px auto; /* Space above/below and center horizontally */
-  width: 90%; /* Responsive width */
-  max-width: 750px; /* Maximum width */
-  text-align: center; /* Center text and button */
+  padding: 40px 50px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4),
+              inset 0 1px 1px rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 165, 0, 0.3);
+  margin: 60px auto;
+  width: 90%;
+  max-width: 750px;
+  text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow: hidden;
   position: relative;
+}
+
+/* --- Improved Hero Section Styles --- */
+
+.improved-hero {
+  display: flex; /* Keep flex */
+  flex-direction: column;
+  justify-content: center; /* Center vertically */
+  align-items: center; /* Center horizontally */
+  min-height: 75vh; /* Adjust height as needed, maybe slightly less than before */
+  text-align: center;
+  padding: 40px 20px; /* Add padding */
+  color: #ffffff; /* Ensure text is white */
+  position: relative; /* For potential background/overlay later */
+  margin-top: 60px; /* Add space below fixed header */
+}
+
+.hero-content-wrapper {
+    max-width: 800px; /* Limit width of content */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.improved-hero h1 {
+  font-size: clamp(2.5rem, 6vw, 4rem); /* Responsive font size */
+  line-height: 1.1;
+  margin-bottom: 15px; /* Space below heading */
+  color: #ffa500; /* Keep brand color */
+   text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+}
+
+.hero-explanation {
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem); /* Responsive font size */
+  color: #e0e0e0; /* Slightly off-white */
+  max-width: 600px; /* Limit width for readability */
+  margin-bottom: 30px; /* Space below explanation */
+  line-height: 1.6;
+}
+
+.hero-features {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping on small screens */
+  justify-content: center;
+  gap: 20px 30px; /* Row and column gap */
+  margin-bottom: 40px; /* Space below features */
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(255, 255, 255, 0.1); /* Subtle background */
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-size: 0.95rem;
+  backdrop-filter: blur(3px);
+}
+
+.feature-icon {
+  font-size: 1.1rem;
+  color: #ffa500; /* Icon color */
+}
+
+.feature-text {
+  color: #ccc;
+}
+
+.hero-cta {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping */
+  justify-content: center;
+  gap: 20px; /* Space between buttons */
+  margin-bottom: 25px; /* Space below buttons */
+}
+
+.cta-button {
+  /* Inherit base button styles or define new ones */
+  padding: 14px 30px; /* Larger padding */
+  border-radius: 25px;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  display: inline-flex; /* Align icon and text */
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  border: 1px solid transparent; /* Base border */
+}
+.cta-button .cta-icon {
+    font-size: 1.2em; /* Make icon slightly larger */
+    line-height: 1; /* Prevent extra spacing */
+}
+
+.cta-button.primary-cta {
+  background-color: #ffa500; /* Primary action color */
+  color: #121214; /* Dark text on bright button */
+}
+.cta-button.primary-cta:hover {
+  background-color: #ffc966;
+  color: #121214;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(255, 165, 0, 0.3);
+}
+
+.cta-button.secondary-cta {
+  background-color: rgba(54, 54, 54, 0.8); /* Use existing dark button color */
+  color: #ffffff;
+  border: 1px solid #585858;
+}
+.cta-button.secondary-cta:hover {
+  background-color: #585858;
+  border-color: #777;
+  transform: translateY(-3px);
+}
+/* Remove hover shine effect if conflicting */
+.cta-button::before {
+    content: none;
+}
+
+
+.dev-notice {
+  font-size: 0.85rem;
+  color: #aaa;
+  margin-top: 20px;
+  line-height: 1.4;
+}
+
+
+/* Adjustments for Cape Upload Section */
+#capeUpload {
+    /* Ensure it has enough top margin after the gallery */
+    margin-top: 60px;
+}
+
+/* Make sure download section is distinct */
+#downloadSection {
+    margin-top: 80px; /* More space before download */
+}
+
+/* Adjust gallery title */
+.cape-gallery h2 {
+    margin-bottom: 30px; /* More space below title */
+    font-size: 2rem;
 }

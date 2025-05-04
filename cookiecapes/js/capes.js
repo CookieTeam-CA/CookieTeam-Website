@@ -73,7 +73,6 @@ function displayCurrentPage() {
 
             if (capeImageUrl && capeImageUrl.startsWith('http://')) {
                 const secureUrl = capeImageUrl.replace('http://api.cookieattack.de:8000', 'https://api.cookieattack.de:8989');
-                // console.log(`Mixed Content Workaround: ${capeImageUrl} -> ${secureUrl}`); // Keep for debugging if needed
                 capeImageUrl = secureUrl;
             }
 
