@@ -1,20 +1,14 @@
-// Global variables for modal elements
 let modalSkinViewer = null;
 let capeModal, modalCanvas, closeModalButton, modalCapeName, modalCapeId, modalUploaderName, modalSkinToggle, modalPanoramaSelect, modalOverlay;
 
-// Constants
 const defaultSkinPath = "/img/skin.png";
 const defaultModalBackgroundColor = 0x2a2a3a;
-const CAPES_PER_PAGE = 12; // Number of capes to show per page
+const CAPES_PER_PAGE = 12;
 
-// Pagination State
-let allCapes = []; // Holds all fetched capes
+let allCapes = [];
 let currentPage = 1;
 let totalPages = 0;
 
-// --- Utility Functions ---
-
-// Floating header logic
 window.addEventListener("scroll", () => {
     const header = document.querySelector("header");
     if (header) {
@@ -26,35 +20,28 @@ window.addEventListener("scroll", () => {
     }
 });
 
-// Function to get the skin URL for a Minecraft name using Starlight Skins API
 function getPlayerSkinUrl(minecraftName) {
     if (!minecraftName || typeof minecraftName !== 'string' || !/^[a-zA-Z0-9_]{3,16}$/.test(minecraftName)) {
         console.warn(`Invalid Minecraft name for skin lookup: ${minecraftName}`);
-        return defaultSkinPath; // Return default path if name is invalid
+        return defaultSkinPath;
     }
-    // Use a reliable skin service
     return `https://starlightskins.lunareclipse.studio/render/skin/${minecraftName}/default`;
 }
 
-// --- Pagination Logic ---
-
-// Display Capes for the Current Page
 function displayCurrentPage() {
     const container = document.getElementById("capeContainer");
     if (!container) {
         console.error("Cape container not found!");
         return;
     }
-    container.innerHTML = ''; // Clear previous page's capes
-    container.style.display = 'none'; // Hide while populating
+    container.innerHTML = '';
+    container.style.display = 'none';
 
     const startIndex = (currentPage - 1) * CAPES_PER_PAGE;
     const endIndex = startIndex + CAPES_PER_PAGE;
     const capesToShow = allCapes.slice(startIndex, endIndex);
 
     if (capesToShow.length === 0) {
-         // This case is handled by the initial fetch check
-         // container.innerHTML = '<p style="color: #ccc;">Keine Capes für diese Seite gefunden.</p>';
     } else {
         capesToShow.forEach((cape) => {
             const previewDiv = document.createElement("div");
@@ -81,8 +68,15 @@ function displayCurrentPage() {
 
             container.appendChild(previewDiv);
 
-            const capeImageUrl = cape.cape_image_url;
+            let capeImageUrl = cape.cape_image_url;
             const capeId = cape.cape_id;
+
+            if (capeImageUrl && capeImageUrl.startsWith('http://')) {
+                const secureUrl = capeImageUrl.replace('http://api.cookieattack.de:8000', 'https://api.cookieattack.de:8989');
+                // console.log(`Mixed Content Workaround: ${capeImageUrl} -> ${secureUrl}`); // Keep for debugging if needed
+                capeImageUrl = secureUrl;
+            }
+
 
             previewDiv.dataset.capeId = capeId;
             previewDiv.dataset.capeUrl = capeImageUrl;
@@ -133,18 +127,17 @@ function displayCurrentPage() {
         });
     }
 
-    container.style.display = 'flex'; // Show the container with the capes
-    renderPaginationControls(); // Update pagination controls based on the new currentPage
+    container.style.display = 'flex';
+    renderPaginationControls();
 }
 
-// Render Pagination Controls
 function renderPaginationControls() {
     const controlsContainer = document.getElementById("paginationControls");
     if (!controlsContainer) {
         console.error("Pagination controls container not found!");
         return;
     }
-    controlsContainer.innerHTML = ''; // Clear existing controls
+    controlsContainer.innerHTML = '';
 
     if (totalPages <= 1) {
         return;
@@ -220,7 +213,6 @@ async function fetchAllCapesAndPaginate() {
         if (allCapes.length === 0) {
             container.innerHTML = '<p style="color: #ccc;">Keine Capes zum Anzeigen gefunden.</p>';
             container.style.display = 'flex';
-            controlsContainer.innerHTML = '';
         } else {
             displayCurrentPage();
         }
@@ -280,8 +272,10 @@ function openCapeModal(capeId, capeUrl, capeName, uploaderName) {
     modalCapeName.textContent = capeName || "Unbenanntes Cape";
     modalCapeId.textContent = capeId !== undefined ? capeId : "N/A";
     modalUploaderName.textContent = uploaderName || "Unbekannt";
+
     modalSkinToggle.checked = true;
     modalPanoramaSelect.value = 'none';
+
     const skinUrl = getPlayerSkinUrl(uploaderName);
 
     modalSkinViewer.loadSkin(skinUrl)
@@ -392,5 +386,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
     fetchAllCapesAndPaginate();
 });

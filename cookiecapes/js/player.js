@@ -1,17 +1,12 @@
-// --- Constants ---
 const defaultSkinPath = "/img/skin.png";
-const API_BASE_URL = "https://api.cookieattack.de:8989"; // Adjust port if needed
-const PLAYERS_PER_PAGE = 12; // Number of players to show per page
+const API_BASE_URL = "https://api.cookieattack.de:8989";
+const PLAYERS_PER_PAGE = 12;
 
-// --- Pagination State ---
-let allPlayersData = []; // Holds ALL fetched and processed player data
+let allPlayersData = [];
 let currentPage = 1;
 let totalPages = 0;
-let capeDataMap = new Map(); // To store capeId -> capeUrl mapping
+let capeDataMap = new Map();
 
-// --- Utility Functions ---
-
-// Floating header logic
 window.addEventListener("scroll", () => {
     const header = document.querySelector("header");
     if (header) {
@@ -23,7 +18,6 @@ window.addEventListener("scroll", () => {
     }
 });
 
-// Function to get the skin URL for a Minecraft name/UUID
 function getPlayerSkinUrl(identifier) {
     if (!identifier || typeof identifier !== 'string') {
         console.warn(`Invalid identifier for skin lookup: ${identifier}`);
@@ -32,9 +26,6 @@ function getPlayerSkinUrl(identifier) {
     return `https://starlightskins.lunareclipse.studio/render/skin/${identifier}/default`;
 }
 
-// --- Pagination & Rendering Logic ---
-
-// Display Players for the Current Page
 function displayCurrentPlayerPage() {
     const playerContainer = document.getElementById("playerContainer");
     const paginationControls = document.getElementById("paginationControls");
@@ -43,8 +34,8 @@ function displayCurrentPlayerPage() {
         console.error("Player container or pagination controls not found!");
         return;
     }
-    playerContainer.innerHTML = ''; // Clear previous page's players
-    playerContainer.style.display = 'none'; // Hide while populating
+    playerContainer.innerHTML = '';
+    playerContainer.style.display = 'none';
 
     const startIndex = (currentPage - 1) * PLAYERS_PER_PAGE;
     const endIndex = startIndex + PLAYERS_PER_PAGE;
@@ -53,10 +44,8 @@ function displayCurrentPlayerPage() {
     console.log(`Displaying page ${currentPage}, players ${startIndex + 1} to ${Math.min(endIndex, allPlayersData.length)} of ${allPlayersData.length}`);
 
     if (playersToShow.length === 0) {
-        // This case should be covered by the initial fetch check
     } else {
         playersToShow.forEach((player) => {
-            // Create and append the player card elements
             const playerCard = document.createElement("div");
             playerCard.className = "player-card";
 
@@ -84,7 +73,6 @@ function displayCurrentPlayerPage() {
 
             playerContainer.appendChild(playerCard);
 
-            // Initialize SkinViewer for this card
             try {
                 const viewer = new skinview3d.SkinViewer({
                     canvas: canvas,
@@ -103,7 +91,7 @@ function displayCurrentPlayerPage() {
                 const skinIdentifier = player.minecraft_uuid || player.minecraft_name;
                 const skinUrl = getPlayerSkinUrl(skinIdentifier);
                 viewer.loadSkin(skinUrl)
-                    .then(() => {/* console.log(`Loaded skin for ${player.minecraft_name || skinIdentifier}`) */}) // Reduce console spam
+                    .then(() => {})
                     .catch(err => {
                         console.error(`Failed to load skin ${skinUrl}:`, err);
                         viewer.loadSkin(defaultSkinPath).catch(e => console.error("Failed to load default skin:", e));
@@ -113,7 +101,7 @@ function displayCurrentPlayerPage() {
                 if (capeId !== null && capeId !== undefined && capeDataMap.has(capeId)) {
                     const capeUrl = capeDataMap.get(capeId);
                     viewer.loadCape(capeUrl, { backEquipment: 'cape' })
-                        .then(() => {/* console.log(`Loaded cape ${capeId} for ${player.minecraft_name || skinIdentifier}`) */}) // Reduce console spam
+                        .then(() => {})
                         .catch(err => console.error(`Failed to load cape ${capeUrl}:`, err));
                 } else {
                     viewer.loadCape(null);
@@ -129,51 +117,45 @@ function displayCurrentPlayerPage() {
         });
     }
 
-    playerContainer.style.display = 'flex'; // Show the container with players
-    renderPlayerPaginationControls(); // Update pagination controls
-    paginationControls.style.display = totalPages > 1 ? 'flex' : 'none'; // Show controls only if needed
+    playerContainer.style.display = 'flex';
+    renderPlayerPaginationControls();
+    paginationControls.style.display = totalPages > 1 ? 'flex' : 'none';
 }
 
-// Render Pagination Controls
 function renderPlayerPaginationControls() {
     const controlsContainer = document.getElementById("paginationControls");
     if (!controlsContainer) return;
-    controlsContainer.innerHTML = ''; // Clear existing
+    controlsContainer.innerHTML = '';
 
     if (totalPages <= 1) {
         controlsContainer.style.display = 'none';
-        return; // No controls needed
+        return;
     }
 
-    // Previous Button
     const prevButton = document.createElement("button");
     prevButton.textContent = "‹ Zurück";
     prevButton.disabled = currentPage === 1;
     prevButton.onclick = () => changePlayerPage(currentPage - 1);
     controlsContainer.appendChild(prevButton);
 
-    // Page Info Span
     const pageInfo = document.createElement("span");
     pageInfo.className = "pagination-info";
     pageInfo.textContent = `Seite ${currentPage} von ${totalPages}`;
     controlsContainer.appendChild(pageInfo);
 
-    // Next Button
     const nextButton = document.createElement("button");
     nextButton.textContent = "Weiter ›";
     nextButton.disabled = currentPage === totalPages;
     nextButton.onclick = () => changePlayerPage(currentPage + 1);
     controlsContainer.appendChild(nextButton);
 
-    controlsContainer.style.display = 'flex'; // Ensure visible
+    controlsContainer.style.display = 'flex';
 }
 
-// Change Page Function
 function changePlayerPage(newPage) {
     if (newPage >= 1 && newPage <= totalPages && newPage !== currentPage) {
         currentPage = newPage;
-        displayCurrentPlayerPage(); // Redraw players for the new page
-        // Scroll to top of player list
+        displayCurrentPlayerPage();
         const container = document.getElementById("playerContainer");
         if (container) {
              window.scrollTo({ top: container.offsetTop - 100, behavior: 'smooth' });
@@ -181,9 +163,6 @@ function changePlayerPage(newPage) {
     }
 }
 
-// --- Data Fetching ---
-
-// Fetch ALL data (Capes, Players, Player Details) and Initialize Pagination
 async function fetchAllDataAndPaginate() {
     const playerContainer = document.getElementById("playerContainer");
     const loadingIndicator = document.getElementById("loadingIndicator");
@@ -197,32 +176,33 @@ async function fetchAllDataAndPaginate() {
     }
 
     loadingIndicator.style.display = 'block';
-    loadingProgress.textContent = ''; // Clear progress text initially
+    loadingProgress.textContent = '';
     playerContainer.style.display = 'none';
-    paginationControls.style.display = 'none'; // Hide controls initially
+    paginationControls.style.display = 'none';
 
     try {
-        // Step 1: Fetch Capes
         loadingIndicator.querySelector("span").textContent = "(Lade Capes...)";
         const capesResponse = await fetch(`${API_BASE_URL}/list_capes`);
         if (!capesResponse.ok) throw new Error(`Failed to fetch capes: ${capesResponse.status}`);
         const capesResult = await capesResponse.json();
-        capeDataMap.clear(); // Ensure map is empty before populating
+        capeDataMap.clear();
         (capesResult.capes || []).forEach(cape => {
             if (cape.cape_id !== undefined && cape.cape_image_url) {
-                capeDataMap.set(cape.cape_id, cape.cape_image_url);
+                let imageUrl = cape.cape_image_url;
+                if (imageUrl && imageUrl.startsWith('http://')) {
+                     imageUrl = imageUrl.replace('http://api.cookieattack.de:8000', 'https://api.cookieattack.de:8989'); // Adjust port if needed
+                 }
+                capeDataMap.set(cape.cape_id, imageUrl);
             }
         });
         console.log(`Created cape lookup map with ${capeDataMap.size} entries.`);
 
-        // Step 2: Fetch Players List
         loadingIndicator.querySelector("span").textContent = "(Lade Spielerliste...)";
         const playersResponse = await fetch(`${API_BASE_URL}/list_players`);
         if (!playersResponse.ok) throw new Error(`Failed to fetch players: ${playersResponse.status}`);
         const playersResult = await playersResponse.json();
         let players = playersResult.players || [];
 
-        // Filter out banned players *before* fetching details
         players = players.filter(p => !p.banned);
 
         if (players.length === 0) {
@@ -233,7 +213,6 @@ async function fetchAllDataAndPaginate() {
             return;
         }
 
-        // Step 3: Fetch Player Details (Name) concurrently
         console.log(`Fetching details for ${players.length} players...`);
         const totalPlayersToFetch = players.length;
         let fetchedCount = 0;
@@ -249,11 +228,10 @@ async function fetchAllDataAndPaginate() {
                         return { ...player, minecraft_name: player.minecraft_uuid, detail_error: true };
                     }
                     const details = await res.json();
-                    // Only keep necessary details to avoid overwriting base player data like banned status if API changes
                     return {
                         ...player,
                         minecraft_name: details.minecraft_name,
-                        discord_id: details.discord_id, // Keep discord ID if needed
+                        discord_id: details.discord_id,
                         detail_error: false
                      };
                 })
@@ -267,22 +245,17 @@ async function fetchAllDataAndPaginate() {
 
         allPlayersData = await Promise.all(playerDetailPromises);
 
-        // Optional: Sort players after fetching details
-        // allPlayersData.sort((a, b) => (a.minecraft_name || "").localeCompare(b.minecraft_name || ""));
-
-        // Step 4: Setup Pagination and Display First Page
         totalPages = Math.ceil(allPlayersData.length / PLAYERS_PER_PAGE);
         currentPage = 1;
 
-        loadingIndicator.style.display = 'none'; // Hide loading indicator
+        loadingIndicator.style.display = 'none';
 
         if (allPlayersData.length === 0) {
-            // Should have been caught earlier, but double-check
             playerContainer.innerHTML = '<p style="color: #ccc;">Keine (nicht gebannten) Spieler gefunden.</p>';
             playerContainer.style.display = 'flex';
             paginationControls.style.display = 'none';
         } else {
-            displayCurrentPlayerPage(); // Display the first page
+            displayCurrentPlayerPage();
         }
 
     } catch (error) {
@@ -290,11 +263,10 @@ async function fetchAllDataAndPaginate() {
         loadingIndicator.style.display = 'none';
         playerContainer.innerHTML = `<p style="color: #ff6b6b;">Fehler beim Laden der Spielerliste: ${error.message}</p>`;
         playerContainer.style.display = 'flex';
-        paginationControls.style.display = 'none'; // Hide controls on error
+        paginationControls.style.display = 'none';
     }
 }
 
-// --- Event Listener Setup ---
 document.addEventListener('DOMContentLoaded', () => {
-    fetchAllDataAndPaginate(); // Start the data fetching and pagination process
+    fetchAllDataAndPaginate();
 });
