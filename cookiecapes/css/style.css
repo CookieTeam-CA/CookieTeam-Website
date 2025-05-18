@@ -154,77 +154,6 @@ button:hover::before {
   width: 30%;
 }
 
-.hero {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 80vh;
-  text-align: center;
-}
-
-.hero-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  opacity: 0.3;
-  z-index: -1;
-  transition: background-image 0.5s ease-in-out;
-}
-
-.hero-text {
-  position: relative;
-  z-index: 1;
-}
-
-.hero p {
-  font-family: __saans_cd5095, __saans_Fallback_cd5095, sans-serif;
-  font-size: 22px;
-  line-height: 1.5;
-  padding: 1px 1px;
-  color: #ffffff;
-}
-
-.hero h1 {
-  font-family: __saans_cd5095, __saans_Fallback_cd5095, sans-serif;
-  font-size: 50px;
-  line-height: 0.3;
-  padding: 1px 1px;
-  color: #ffffff;
-  animation: colorChange 4s infinite;
-}
-
-.hero svg {
-  margin-top: 20px;
-  animation: bounce 3s infinite;
-}
-
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-@keyframes colorChange {
-  0% {
-    color: #FFA500;
-  }
-  50% {
-    color: #c06a00;
-  }
-  100% {
-    color: #ffb429;
-  }
-}
-
 .content {
   margin-top: 20px;
   line-height: 1.6;
@@ -283,7 +212,6 @@ button:hover::before {
   overflow: hidden;
 }
 
-/* --- Purple Theme for Recommendation Box --- */
 .recommendation-box.purple-theme {
   background: linear-gradient(140deg, rgba(139, 92, 246, 0.15), rgba(96, 51, 162, 0.2));
   border: 1px solid rgba(167, 139, 250, 0.4);
@@ -330,64 +258,6 @@ left: 125%;
 .recommendation-box.purple-theme .recommendation-button:active {
   transform: translateY(-1px) scale(0.98);
   box-shadow: 0 3px 10px rgba(124, 58, 237, 0.3);
-}
-
-.info-box {
-  background-color: rgba(255, 166, 0, 0.040);
-  color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  flex: 1 1 calc(50% - 20px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(10px);
-  transition: border 0.3s ease, transform 0.3s ease;
-  border: 2px solid transparent;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.info-box a {
-  color: #ffa500;
-  text-decoration: none;
-  font-weight: 600;
-  transition: color 0.5s ease;
-}
-
-.info-box p {
-  margin-top: 2%;
-}
-
-.info-box h2 {
-  align-self: center;
-  font-size: 1.7em;
-}
-
-.info-box:hover {
-  border: 2px solid #ffa500;
-  transform: translateY(-5px);
-}
-
-.info-box button {
-  background-color: #ff7218;
-  color: #fff;
-  border: none;
-  padding: 8px 16px;
-  font-size: 1em;
-  font-family: 'Lexend', sans-serif;
-  font-weight: 600;
-  cursor: pointer;
-  margin-top: 10%;
-  border-radius: 8px;
-  transition: background-color 0.5s ease;
-  user-select: none;
-}
-
-.info-box label {
-  font-size: 1.2em;
-  margin-top: 1%;
-  color: #ffa500;
-  border-radius: 20px;
 }
 
 .cape-gallery {
@@ -605,6 +475,14 @@ left: 125%;
   color: #aaa;
 }
 
+#successMessage, #limitMessage {
+  padding: 20px;
+  text-align: center;
+  width: 90%;
+  max-width: 500px;
+  margin: 20px auto;
+}
+
 #successMessage h2 {
   color: #4CAF50;
   margin-bottom: 10px;
@@ -639,7 +517,7 @@ left: 125%;
 }
 
 @media (min-width: 600px) {
-  #step-4 .preview-container {
+  #step-5 .preview-container {
       flex-direction: row;
       justify-content: center;
       align-items: flex-start;
@@ -659,7 +537,7 @@ left: 125%;
   display: inline-block;
   padding: 10px 20px;
   background-color: #363636;
-  color: #121214;
+  color: white;
   border: none;
   border-radius: 20px;
   cursor: pointer;
@@ -670,7 +548,7 @@ left: 125%;
 }
 
 .file-label:hover {
-  background-color: #1d1d1d;
+  background-color: #585858;
   transform: translateY(-2px);
 }
 
@@ -728,7 +606,7 @@ left: 125%;
   background-color: #e05a00;
 }
 
-#step-4 .preview-container {
+#step-5 .preview-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -764,7 +642,7 @@ left: 125%;
 }
 
 @media (min-width: 600px) {
-  #step-4 .preview-container {
+  #step-5 .preview-container {
       flex-direction: row;
       justify-content: center;
   }
@@ -953,8 +831,6 @@ left: 125%;
   margin-top: 10px;
 }
 
-/* capes.html */
-
 .pagination-controls {
   display: flex;
   justify-content: center;
@@ -1021,7 +897,6 @@ left: 125%;
   margin-bottom: 10px;
 }
 
-/* Modal */
 .modal {
   position: fixed;
   top: 0;
@@ -1190,7 +1065,6 @@ header {
     display: none !important;
 }
 
-/* --- Player List Page Styles --- */
 
 .all-players {
   padding: 20px;
@@ -1239,44 +1113,21 @@ header {
    color: #aaa;
 }
 
-/* rules.html */
-
-.rules {
-  background: linear-gradient(140deg, rgba(255, 165, 0, 0.08), rgba(255, 114, 24, 0.05));
-  color: #e0e0e0;
-  padding: 40px 50px;
-  border-radius: 15px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4),
-              inset 0 1px 1px rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 165, 0, 0.3);
-  margin: 60px auto;
-  width: 90%;
-  max-width: 750px;
-  text-align: center;
+.improved-hero {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  overflow: hidden;
-  position: relative;
-}
-
-/* --- Improved Hero Section Styles --- */
-
-.improved-hero {
-  display: flex; /* Keep flex */
-  flex-direction: column;
-  justify-content: center; /* Center vertically */
-  align-items: center; /* Center horizontally */
-  min-height: 75vh; /* Adjust height as needed, maybe slightly less than before */
+  min-height: 75vh;
   text-align: center;
-  padding: 40px 20px; /* Add padding */
-  color: #ffffff; /* Ensure text is white */
-  position: relative; /* For potential background/overlay later */
-  margin-top: 60px; /* Add space below fixed header */
+  padding: 40px 20px;
+  color: #ffffff;
+  position: relative;
+  margin-top: 60px;
 }
 
 .hero-content-wrapper {
-    max-width: 800px; /* Limit width of content */
+    max-width: 800px;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -1285,34 +1136,34 @@ header {
 
 
 .improved-hero h1 {
-  font-size: clamp(2.5rem, 6vw, 4rem); /* Responsive font size */
+  font-size: clamp(2.5rem, 6vw, 4rem);
   line-height: 1.1;
-  margin-bottom: 15px; /* Space below heading */
-  color: #ffa500; /* Keep brand color */
+  margin-bottom: 15px;
+  color: #ffa500;
    text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
 }
 
 .hero-explanation {
-  font-size: clamp(1.1rem, 2.5vw, 1.4rem); /* Responsive font size */
-  color: #e0e0e0; /* Slightly off-white */
-  max-width: 600px; /* Limit width for readability */
-  margin-bottom: 30px; /* Space below explanation */
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  color: #e0e0e0;
+  max-width: 600px;
+  margin-bottom: 30px;
   line-height: 1.6;
 }
 
 .hero-features {
   display: flex;
-  flex-wrap: wrap; /* Allow wrapping on small screens */
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 20px 30px; /* Row and column gap */
-  margin-bottom: 40px; /* Space below features */
+  gap: 20px 30px;
+  margin-bottom: 40px;
 }
 
 .feature-item {
   display: flex;
   align-items: center;
   gap: 8px;
-  background-color: rgba(255, 255, 255, 0.1); /* Subtle background */
+  background-color: rgba(255, 255, 255, 0.1);
   padding: 8px 15px;
   border-radius: 20px;
   font-size: 0.95rem;
@@ -1321,7 +1172,7 @@ header {
 
 .feature-icon {
   font-size: 1.1rem;
-  color: #ffa500; /* Icon color */
+  color: #ffa500;
 }
 
 .feature-text {
@@ -1330,33 +1181,32 @@ header {
 
 .hero-cta {
   display: flex;
-  flex-wrap: wrap; /* Allow wrapping */
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 20px; /* Space between buttons */
-  margin-bottom: 25px; /* Space below buttons */
+  gap: 20px;
+  margin-bottom: 25px;
 }
 
 .cta-button {
-  /* Inherit base button styles or define new ones */
-  padding: 14px 30px; /* Larger padding */
+  padding: 14px 30px;
   border-radius: 25px;
   text-decoration: none;
   font-size: 1.1rem;
   font-weight: 600;
-  display: inline-flex; /* Align icon and text */
+  display: inline-flex;
   align-items: center;
   gap: 8px;
   transition: all 0.3s ease;
-  border: 1px solid transparent; /* Base border */
+  border: 1px solid transparent;
 }
 .cta-button .cta-icon {
-    font-size: 1.2em; /* Make icon slightly larger */
-    line-height: 1; /* Prevent extra spacing */
+    font-size: 1.2em;
+    line-height: 1;
 }
 
 .cta-button.primary-cta {
-  background-color: #ffa500; /* Primary action color */
-  color: #121214; /* Dark text on bright button */
+  background-color: #ffa500;
+  color: #121214;
 }
 .cta-button.primary-cta:hover {
   background-color: #ffc966;
@@ -1366,7 +1216,7 @@ header {
 }
 
 .cta-button.secondary-cta {
-  background-color: rgba(54, 54, 54, 0.8); /* Use existing dark button color */
+  background-color: rgba(54, 54, 54, 0.8);
   color: #ffffff;
   border: 1px solid #585858;
 }
@@ -1375,33 +1225,20 @@ header {
   border-color: #777;
   transform: translateY(-3px);
 }
-/* Remove hover shine effect if conflicting */
+
 .cta-button::before {
     content: none;
 }
 
-
-.dev-notice {
-  font-size: 0.85rem;
-  color: #aaa;
-  margin-top: 20px;
-  line-height: 1.4;
-}
-
-
-/* Adjustments for Cape Upload Section */
 #capeUpload {
-    /* Ensure it has enough top margin after the gallery */
     margin-top: 60px;
 }
 
-/* Make sure download section is distinct */
 #downloadSection {
-    margin-top: 80px; /* More space before download */
+    margin-top: 80px;
 }
 
-/* Adjust gallery title */
 .cape-gallery h2 {
-    margin-bottom: 30px; /* More space below title */
+    margin-bottom: 30px;
     font-size: 2rem;
 }

@@ -41,90 +41,87 @@ function displayCurrentPage() {
     const endIndex = startIndex + CAPES_PER_PAGE;
     const capesToShow = allCapes.slice(startIndex, endIndex);
 
-    if (capesToShow.length === 0) {
-    } else {
-        capesToShow.forEach((cape) => {
-            const previewDiv = document.createElement("div");
-            previewDiv.className = "cape-preview";
-            previewDiv.style.cursor = 'pointer';
+    capesToShow.forEach((cape) => {
+        const previewDiv = document.createElement("div");
+        previewDiv.className = "cape-preview";
+        previewDiv.style.cursor = 'pointer';
 
-            const canvas = document.createElement("canvas");
-            canvas.width = 180;
-            canvas.height = 250;
-            previewDiv.appendChild(canvas);
+        const canvas = document.createElement("canvas");
+        canvas.width = 180;
+        canvas.height = 250;
+        previewDiv.appendChild(canvas);
 
-            const nameP = document.createElement("p");
-            const capeNameText = cape.cape_name || "Unbenanntes Cape";
-            nameP.textContent = capeNameText;
-            previewDiv.appendChild(nameP);
+        const nameP = document.createElement("p");
+        const capeNameText = cape.cape_name || "Unbenanntes Cape";
+        nameP.textContent = capeNameText;
+        previewDiv.appendChild(nameP);
 
-            const uploaderName = cape.minecraft_name;
-            const uploaderP = document.createElement("p");
-            uploaderP.textContent = `von ${uploaderName}`;
-            uploaderP.style.fontSize = '0.8em';
-            uploaderP.style.color = '#aaa';
-            uploaderP.style.marginTop = '-5px';
-            previewDiv.appendChild(uploaderP);
+        const uploaderName = cape.minecraft_name;
+        const uploaderP = document.createElement("p");
+        uploaderP.textContent = `von ${uploaderName}`;
+        uploaderP.style.fontSize = '0.8em';
+        uploaderP.style.color = '#aaa';
+        uploaderP.style.marginTop = '-5px';
+        previewDiv.appendChild(uploaderP);
 
-            container.appendChild(previewDiv);
+        container.appendChild(previewDiv);
 
-            let capeImageUrl = cape.cape_image_url;
-            const capeId = cape.cape_id;
+        let capeImageUrl = cape.cape_image_url;
+        const capeId = cape.cape_id;
 
-            if (capeImageUrl && capeImageUrl.startsWith('http://')) {
-                const secureUrl = capeImageUrl.replace('http://api.cookieattack.de:8000', 'https://api.cookieattack.de:8989');
-                capeImageUrl = secureUrl;
-            }
+        if (capeImageUrl && capeImageUrl.startsWith('http://')) {
+            const secureUrl = capeImageUrl.replace('http://api.cookieattack.de:8000', 'https://api.cookieattack.de:8989');
+            capeImageUrl = secureUrl;
+        }
 
 
-            previewDiv.dataset.capeId = capeId;
-            previewDiv.dataset.capeUrl = capeImageUrl;
-            previewDiv.dataset.capeName = capeNameText;
-            previewDiv.dataset.uploaderName = uploaderName;
+        previewDiv.dataset.capeId = capeId;
+        previewDiv.dataset.capeUrl = capeImageUrl;
+        previewDiv.dataset.capeName = capeNameText;
+        previewDiv.dataset.uploaderName = uploaderName;
 
-            try {
-                const viewer = new skinview3d.SkinViewer({
-                    canvas: canvas,
-                    width: canvas.width,
-                    height: canvas.height,
-                    skin: defaultSkinPath,
-                    background: 0x2a2a3a
-                });
+        try {
+            const viewer = new skinview3d.SkinViewer({
+                canvas: canvas,
+                width: canvas.width,
+                height: canvas.height,
+                skin: defaultSkinPath,
+                background: 0x2a2a3a
+            });
 
-                viewer.loadCape(capeImageUrl, { backEquipment: 'cape' })
-                    .catch(err => console.error(`Failed to load cape ${capeImageUrl} for preview:`, err));
+            viewer.loadCape(capeImageUrl, { backEquipment: 'cape' })
+                .catch(err => console.error(`Failed to load cape ${capeImageUrl} for preview:`, err));
 
-                viewer.fov = 70;
-                viewer.zoom = 0.9;
-                viewer.globalLight.intensity = 2.8;
-                viewer.cameraLight.intensity = 0.7;
-                viewer.autoRotate = true;
-                viewer.autoRotateSpeed = 0.6;
+            viewer.fov = 70;
+            viewer.zoom = 0.9;
+            viewer.globalLight.intensity = 2.8;
+            viewer.cameraLight.intensity = 0.7;
+            viewer.autoRotate = true;
+            viewer.autoRotateSpeed = 0.6;
 
-                previewDiv.addEventListener('click', () => {
-                    const id = previewDiv.dataset.capeId;
-                    const url = previewDiv.dataset.capeUrl;
-                    const name = previewDiv.dataset.capeName;
-                    const uploader = previewDiv.dataset.uploaderName;
-                    if (url && id !== undefined && name && uploader) {
-                        openCapeModal(id, url, name, uploader);
-                    } else {
-                        console.error("Missing data for modal", previewDiv.dataset);
-                        alert("Fehler: Details für dieses Cape konnten nicht geladen werden.");
-                    }
-                });
+            previewDiv.addEventListener('click', () => {
+                const id = previewDiv.dataset.capeId;
+                const url = previewDiv.dataset.capeUrl;
+                const name = previewDiv.dataset.capeName;
+                const uploader = previewDiv.dataset.uploaderName;
+                if (url && id !== undefined && name && uploader) {
+                    openCapeModal(id, url, name, uploader);
+                } else {
+                    console.error("Missing data for modal", previewDiv.dataset);
+                    alert("Fehler: Details für dieses Cape konnten nicht geladen werden.");
+                }
+            });
 
-            } catch (viewerError) {
-                console.error("Error initializing gallery SkinViewer:", viewerError);
-                const errorP = document.createElement("p");
-                errorP.style.cssText = 'font-size: 0.8em; color: red; margin-top: 5px;';
-                errorP.textContent = 'Vorschaufehler';
-                previewDiv.appendChild(errorP);
-                previewDiv.style.opacity = '0.7';
-                previewDiv.style.cursor = 'not-allowed';
-            }
-        });
-    }
+        } catch (viewerError) {
+            console.error("Error initializing gallery SkinViewer:", viewerError);
+            const errorP = document.createElement("p");
+            errorP.style.cssText = 'font-size: 0.8em; color: red; margin-top: 5px;';
+            errorP.textContent = 'Vorschaufehler';
+            previewDiv.appendChild(errorP);
+            previewDiv.style.opacity = '0.7';
+            previewDiv.style.cursor = 'not-allowed';
+        }
+    });
 
     container.style.display = 'flex';
     renderPaginationControls();
