@@ -624,6 +624,17 @@ function openCapeModal(capeId, capeUrl, capeName, uploaderName = "N/A") {
     const modalUploaderNameEl = document.getElementById('modalUploaderName');
     if (modalUploaderNameEl) modalUploaderNameEl.textContent = uploaderName;
 
+    const modalViewDetailsButton = document.getElementById('modalViewDetailsButton');
+    if (modalViewDetailsButton) {
+        if (capeId !== undefined && capeId !== null) {
+            modalViewDetailsButton.href = `cape-detail.html?id=${capeId}`;
+            modalViewDetailsButton.style.display = 'inline-block'; // Make sure it's visible
+        } else {
+            modalViewDetailsButton.href = '#'; // Fallback href
+            modalViewDetailsButton.style.display = 'none'; // Hide if no valid Cape ID
+        }
+    }
+
     if(modalSkinToggle) modalSkinToggle.checked = true;
     if(modalPanoramaSelect) modalPanoramaSelect.value = 'none';
 

@@ -44,30 +44,33 @@
 
     <div id="capeModal" class="modal hidden">
         <div class="modal-overlay"></div>
-        <div class="modal-content">
-            <button id="closeModalButton" class="close-button" aria-label="Schließen">×</button>
-            <h2 id="modalCapeName">Cape Name</h2>
-            <div class="modal-viewer-container">
-                <canvas id="modalCanvas" width="300" height="400"></canvas>
-            </div>
-            <div class="modal-info">
-                <p><strong>Cape ID:</strong> <span id="modalCapeId">N/A</span></p>
-                <p><strong>Ersteller:</strong> <span id="modalUploaderName">N/A</span></p>
-            </div>
-            <div class="modal-controls">
-                <div class="control-group">
-                    <label for="modalSkinToggle">Skin anzeigen:</label>
-                    <input type="checkbox" id="modalSkinToggle" checked>
+            <div class="modal-content">
+                <button id="closeModalButton" class="close-button" aria-label="Schließen">×</button>
+                <h2 id="modalCapeName">Cape Name</h2>
+                <div class="modal-viewer-container">
+                    <canvas id="modalCanvas" width="300" height="400"></canvas>
                 </div>
-                <div class="control-group">
-                    <label for="modalPanoramaSelect">Hintergrund:</label>
-                    <select id="modalPanoramaSelect">
-                        <option value="none">Standard</option>
-                        <option value="panorama1">Panorama 1</option>
-                    </select>
+                <div class="modal-info">
+                    <p><strong>Cape ID:</strong> <span id="modalCapeId">N/A</span></p>
+                    <p><strong>Ersteller:</strong> <span id="modalUploaderName">N/A</span></p> 
+                </div>
+                <div class="modal-additional-actions" style="text-align: center; margin-top: 15px; margin-bottom: 15px;">
+                    <a href="#" id="modalViewDetailsButton" class="cta-button secondary-cta" style="font-size: 0.9em; padding: 8px 15px;" target="_blank">Details ansehen</a>
+                </div>
+                <div class="modal-controls">
+                    <div class="control-group">
+                        <label for="modalSkinToggle">Skin anzeigen:</label>
+                        <input type="checkbox" id="modalSkinToggle" checked>
+                    </div>
+                    <div class="control-group">
+                        <label for="modalPanoramaSelect">Hintergrund:</label>
+                        <select id="modalPanoramaSelect">
+                            <option value="none">Standard</option>
+                            <option value="panorama1">Panorama 1</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
     </div>
     <footer class="footer">
         <div class="footer-content">

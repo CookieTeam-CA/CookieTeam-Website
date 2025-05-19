@@ -272,6 +272,17 @@ function openCapeModal(capeId, capeUrl, capeName, uploaderName) {
     modalCapeId.textContent = capeId !== undefined ? capeId : "N/A";
     modalUploaderName.textContent = uploaderName || "Unbekannt";
 
+    const modalViewDetailsButton = document.getElementById('modalViewDetailsButton');
+    if (modalViewDetailsButton) {
+        if (capeId !== undefined && capeId !== null) {
+            modalViewDetailsButton.href = `cape-detail.html?id=${capeId}`;
+            modalViewDetailsButton.style.display = 'inline-block'; // Make sure it's visible
+        } else {
+            modalViewDetailsButton.href = '#'; // Fallback href
+            modalViewDetailsButton.style.display = 'none'; // Hide if no valid Cape ID
+        }
+    }
+
     modalSkinToggle.checked = true;
     modalPanoramaSelect.value = 'none';
 
@@ -293,7 +304,6 @@ function openCapeModal(capeId, capeUrl, capeName, uploaderName) {
             modalCapeName.textContent += " (Cape-Ladefehler)";
         });
 
-    // Set background of the skin viewer canvas inside the modal
     modalCanvas.style.backgroundColor = 'var(--card-bg-darker)'; // From CSS
     modalSkinViewer.loadPanorama(null); // Ensure no panorama
     modalSkinViewer.background = null; // Use canvas CSS background

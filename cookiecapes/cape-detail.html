@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CookieCapes - Cape Vorschau</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/skinview3d/bundles/skinview3d.bundle.js"></script>
+    <script src="js/cape-detail.js" defer></script>
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <style>
+        .cape-detail-container { /* Dieser ist der Hauptcontainer, vielleicht willst du den Effekt hier nicht */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin-top: 80px;
+            background-color: var(--card-bg-color);
+            border-radius: 15px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--primary-color-alpha-20);
+            /* transition für border, falls du es doch hier willst */
+            /* transition: border-color 0.3s ease, border-width 0.3s ease, box-shadow 0.3s ease; */
+        }
+        /* .cape-detail-container:hover {
+            border-color: var(--primary-color);
+            border-width: 2px;
+            box-shadow: 0 8px 25px rgba(var(--primary-color-rgb), 0.3);
+        } */
+
+        .cape-detail-container h1#pageTitle {
+            font-family: var(--font-headline);
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 2.2em;
+            text-align: center;
+        }
+
+        /* Neuer Stil für interaktive Container */
+        .interactive-border-container {
+            border: 1px solid var(--text-color-alpha-10); /* Standard-Border */
+            transition: border-color 0.25s ease-in-out, border-width 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
+            border-radius: 10px; /* Muss konsistent sein */
+        }
+        .interactive-border-container:hover {
+            border-color: var(--primary-color);
+            border-width: 2px; /* Dickere Border beim Hover */
+            /* Optional: Ein leichter Glow-Effekt */
+            box-shadow: 0 0 10px 0px rgba(var(--primary-color-rgb, 255, 165, 0), 0.4);
+        }
+
+
+        .viewer-wrapper {
+            background-color: var(--bg-color);
+            /* border-radius: 10px; -> wird von .interactive-border-container geerbt/überschrieben */
+            padding: 10px;
+            margin-bottom: 20px;
+            /* border: 1px solid var(--text-color-alpha-10); -> wird von .interactive-border-container geerbt/überschrieben */
+            display: inline-block;
+        }
+        #mainViewerCanvas {
+            display: block;
+            margin: 0 auto;
+            border-radius: 8px; /* Innere Border-Radius für den Canvas selbst */
+            background-color: var(--card-bg-darker);
+        }
+        .cape-info-fetched {
+            background-color: var(--text-color-alpha-05);
+            /* border-radius: 8px; -> wird von .interactive-border-container geerbt/überschrieben */
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            text-align: left;
+            font-size: 1em;
+            width: 100%;
+            max-width: 400px;
+            /* border: 1px solid var(--text-color-alpha-10); -> Standard-Border, falls .interactive-border-container nicht direkt hier angewendet wird */
+        }
+        .cape-info-fetched p {
+            margin: 8px 0;
+            color: var(--text-color-dim);
+        }
+        .cape-info-fetched strong {
+            color: var(--primary-color);
+            margin-right: 5px;
+        }
+
+        .viewer-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: stretch;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 520px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .control-group { /* Gilt für die meisten einzelnen Control-Rows */
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background-color: var(--text-color-alpha-05);
+            /* border-radius: 8px; -> wird von .interactive-border-container geerbt/überschrieben */
+            justify-content: space-between;
+        }
+         .control-group.asset-source-group {
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            background-color: transparent; /* Kein eigener Hintergrund, da Kinder (.asset-source-block) Hintergründe haben */
+            padding: 0;
+            gap: 15px;
+            /* Diese Gruppe selbst hat keinen Border, die Kinder schon */
+        }
+        .asset-source-block { /* Dies sind die Container, die den Hover-Effekt bekommen könnten */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background-color: var(--text-color-alpha-05);
+            /* border-radius: 8px; -> wird von .interactive-border-container geerbt/überschrieben */
+            flex-basis: 0;
+            flex-grow: 1;
+            min-width: 0;
+            /* border: 1px solid var(--text-color-alpha-10); -> Standard-Border, falls .interactive-border-container hier angewendet wird */
+        }
+        .asset-source-block label.block-title {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1.05em;
+            margin-bottom: 5px;
+        }
+        .asset-source-block input[type="file"] {
+            padding: 8px 10px;
+            border: 1px solid var(--border-color-medium);
+            border-radius: 4px;
+            background-color: var(--bg-color);
+            color: var(--text-color-dim);
+            width: 100%;
+            box-sizing: border-box;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+         .asset-source-block input[type="file"]::-webkit-file-upload-button {
+            background: var(--secondary-color);
+            color: var(--secondary-text-color);
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 8px;
+            font-size: 0.9em;
+        }
+        .asset-source-block input[type="text"] {
+            padding: 9px 12px;
+            border: 1px solid var(--border-color-medium);
+            border-radius: 4px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 0.9em;
+        }
+         .asset-source-block input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px var(--primary-color-alpha-30);
+        }
+        .file-name-display-small {
+            font-size: 0.8em;
+            color: var(--text-color-dimmer);
+            font-style: italic;
+            min-height: 1em;
+            margin-top: 2px;
+            text-align: center;
+            word-break: break-all;
+        }
+         .input-feedback-small {
+            font-size: 0.8em;
+            color: var(--text-color-dimmer);
+            min-height: 1em;
+            margin-top: 5px;
+            text-align: center;
+        }
+        .or-divider {
+            text-align: center;
+            color: var(--text-color-dimmer);
+            font-size: 0.85em;
+            margin: 8px 0;
+            width: 100%;
+        }
+        .or-divider::before, .or-divider::after {
+            content: "";
+            display: inline-block;
+            width: 35%;
+            height: 1px;
+            background-color: var(--text-color-alpha-10);
+            vertical-align: middle;
+            margin: 0 5px;
+        }
+
+        .viewer-controls label {
+            color: var(--text-color-dim);
+            font-size: 0.9em;
+            white-space: nowrap;
+        }
+        .viewer-controls input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary-color);
+            cursor: pointer;
+            margin-left: auto;
+        }
+        .viewer-controls select {
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: 1px solid var(--border-color-medium);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 0.9em;
+            flex-grow: 1;
+            max-width: 200px;
+        }
+        .control-divider {
+            width: 90%;
+            border: none;
+            border-top: 1px solid var(--primary-color-alpha-20);
+            margin: 10px auto;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: var(--secondary-color);
+            color: var(--secondary-text-color);
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .back-link:hover {
+            background-color: var(--secondary-color-hover);
+        }
+        #loadingMessageGlobal {
+            font-size: 1.2em;
+            color: var(--text-color-dim);
+            text-align: center;
+            margin-top: 20px;
+        }
+        #errorMessageGlobal {
+            color: var(--error-color);
+            text-align:center;
+            margin-top: 20px;
+        }
+        .hidden { display: none !important; }
+
+        /* Definieren der RGB-Werte für die Primärfarbe für den Glow-Effekt */
+        :root {
+            --primary-color-rgb: 255, 165, 0; /* Orange */
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/index.html"><img src="/img/logoteam.png" alt="CookieTeam Logo" class="logo"></a>
+        <div class="nav-container">
+            <nav>
+                <a href="player.html">Spieler</a>
+                <a href="capes.html">Capes</a>
+                <a href="rules.html">Regeln</a>
+                <a href="tutorial.html">Tutorial</a>
+                <a href="index.html">Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="cape-detail-container">
+            <h1 id="pageTitle">Lade...</h1>
+
+            <div id="loadingMessageGlobal">Lade Vorschau...</div>
+            <div id="errorMessageGlobal" class="hidden"><p></p></div>
+
+            <div id="viewerSection" class="hidden" style="width:100%; text-align:center;">
+                <div id="fetchedCapeInfoDisplay" class="cape-info-fetched hidden interactive-border-container" style="margin-left:auto; margin-right:auto;">
+                    <p><strong>Cape ID:</strong> <span id="capeIdDetail">N/A</span></p>
+                    <p><strong>Ersteller:</strong> <span id="uploaderNameDetail">N/A</span></p>
+                </div>
+
+                <div class="viewer-wrapper interactive-border-container">
+                    <canvas id="mainViewerCanvas" width="300" height="400"></canvas>
+                </div>
+
+                <div class="viewer-controls">
+                    <div id="assetSourceControls" class="control-group asset-source-group hidden">
+                        <div class="asset-source-block interactive-border-container">
+                            <label class="block-title">Skin Quelle</label>
+                            <input type="file" id="skinUpload" accept="image/png">
+                            <span id="skinFileName" class="file-name-display-small">Kein Skin ausgewählt</span>
+                            <div class="or-divider">oder</div>
+                            <input type="text" id="skinNameInput" placeholder="Minecraft-Name">
+                            <span id="skinLoadStatus" class="input-feedback-small"></span>
+                        </div>
+                        <div class="asset-source-block interactive-border-container">
+                            <label class="block-title">Cape Quelle</label>
+                            <input type="file" id="capeUpload" accept="image/png">
+                            <span id="capeFileName" class="file-name-display-small">Kein Cape ausgewählt</span>
+                            <div class="or-divider">oder</div>
+                            <input type="text" id="capeNameInput" placeholder="Minecraft-Name für Cape">
+                            <span id="capeLoadStatus" class="input-feedback-small"></span>
+                        </div>
+                    </div>
+                    
+                    <hr id="sourceControlsDivider" class="control-divider hidden">
+
+                    <div class="control-group interactive-border-container">
+                        <label for="rotationToggle">Rotation:</label>
+                        <input type="checkbox" id="rotationToggle" checked>
+                    </div>
+
+                    <div class="control-group interactive-border-container">
+                        <label for="animationSelect">Animation:</label>
+                        <select id="animationSelect">
+                            <option value="idle">Idle</option>
+                            <option value="walking">Gehen</option>
+                            <option value="running">Rennen</option>
+                            <option value="flying">Fliegen</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group interactive-border-container">
+                        <label for="elytraToggle">Elytra Modus:</label>
+                        <input type="checkbox" id="elytraToggle">
+                    </div>
+                    
+                    <div class="control-group interactive-border-container">
+                        <label for="skinVisibleToggle">Skin Sichtbar:</label>
+                        <input type="checkbox" id="skinVisibleToggle" checked>
+                    </div>
+
+                    <div class="control-group interactive-border-container">
+                        <label for="panoramaSelect">Hintergrund:</label>
+                        <select id="panoramaSelect">
+                            <option value="none">Standard</option>
+                            <option value="panorama1">Panorama 1</option>
+                        </select>
+                    </div>
+                </div>
+                <a href="capes.html" id="backLink" class="back-link">« Zurück zur Galerie</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <nav class="footer-nav">
+                    <a href="/impressum.html">Impressum</a>
+                    <a href="/datenschutz.html">Datenschutz</a>
+                    <a href="/kontakt.html">Kontakt</a>
+                </nav>
+            </div>
+            <div class="footer-social">
+                <a href="https://www.youtube.com/@cookieteamca" target="_blank" aria-label="Besuche uns auf YouTube"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0C.904 3.407 0 4.956 0 12c0 7.044.904 8.593 4.385 8.816 3.6.245 11.626.246 15.23 0C23.096 20.593 24 19.044 24 12c0-7.044-.904-8.593-4.385-8.816zM9.75 15.3V8.7l6.5 3.3-6.5 3.3z"/></svg></a>
+                <a href="https://www.tiktok.com/@cookieteamca" target="_blank" aria-label="Folge uns auf TikTok"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a>
+                <a href="https://www.instagram.com/cookie.teamca/" target="_blank" aria-label="Finde uns auf Instagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+                 <a href="https://x.com/CookieTeamCA" target="_blank" aria-label="Folge uns auf X (ehemals Twitter)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.839L7.088 4.126H5.117z"/></svg></a>
+                <a href="https://dc.cookieattack.de" target="_blank" aria-label="Tritt unserem Discord Server bei"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M14.983 3l.123 .006c2.014 .214 3.527 .672 4.966 1.673a1 1 0 0 1 .371 .488c1.876 5.315 2.373 9.987 1.451 12.28c-1.003 2.005 -2.606 3.553 -4.394 3.553c-.732 0 -1.693 -.968 -2.328 -2.045a21.512 21.512 0 0 0 2.103 -.493a1 1 0 1 0 -.55 -1.924c-3.32 .95 -6.13 .95 -9.45 0a1 1 0 0 0 -.55 1.924c.717 .204 1.416 .37 2.103 .494c-.635 1.075 -1.596 2.044 -2.328 2.044c-1.788 0 -3.391 -1.548 -4.428 -3.629c-.888 -2.217 -.39 -6.89 1.485 -12.204a1 1 0 0 1 .371 -.488c1.439 -1.001 2.952 -1.459 4.966 -1.673a1 1 0 0 1 .935 .435l.063 .107l.651 1.285l.137 -.016a12.97 12.97 0 0 1 2.643 0l.134 .016l.65 -1.284a1 1 0 0 1 .754 -.54l.122 -.009zm-5.983 7a2 2 0 0 0 -1.977 1.697l-.018 .154l-.005 .149l.005 .15a2 2 0 1 0 1.995 -2.15zm6 0a2 2 0 0 0 -1.977 1.697l-.018 .154l-.005 .149l.005 .15a2 2 0 1 0 1.995 -2.15z"/></svg></a>
+            </div>
+            <div class="footer-copyright">
+                <p>© 2025 CookieTeam. Alle Rechte vorbehalten.</p>
+                <p>NOT AN OFFICIAL MINECRAFT SERVICE. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

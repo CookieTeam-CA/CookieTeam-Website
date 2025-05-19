@@ -14,6 +14,7 @@
     --primary-color: #FFA500;
     --primary-color-hover: #ffb733;
     --primary-text-color: var(--text-color-dark);
+    --primary-color-rgb: 255, 165, 0; /* Added for rgba() glow effects */
 
     --secondary-color: #226CE0;
     --secondary-color-hover: #337ceF;
@@ -102,7 +103,7 @@ header {
   position: fixed;
   top: 10px;
   left: 50%;
-  width: 35%;
+  max-width: 500px; width: 90%;
   align-items: center;
   transform: translateX(-50%);
   border-radius: 25px;
@@ -239,7 +240,13 @@ button:hover::before {
 
 .recommendation-box.purple-theme {
   background: linear-gradient(140deg, rgba(139, 92, 246, 0.15), rgba(96, 51, 162, 0.2));
-  border: 1px solid rgba(167, 139, 250, 0.4);
+  border: 1px solid rgba(167, 139, 250, 0.4); /* Will be overridden by :hover if specific color is desired */
+}
+
+.recommendation-box.purple-theme:hover {
+  border-color: rgba(167, 139, 250, 0.8); /* Stronger purple for hover */
+  /* padding and base shadow handled by .recommendation-box:hover */
+  box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3), 0 0 15px rgba(167, 139, 250, 0.2); /* Purple glow */
 }
 
 .recommendation-box {
@@ -257,7 +264,16 @@ button:hover::before {
   overflow: hidden;
   position: relative;
   background: var(--card-bg-color); 
-  border: 1px solid var(--primary-color-alpha-30); 
+  border: 1px solid var(--primary-color-alpha-30);
+  box-sizing: border-box; /* Ensure no shift */
+  transition: border-color 0.3s ease, border-width 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
+}
+
+.recommendation-box:hover {
+  border-width: 1.5px;
+  border-color: var(--primary-color);
+  padding: 29px 39px; /* Adjust padding: original - 1px */
+  box-shadow: 0 10px 30px rgba(var(--primary-color-rgb), 0.3), 0 0 15px rgba(var(--primary-color-rgb), 0.2); /* Enhanced shadow */
 }
 
 .recommendation-box h2 {
@@ -335,10 +351,21 @@ button:hover::before {
   background-color: var(--card-bg-color);
   color: var(--text-color);
   text-align: center;
-  width: 55%;
-  margin: 0 auto;
+  width: 58%;
+  margin: 20px auto; /* Adjusted margin for consistency */
   border-radius: 15px;
+  box-sizing: border-box;
+  border: 1px solid transparent; /* Initial transparent border */
+  transition: border-color 0.3s ease, border-width 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
 }
+
+.cape-gallery:hover {
+  border-width: 1.5px;
+  border-color: var(--primary-color);
+  padding: calc(2rem - 1px); /* Adjust padding */
+  box-shadow: 0 0 20px rgba(var(--primary-color-rgb), 0.25);
+}
+
 .cape-gallery h2 {
     font-family: var(--font-headline);
     color: var(--primary-color);
@@ -399,11 +426,6 @@ button:hover::before {
   margin: 10px auto 0 auto;
 }
 
-#capeUpload {
-  margin-top: 60px;
-  margin-bottom: 50px;
-}
-
 .step-wizard-container {
   background: var(--card-bg-color);
   color: var(--text-color);
@@ -419,6 +441,15 @@ button:hover::before {
   width: 100%;
   max-width: 700px;
   margin: 20px auto;
+  box-sizing: border-box; /* Ensure no shift */
+  transition: border-color 0.3s ease, border-width 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
+}
+
+.step-wizard-container:hover {
+  border-width: 1.5px;
+  border-color: var(--primary-color);
+  padding: 29px 39px; /* Adjust padding */
+  box-shadow: 0 10px 30px rgba(var(--primary-color-rgb), 0.3), 0 0 15px rgba(var(--primary-color-rgb), 0.2); /* Enhanced shadow */
 }
 
 .step-wizard-header {
@@ -1302,10 +1333,6 @@ button:hover::before {
     content: none;
 }
 
-#capeUpload {
-    margin-top: 60px;
-}
-
 #downloadSection {
     margin-top: 80px;
 }
@@ -1340,8 +1367,6 @@ button:hover::before {
 
 .animate-on-scroll.fade-in-up {
     transform: translateY(40px);
-}
-.animate-on-scroll.fade-in {
 }
 
 .animate-on-scroll.is-visible {
