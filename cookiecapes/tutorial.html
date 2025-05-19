@@ -20,7 +20,7 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
             border: 1px solid var(--primary-color-alpha-20);
             max-width: 950px;
-            margin: 120px auto 40px auto; 
+            margin: 120px auto 40px auto; /* Adjusted margin-top for floating header */
             line-height: 1.7;
         }
 
@@ -137,6 +137,45 @@
         .highlight { 
             color: var(--success-color);
             font-weight: bold;
+        }
+
+        /* Responsive adjustments for tutorial.html */
+        @media (max-width: 768px) {
+            .tutorial-content {
+                max-width: 95%;
+                padding: 20px;
+                 margin-top: 130px; /* Further adjust if header is tall */
+            }
+            .tutorial-content h1 {
+                font-size: 2em;
+            }
+            .tutorial-content h2 {
+                font-size: 1.5em;
+            }
+            .tutorial-content h3 {
+                font-size: 1.2em;
+            }
+            .tutorial-content ul, .tutorial-content ol {
+                padding-left: 20px;
+            }
+            #capeTemplateImage {
+                max-width: 200px; /* Make template image smaller on mobile */
+            }
+            .tutorial-content button {
+                padding: 8px 15px;
+                font-size: 0.9em;
+            }
+        }
+         @media (max-width: 480px) {
+             .tutorial-content h1 {
+                font-size: 1.8em;
+            }
+            .tutorial-content h2 {
+                font-size: 1.3em;
+            }
+            .tutorial-content h3 {
+                font-size: 1.1em;
+            }
         }
 
     </style>

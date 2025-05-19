@@ -3,8 +3,8 @@ let capeModal, modalCanvas, closeModalButton, modalCapeName, modalCapeId, modalU
 
 const defaultSkinPath = "/img/skin.png";
 const defaultGalleryPreviewBackgroundColor = 0x1a1a1a;
-const defaultModalCanvasBackgroundColor = 0x1a1a1a; // Main background for canvas in modal
-const defaultModalViewerBackgroundColor = 0x2e2e2e; // card-bg-color for the modal itself
+const defaultModalCanvasBackgroundColor = 0x1a1a1a;
+const defaultModalViewerBackgroundColor = 0x2e2e2e;
 
 const CAPES_PER_PAGE = 12;
 
@@ -63,7 +63,6 @@ function displayCurrentPage() {
         const uploaderP = document.createElement("p");
         uploaderP.textContent = `von ${uploaderName}`;
         uploaderP.style.fontSize = '0.8em';
-        // uploaderP.style.color = '#aaa'; // Will be handled by CSS var(--text-color-dimmer) via .cape-preview p
         uploaderP.style.marginTop = '-5px';
         previewDiv.appendChild(uploaderP);
 
@@ -233,7 +232,7 @@ function initializeModalViewer() {
                 width: modalCanvas.width,
                 height: modalCanvas.height,
                 skin: defaultSkinPath,
-                background: defaultModalViewerBackgroundColor // The modal content card's background
+                background: defaultModalViewerBackgroundColor
             });
             modalSkinViewer.fov = 65;
             modalSkinViewer.zoom = 0.8;
@@ -276,10 +275,10 @@ function openCapeModal(capeId, capeUrl, capeName, uploaderName) {
     if (modalViewDetailsButton) {
         if (capeId !== undefined && capeId !== null) {
             modalViewDetailsButton.href = `cape-detail.html?id=${capeId}`;
-            modalViewDetailsButton.style.display = 'inline-block'; // Make sure it's visible
+            modalViewDetailsButton.style.display = 'inline-block';
         } else {
-            modalViewDetailsButton.href = '#'; // Fallback href
-            modalViewDetailsButton.style.display = 'none'; // Hide if no valid Cape ID
+            modalViewDetailsButton.href = '#';
+            modalViewDetailsButton.style.display = 'none';
         }
     }
 
@@ -304,9 +303,9 @@ function openCapeModal(capeId, capeUrl, capeName, uploaderName) {
             modalCapeName.textContent += " (Cape-Ladefehler)";
         });
 
-    modalCanvas.style.backgroundColor = 'var(--card-bg-darker)'; // From CSS
-    modalSkinViewer.loadPanorama(null); // Ensure no panorama
-    modalSkinViewer.background = null; // Use canvas CSS background
+    modalCanvas.style.backgroundColor = 'var(--card-bg-darker)';
+    modalSkinViewer.loadPanorama(null);
+    modalSkinViewer.background = null;
 
     modalSkinViewer.autoRotate = true;
     if (modalSkinViewer.animation) {
@@ -384,7 +383,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 modalSkinViewer.loadPanorama(panoramaPath)
                     .then(() => {
                         console.log("Modal: Loaded panorama", panoramaPath);
-                        modalSkinViewer.background = null; // Panorama overrides background color
+                        modalSkinViewer.background = null;
                     })
                     .catch(err => {
                         console.error("Modal: Failed to load panorama:", err);

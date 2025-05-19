@@ -98,6 +98,256 @@ a:hover {
   flex: 1;
 }
 
+
+@media (max-width: 768px) {
+    .page-wrapper, .main-content {
+        width: 95%;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    header {
+        /* max-width: 90%; */ /* Already has width 90% and max-width 500px which is fine */
+        flex-direction: column; /* Stack logo and nav */
+        align-items: center;
+        padding: 10px;
+        border-radius: 20px; /* Slightly smaller radius */
+    }
+    header.floating {
+        top: 15px;
+    }
+    .logo {
+        margin-right: 0; /* Reset margin if logo was pushing nav */
+        margin-bottom: 5px; /* Space between logo and nav */
+    }
+    .nav-container {
+        margin-left: 0; /* Reset margin */
+        width: 100%; /* Allow nav to take full width */
+    }
+    .nav-container nav {
+        justify-content: center; /* Center nav links */
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    header a {
+        font-size: 17px; /* Slightly smaller nav links */
+        padding: 8px 10px;
+    }
+
+    .improved-hero {
+        min-height: 60vh;
+        padding: 30px 15px;
+        margin-top: 100px; /* Account for taller header */
+    }
+    .improved-hero h1 {
+        font-size: clamp(2rem, 5vw, 3rem);
+    }
+    .hero-explanation {
+        font-size: clamp(1rem, 2.2vw, 1.2rem);
+        margin-bottom: 25px;
+    }
+    .hero-features {
+        gap: 15px 20px;
+        margin-bottom: 30px;
+    }
+    .hero-cta {
+        flex-direction: column;
+        gap: 15px;
+        width: 80%;
+    }
+    .cta-button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .cape-gallery {
+        width: 90%;
+        padding: 1.5rem;
+    }
+    .cape-gallery h2 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+    .cape-container {
+        gap: 1.5rem;
+        width: 100%; /* Take full width of parent */
+    }
+
+    .step-wizard-container {
+        width: 95%;
+        padding: 20px;
+    }
+    .step-wizard-header h1 {
+        font-size: 1.6em;
+    }
+    .step-instruction {
+        max-width: 95%;
+        font-size: 1em;
+    }
+    .step-wizard-container input[type="text"] {
+        width: 90%;
+    }
+    .input-feedback {
+        width: 90%;
+    }
+    #step-5 .preview-container {
+        flex-direction: column; /* Already default, ensure it stays */
+    }
+     #skin_preview_canvas { /* Keep preview canvas a bit smaller on mobile if needed */
+        width: 180px !important;
+        height: 280px !important;
+    }
+    .preview-details {
+        width: 90%;
+        max-width: none;
+    }
+    .step-navigation {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+    }
+    .step-button {
+        width: 100%;
+    }
+
+    .downloadSection, .recommendation-box {
+        width: 95%;
+        padding: 25px;
+        margin-top: 40px;
+    }
+    .downloadSection h2, .recommendation-box h2 {
+        font-size: 1.8em;
+    }
+    .downloadSection p, .recommendation-box p {
+        font-size: 1em;
+    }
+    .downloadSection button, .recommendation-button {
+        font-size: 1em;
+        padding: 12px 25px;
+    }
+
+    .intro h1 {
+        font-size: 2rem;
+    }
+
+    .player-card {
+        width: calc(50% - 1rem); /* Two cards per row, accounting for gap */
+        padding: 1rem;
+    }
+
+    .pagination-controls {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .modal-content {
+        width: 90%;
+        padding: 20px;
+    }
+    .modal-content h2 {
+        font-size: 1.5em;
+    }
+    .modal-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+    .modal-controls .control-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .modal-controls label {
+        margin-bottom: 5px;
+    }
+    .modal-controls input[type="checkbox"] {
+        margin-left: 0; /* Reset margin if any */
+    }
+    .modal-controls select {
+        width: 100%;
+    }
+    .modal-viewer-container canvas { /* Ensure canvas in modal is also responsive */
+        max-width: 100%;
+        height: auto; /* Maintain aspect ratio */
+        width: 250px; /* Or a suitable size */
+        height: 350px;
+    }
+}
+
+/* Smaller mobile */
+@media (max-width: 480px) {
+    header {
+        margin-top: 5px; /* Reduced top margin for smaller floating header */
+    }
+    header.floating {
+        top: 10px;
+    }
+
+    .improved-hero {
+        margin-top: 120px; /* Further adjust for header */
+    }
+    .improved-hero h1 {
+        font-size: 1.8rem;
+    }
+    .hero-explanation {
+        font-size: 0.9rem;
+    }
+    .hero-features {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    .feature-item {
+        width: 80%;
+        justify-content: center;
+    }
+    .hero-cta {
+        width: 90%;
+    }
+
+    .cape-gallery h2 {
+        font-size: 1.5rem;
+    }
+    .cape-preview { /* One card per row */
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .step-wizard-header h1 {
+        font-size: 1.4em;
+    }
+    .step-instruction {
+        font-size: 0.9em;
+    }
+    #skin_preview_canvas {
+        width: 150px !important;
+        height: 230px !important;
+    }
+
+    .downloadSection h2, .recommendation-box h2 {
+        font-size: 1.5em;
+    }
+    .downloadSection p, .recommendation-box p {
+        font-size: 0.9em;
+    }
+
+    .player-card {
+        width: 80%; /* One card per row */
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .player-card canvas {
+      width: 150px; /* Adjust canvas if needed */
+      height: 220px;
+    }
+
+    .modal-viewer-container canvas {
+        width: 200px; /* Smaller canvas in modal */
+        height: 300px;
+    }
+}
+
+
 header {
   display: flex;
   position: fixed;
@@ -632,23 +882,6 @@ button:hover::before {
   border: 1px solid var(--text-color-alpha-10);
   width: 200px !important;
   height: 300px !important;
-}
-
-@media (min-width: 600px) {
-  #step-5 .preview-container {
-      flex-direction: row;
-      justify-content: center;
-      align-items: flex-start;
-  }
-   #skin_preview_canvas {
-      width: 250px !important;
-      height: 350px !important;
-  }
-  .preview-details {
-      width: auto;
-      max-width: none;
-      margin-top: 10px;
-  }
 }
 
 .file-label { 

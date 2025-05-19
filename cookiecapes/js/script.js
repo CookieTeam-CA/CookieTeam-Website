@@ -628,10 +628,10 @@ function openCapeModal(capeId, capeUrl, capeName, uploaderName = "N/A") {
     if (modalViewDetailsButton) {
         if (capeId !== undefined && capeId !== null) {
             modalViewDetailsButton.href = `cape-detail.html?id=${capeId}`;
-            modalViewDetailsButton.style.display = 'inline-block'; // Make sure it's visible
+            modalViewDetailsButton.style.display = 'inline-block';
         } else {
-            modalViewDetailsButton.href = '#'; // Fallback href
-            modalViewDetailsButton.style.display = 'none'; // Hide if no valid Cape ID
+            modalViewDetailsButton.href = '#';
+            modalViewDetailsButton.style.display = 'none';
         }
     }
 

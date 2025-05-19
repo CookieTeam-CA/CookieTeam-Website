@@ -20,7 +20,7 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
             border: 1px solid var(--primary-color-alpha-20);
             max-width: 900px;
-            margin: 120px auto 40px auto; 
+            margin: 120px auto 40px auto; /* Adjusted margin-top for floating header */
         }
 
         .rules-content h1 {
@@ -51,6 +51,32 @@
             margin-bottom: 12px;
             line-height: 1.6;
             color: var(--text-color-dim);
+        }
+
+        /* Responsive adjustments for rules.html */
+        @media (max-width: 768px) {
+            .rules-content {
+                max-width: 95%;
+                padding: 20px;
+                margin-top: 130px; /* Further adjust if header is tall */
+            }
+            .rules-content h1 {
+                font-size: 2em;
+            }
+            .rules-content h2 {
+                font-size: 1.5em;
+            }
+            .rules-content ul {
+                padding-left: 20px; /* Reduce indent for lists */
+            }
+        }
+        @media (max-width: 480px) {
+             .rules-content h1 {
+                font-size: 1.8em;
+            }
+            .rules-content h2 {
+                font-size: 1.3em;
+            }
         }
     </style>
 </head>

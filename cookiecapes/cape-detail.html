@@ -18,7 +18,7 @@
             flex-direction: column;
             align-items: center;
             padding: 20px;
-            margin-top: 80px;
+            margin-top: 80px; /* Increased to make space for floating header */
             background-color: var(--card-bg-color);
             border-radius: 15px;
             max-width: 700px;
@@ -266,8 +266,80 @@
         .hidden { display: none !important; }
 
         /* Definieren der RGB-Werte für die Primärfarbe für den Glow-Effekt */
-        :root {
+        :root { /* This :root block for CSS variables is usually in style.css not here */
             --primary-color-rgb: 255, 165, 0; /* Orange */
+        }
+
+        /* Responsive adjustments for cape-detail.html */
+        @media (max-width: 768px) {
+            .cape-detail-container {
+                padding: 15px;
+                margin-top: 120px; /* Increased more to ensure floating header doesn't overlap */
+                max-width: 95%;
+            }
+            .cape-detail-container h1#pageTitle {
+                font-size: 1.8em;
+            }
+            #mainViewerCanvas {
+                 width: 250px !important; /* Adjust if too big for mobile */
+                 height: 350px !important;
+            }
+            .viewer-wrapper {
+                 padding: 5px;
+            }
+            .cape-info-fetched {
+                max-width: 100%;
+                padding: 10px 15px;
+                font-size: 0.9em;
+            }
+            .viewer-controls {
+                max-width: 100%;
+                gap: 10px;
+            }
+            .control-group {
+                padding: 8px 10px;
+                flex-direction: column; /* Stack label and control */
+                align-items: flex-start;
+            }
+             .viewer-controls label {
+                margin-bottom: 5px; /* Space between label and control */
+                white-space: normal; /* Allow label to wrap */
+            }
+            .viewer-controls input[type="checkbox"] {
+                margin-left: 0; /* Reset margin */
+            }
+             .viewer-controls select {
+                width: 100%; /* Make select full width */
+                max-width: none;
+            }
+             .control-group.asset-source-group {
+                flex-direction: column; /* Stack skin and cape source blocks */
+                gap: 20px; /* Increased gap for better separation when stacked */
+            }
+            .asset-source-block {
+                width: 100%; /* Make blocks full width */
+                flex-basis: auto;
+            }
+            .back-link {
+                padding: 8px 15px;
+                font-size: 0.9em;
+            }
+        }
+        @media (max-width: 480px) {
+            .cape-detail-container h1#pageTitle {
+                font-size: 1.6em;
+            }
+            #mainViewerCanvas { /* Even smaller for very small screens */
+                 width: 200px !important;
+                 height: 300px !important;
+            }
+            .asset-source-block label.block-title {
+                font-size: 1em;
+            }
+             .asset-source-block input[type="file"],
+             .asset-source-block input[type="text"] {
+                font-size: 0.85em;
+            }
         }
 
     </style>
