@@ -2,7 +2,10 @@ let modalSkinViewer = null;
 let capeModal, modalCanvas, closeModalButton, modalCapeName, modalCapeId, modalUploaderName, modalSkinToggle, modalPanoramaSelect, modalOverlay;
 
 const defaultSkinPath = "/img/skin.png";
-const defaultModalBackgroundColor = 0x2a2a3a;
+const defaultGalleryPreviewBackgroundColor = 0x1a1a1a;
+const defaultModalCanvasBackgroundColor = 0x1a1a1a; // Main background for canvas in modal
+const defaultModalViewerBackgroundColor = 0x2e2e2e; // card-bg-color for the modal itself
+
 const CAPES_PER_PAGE = 12;
 
 let allCapes = [];
@@ -60,7 +63,7 @@ function displayCurrentPage() {
         const uploaderP = document.createElement("p");
         uploaderP.textContent = `von ${uploaderName}`;
         uploaderP.style.fontSize = '0.8em';
-        uploaderP.style.color = '#aaa';
+        // uploaderP.style.color = '#aaa'; // Will be handled by CSS var(--text-color-dimmer) via .cape-preview p
         uploaderP.style.marginTop = '-5px';
         previewDiv.appendChild(uploaderP);
 
@@ -86,7 +89,7 @@ function displayCurrentPage() {
                 width: canvas.width,
                 height: canvas.height,
                 skin: defaultSkinPath,
-                background: 0x2a2a3a
+                background: defaultGalleryPreviewBackgroundColor
             });
 
             viewer.loadCape(capeImageUrl, { backEquipment: 'cape' })
@@ -115,7 +118,7 @@ function displayCurrentPage() {
         } catch (viewerError) {
             console.error("Error initializing gallery SkinViewer:", viewerError);
             const errorP = document.createElement("p");
-            errorP.style.cssText = 'font-size: 0.8em; color: red; margin-top: 5px;';
+            errorP.style.cssText = 'font-size: 0.8em; color: var(--error-color); margin-top: 5px;';
             errorP.textContent = 'Vorschaufehler';
             previewDiv.appendChild(errorP);
             previewDiv.style.opacity = '0.7';
@@ -175,7 +178,7 @@ async function fetchAllCapesAndPaginate() {
 
     if (!container || !loadingIndicator || !controlsContainer) {
         console.error("Essential elements for pagination not found.");
-         if(loadingIndicator) loadingIndicator.innerHTML = '<p style="color: #ff6b6b;">Seitenfehler: Wichtige Elemente fehlen.</p>';
+         if(loadingIndicator) loadingIndicator.innerHTML = `<p style="color: var(--error-color);">Seitenfehler: Wichtige Elemente fehlen.</p>`;
         return;
     }
 
@@ -207,7 +210,7 @@ async function fetchAllCapesAndPaginate() {
         loadingIndicator.style.display = 'none';
 
         if (allCapes.length === 0) {
-            container.innerHTML = '<p style="color: #ccc;">Keine Capes zum Anzeigen gefunden.</p>';
+            container.innerHTML = `<p style="color: var(--text-color-dim);">Keine Capes zum Anzeigen gefunden.</p>`;
             container.style.display = 'flex';
         } else {
             displayCurrentPage();
@@ -216,7 +219,7 @@ async function fetchAllCapesAndPaginate() {
     } catch (err) {
         console.error("Error fetching or setting up pagination:", err);
         loadingIndicator.style.display = 'none';
-        container.innerHTML = `<p style="color: #ff6b6b;">Ein Fehler ist aufgetreten: ${err.message || 'Capes konnten nicht geladen werden.'}</p>`;
+        container.innerHTML = `<p style="color: var(--error-color);">Ein Fehler ist aufgetreten: ${err.message || 'Capes konnten nicht geladen werden.'}</p>`;
         container.style.display = 'flex';
         controlsContainer.innerHTML = '';
     }
@@ -230,7 +233,7 @@ function initializeModalViewer() {
                 width: modalCanvas.width,
                 height: modalCanvas.height,
                 skin: defaultSkinPath,
-                background: defaultModalBackgroundColor
+                background: defaultModalViewerBackgroundColor // The modal content card's background
             });
             modalSkinViewer.fov = 65;
             modalSkinViewer.zoom = 0.8;
@@ -245,7 +248,7 @@ function initializeModalViewer() {
         } catch (e) {
             console.error("Failed to initialize modal SkinViewer:", e);
             if (modalCanvas.parentElement) {
-                modalCanvas.parentElement.innerHTML = "<p style='color: #ff6b6b;'>3D-Vorschau konnte nicht geladen werden.</p>";
+                modalCanvas.parentElement.innerHTML = `<p style='color: var(--error-color);'>3D-Vorschau konnte nicht geladen werden.</p>`;
             }
             modalSkinViewer = null;
         }
@@ -290,8 +293,10 @@ function openCapeModal(capeId, capeUrl, capeName, uploaderName) {
             modalCapeName.textContent += " (Cape-Ladefehler)";
         });
 
-    modalSkinViewer.loadPanorama(null);
-    modalSkinViewer.background = defaultModalBackgroundColor;
+    // Set background of the skin viewer canvas inside the modal
+    modalCanvas.style.backgroundColor = 'var(--card-bg-darker)'; // From CSS
+    modalSkinViewer.loadPanorama(null); // Ensure no panorama
+    modalSkinViewer.background = null; // Use canvas CSS background
 
     modalSkinViewer.autoRotate = true;
     if (modalSkinViewer.animation) {
@@ -367,18 +372,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (panoramaPath) {
                 modalSkinViewer.loadPanorama(panoramaPath)
-                    .then(() => console.log("Modal: Loaded panorama", panoramaPath))
+                    .then(() => {
+                        console.log("Modal: Loaded panorama", panoramaPath);
+                        modalSkinViewer.background = null; // Panorama overrides background color
+                    })
                     .catch(err => {
                         console.error("Modal: Failed to load panorama:", err);
                         alert("Panorama konnte nicht geladen werden.");
                         modalSkinViewer.loadPanorama(null);
-                        modalSkinViewer.background = defaultModalBackgroundColor;
+                        modalCanvas.style.backgroundColor = 'var(--card-bg-darker)';
+                        modalSkinViewer.background = null;
                         modalPanoramaSelect.value = 'none';
                     });
             } else {
                 modalSkinViewer.loadPanorama(null);
-                modalSkinViewer.background = defaultModalBackgroundColor;
-                console.log("Modal: Reset to default background.");
+                modalCanvas.style.backgroundColor = 'var(--card-bg-darker)';
+                modalSkinViewer.background = null;
+                console.log("Modal: Reset to default background via CSS.");
             }
         });
     }
