@@ -29,6 +29,29 @@
     <div class="intro">
         <h1>Alle Capes</h1>
         <p style="color: var(--text-color-dim); font-size: 0.9em;">Klicke auf ein Cape für Details und Vorschau.</p>
+        <div class="cape-filters-modern">
+            <div class="search-wrapper">
+                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                    <path d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z"></path>
+                </svg>
+                <input type="text" id="capeSearchInput" placeholder="Capes durchsuchen...">
+            </div>
+            <div class="sort-wrapper">
+                <label for="capeSortBy" class="visually-hidden">Sortieren nach:</label>
+                <select id="capeSortBy" aria-label="Sortieren nach">
+                    <option value="active_user_count">Beliebtheit</option>
+                    <option value="last_edited">Datum</option>
+                    <option value="cape_name">Name</option>
+                    <option value="minecraft_name">Ersteller</option>
+                    <option value="cape_id">ID</option>
+                </select>
+                <label for="capeSortOrder" class="visually-hidden">Reihenfolge:</label>
+                <select id="capeSortOrder" aria-label="Sortierreihenfolge">
+                    <option value="desc">Absteigend</option>
+                    <option value="asc">Aufsteigend</option>
+                </select>
+            </div>
+        </div>
     </div>
 
     <div class="all-capes">
@@ -52,7 +75,8 @@
                 </div>
                 <div class="modal-info">
                     <p><strong>Cape ID:</strong> <span id="modalCapeId">N/A</span></p>
-                    <p><strong>Ersteller:</strong> <span id="modalUploaderName">N/A</span></p> 
+                    <p><strong>Ersteller:</strong> <span id="modalUploaderName">N/A</span></p>
+                    <p><strong>Wird verwendet von:</strong> <span id="modalActiveUsers">0</span> Spielern</p>
                 </div>
                 <div class="modal-additional-actions" style="text-align: center; margin-top: 15px; margin-bottom: 15px;">
                     <a href="#" id="modalViewDetailsButton" class="cta-button secondary-cta" style="font-size: 0.9em; padding: 8px 15px;" target="_blank">Details ansehen</a>

@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (navigationContainer) navigationContainer.style.display = 'none';
             if (stepTitle) stepTitle.textContent = "Limit erreicht";
             if (progressBar) progressBar.style.width = '100%';
-            console.log("Daily upload limit reached.");
+            
             return; 
         } else {
            if (limitMessageContainer) limitMessageContainer.style.display = 'none';
@@ -405,7 +405,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
     } else {
-        console.log("Cape upload form/section not found, skipping form initialization.");
+        
     }
 
 
@@ -449,7 +449,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (panoramaPath) {
                     modalSkinViewer.loadPanorama(panoramaPath)
                         .then(() => {
-                            console.log("Modal: Loaded panorama", panoramaPath);
+                            
                             modalSkinViewer.background = null;
                         })
                         .catch(err => {
@@ -529,7 +529,7 @@ async function fetchRandomCapes() {
              return;
         }
 
-        const randomCapes = validCapes.sort(() => 0.5 - Math.random()).slice(0, 4);
+        const randomCapes = validCapes.sort(() => 0.5 - Math.random()).slice(0, 3);
         container.innerHTML = "";
 
         randomCapes.forEach((cape) => {
@@ -598,7 +598,7 @@ function initializeModalViewer() {
             modalSkinViewer.animation = new skinview3d.WalkingAnimation();
             modalSkinViewer.animation.speed = 0.8;
             modalSkinViewer.animation.paused = true;
-            console.log("Modal SkinViewer initialized.");
+            
         } catch (e) {
             console.error("Failed to initialize modal SkinViewer:", e);
             if (modalCanvas.parentElement) modalCanvas.parentElement.innerHTML = `<p style='color: var(--error-color);'>3D-Vorschau konnte nicht geladen werden.</p>`;
@@ -650,7 +650,7 @@ function openCapeModal(capeId, capeUrl, capeName, uploaderName = "N/A") {
         });
 
     modalSkinViewer.loadCape(capeUrl, { backEquipment: 'cape' })
-        .then(() => console.log(`Modal: Loaded cape ${capeId}`))
+        .then(() => {})
         .catch(err => { console.error(`Modal: Failed cape ${capeUrl}:`, err); modalCapeName.textContent += " (Ladefehler)"; });
     
 

@@ -14,7 +14,7 @@
     --primary-color: #FFA500;
     --primary-color-hover: #ffb733;
     --primary-text-color: var(--text-color-dark);
-    --primary-color-rgb: 255, 165, 0; /* Added for rgba() glow effects */
+    --primary-color-rgb: 255, 165, 0; 
 
     --secondary-color: #226CE0;
     --secondary-color-hover: #337ceF;
@@ -107,37 +107,37 @@ a:hover {
     }
 
     header {
-        /* max-width: 90%; */ /* Already has width 90% and max-width 500px which is fine */
-        flex-direction: column; /* Stack logo and nav */
+        
+        flex-direction: column; 
         align-items: center;
         padding: 10px;
-        border-radius: 20px; /* Slightly smaller radius */
+        border-radius: 20px; 
     }
     header.floating {
         top: 15px;
     }
     .logo {
-        margin-right: 0; /* Reset margin if logo was pushing nav */
-        margin-bottom: 5px; /* Space between logo and nav */
+        margin-right: 0; 
+        margin-bottom: 5px; 
     }
     .nav-container {
-        margin-left: 0; /* Reset margin */
-        width: 100%; /* Allow nav to take full width */
+        margin-left: 0; 
+        width: 100%; 
     }
     .nav-container nav {
-        justify-content: center; /* Center nav links */
+        justify-content: center; 
         gap: 8px;
         flex-wrap: wrap;
     }
     header a {
-        font-size: 17px; /* Slightly smaller nav links */
+        font-size: 17px; 
         padding: 8px 10px;
     }
 
     .improved-hero {
         min-height: 60vh;
         padding: 30px 15px;
-        margin-top: 100px; /* Account for taller header */
+        margin-top: 100px; 
     }
     .improved-hero h1 {
         font-size: clamp(2rem, 5vw, 3rem);
@@ -170,7 +170,7 @@ a:hover {
     }
     .cape-container {
         gap: 1.5rem;
-        width: 100%; /* Take full width of parent */
+        width: 100%;
     }
 
     .step-wizard-container {
@@ -191,9 +191,9 @@ a:hover {
         width: 90%;
     }
     #step-5 .preview-container {
-        flex-direction: column; /* Already default, ensure it stays */
+        flex-direction: column; 
     }
-     #skin_preview_canvas { /* Keep preview canvas a bit smaller on mobile if needed */
+     #skin_preview_canvas { 
         width: 180px !important;
         height: 280px !important;
     }
@@ -229,11 +229,28 @@ a:hover {
     .intro h1 {
         font-size: 2rem;
     }
+     .cape-filters-modern {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .search-wrapper, .sort-wrapper {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .search-wrapper input[type="text"], .sort-wrapper select {
+        width: 100%;
+    }
+
 
     .player-card {
-        width: calc(50% - 1rem); /* Two cards per row, accounting for gap */
+        width: calc(50% - 1rem); 
         padding: 1rem;
     }
+    .cape-preview {
+        width: calc(50% - 1rem);
+    }
+
 
     .pagination-controls {
         flex-wrap: wrap;
@@ -260,30 +277,30 @@ a:hover {
         margin-bottom: 5px;
     }
     .modal-controls input[type="checkbox"] {
-        margin-left: 0; /* Reset margin if any */
+        margin-left: 0; 
     }
     .modal-controls select {
         width: 100%;
     }
-    .modal-viewer-container canvas { /* Ensure canvas in modal is also responsive */
+    .modal-viewer-container canvas { 
         max-width: 100%;
-        height: auto; /* Maintain aspect ratio */
-        width: 250px; /* Or a suitable size */
+        height: auto; 
+        width: 250px; 
         height: 350px;
     }
 }
 
-/* Smaller mobile */
+
 @media (max-width: 480px) {
     header {
-        margin-top: 5px; /* Reduced top margin for smaller floating header */
+        margin-top: 5px; 
     }
     header.floating {
         top: 10px;
     }
 
     .improved-hero {
-        margin-top: 120px; /* Further adjust for header */
+        margin-top: 120px; 
     }
     .improved-hero h1 {
         font-size: 1.8rem;
@@ -307,7 +324,7 @@ a:hover {
     .cape-gallery h2 {
         font-size: 1.5rem;
     }
-    .cape-preview { /* One card per row */
+    .cape-preview { 
         width: 80%;
         margin-left: auto;
         margin-right: auto;
@@ -332,17 +349,17 @@ a:hover {
     }
 
     .player-card {
-        width: 80%; /* One card per row */
+        width: 80%; 
         margin-left: auto;
         margin-right: auto;
     }
     .player-card canvas {
-      width: 150px; /* Adjust canvas if needed */
+      width: 150px; 
       height: 220px;
     }
 
     .modal-viewer-container canvas {
-        width: 200px; /* Smaller canvas in modal */
+        width: 200px; 
         height: 300px;
     }
 }
@@ -490,13 +507,13 @@ button:hover::before {
 
 .recommendation-box.purple-theme {
   background: linear-gradient(140deg, rgba(139, 92, 246, 0.15), rgba(96, 51, 162, 0.2));
-  border: 1px solid rgba(167, 139, 250, 0.4); /* Will be overridden by :hover if specific color is desired */
+  border: 1px solid rgba(167, 139, 250, 0.4); 
 }
 
 .recommendation-box.purple-theme:hover {
-  border-color: rgba(167, 139, 250, 0.8); /* Stronger purple for hover */
-  /* padding and base shadow handled by .recommendation-box:hover */
-  box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3), 0 0 15px rgba(167, 139, 250, 0.2); /* Purple glow */
+  border-color: rgba(167, 139, 250, 0.8); 
+  
+  box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3), 0 0 15px rgba(167, 139, 250, 0.2); 
 }
 
 .recommendation-box {
@@ -515,15 +532,15 @@ button:hover::before {
   position: relative;
   background: var(--card-bg-color); 
   border: 1px solid var(--primary-color-alpha-30);
-  box-sizing: border-box; /* Ensure no shift */
+  box-sizing: border-box; 
   transition: border-color 0.3s ease, border-width 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
 }
 
 .recommendation-box:hover {
   border-width: 1.5px;
   border-color: var(--primary-color);
-  padding: 29px 39px; /* Adjust padding: original - 1px */
-  box-shadow: 0 10px 30px rgba(var(--primary-color-rgb), 0.3), 0 0 15px rgba(var(--primary-color-rgb), 0.2); /* Enhanced shadow */
+  padding: 29px 39px; 
+  box-shadow: 0 10px 30px rgba(var(--primary-color-rgb), 0.3), 0 0 15px rgba(var(--primary-color-rgb), 0.2); 
 }
 
 .recommendation-box h2 {
@@ -602,17 +619,17 @@ button:hover::before {
   color: var(--text-color);
   text-align: center;
   width: 58%;
-  margin: 20px auto; /* Adjusted margin for consistency */
+  margin: 20px auto; 
   border-radius: 15px;
   box-sizing: border-box;
-  border: 1px solid transparent; /* Initial transparent border */
+  border: 1px solid transparent; 
   transition: border-color 0.3s ease, border-width 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
 }
 
 .cape-gallery:hover {
   border-width: 1.5px;
   border-color: var(--primary-color);
-  padding: calc(2rem - 1px); /* Adjust padding */
+  padding: calc(2rem - 1px); 
   box-shadow: 0 0 20px rgba(var(--primary-color-rgb), 0.25);
 }
 
@@ -629,37 +646,66 @@ button:hover::before {
   justify-content: center;
   flex-wrap: wrap;
   margin-top: 1rem;
-  width: 80%;
+  width: 100%; 
   margin: 0 auto;
 }
 
 .cape-preview {
   background: var(--card-bg-darker);
-  padding: 1rem;
+  padding: 1.2rem;
   border-radius: 1rem;
-  transition: transform 0.2s;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  width: 220px; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .cape-preview:hover {
-  transform: scale(1.05);
-}
-
-.cape-preview img {
-  max-width: 100%;
-  border-radius: 0.5rem;
-}
-
-.cape-preview p {
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
-  color: var(--text-color-dim);
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 8px 15px rgba(var(--primary-color-rgb), 0.15);
 }
 
 .cape-preview canvas {
-  border-radius: 0.5rem;
-  background: var(--bg-color); 
-  margin-bottom: 0.5rem;
+  display: block;
+  margin: 0 auto 0.8rem auto;
+  border-radius: 8px;
+  background-color: var(--bg-color); 
 }
+
+.cape-preview p {
+  margin: 0.3rem 0;
+  color: var(--text-color);
+  font-weight: 500;
+  word-wrap: break-word;
+  width: 100%;
+}
+
+.cape-preview-name {
+  font-size: 1em;
+  font-weight: 600 !important;
+  color: var(--text-color) !important;
+}
+.cape-preview-uploader {
+   font-size: 0.8em !important;
+   color: var(--text-color-dimmer) !important;
+   margin-top: -2px !important;
+}
+.cape-active-users {
+    font-size: 0.75em !important;
+    color: var(--text-color-dim) !important;
+    margin-top: 4px !important;
+    display: inline-flex;
+    align-items: center;
+}
+.cape-active-users svg {
+    margin-right: 4px;
+    opacity: 0.7;
+}
+
+
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
@@ -691,15 +737,15 @@ button:hover::before {
   width: 100%;
   max-width: 700px;
   margin: 20px auto;
-  box-sizing: border-box; /* Ensure no shift */
+  box-sizing: border-box; 
   transition: border-color 0.3s ease, border-width 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
 }
 
 .step-wizard-container:hover {
   border-width: 1.5px;
   border-color: var(--primary-color);
-  padding: 29px 39px; /* Adjust padding */
-  box-shadow: 0 10px 30px rgba(var(--primary-color-rgb), 0.3), 0 0 15px rgba(var(--primary-color-rgb), 0.2); /* Enhanced shadow */
+  padding: 29px 39px; 
+  box-shadow: 0 10px 30px rgba(var(--primary-color-rgb), 0.3), 0 0 15px rgba(var(--primary-color-rgb), 0.2); 
 }
 
 .step-wizard-header {
@@ -1203,7 +1249,7 @@ button:hover::before {
   align-items: center;
   justify-content: center;
   text-align: center;
-  margin-top: 50px;
+  margin-top: 70px;
   margin-bottom: 25px;
 }
 
@@ -1217,6 +1263,90 @@ button:hover::before {
 .intro p {
     color: var(--text-color-dim) !important; 
 }
+
+.cape-filters-modern {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 20px;
+    background-color: var(--card-bg-darker);
+    border-radius: 12px;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    max-width: 800px;
+    width: 90%;
+}
+
+.search-wrapper {
+    display: flex;
+    align-items: center;
+    background-color: var(--bg-color);
+    border-radius: 20px;
+    padding: 0px 12px;
+    border: 1px solid var(--border-color-medium);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.search-wrapper:focus-within {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px var(--primary-color-alpha-30);
+}
+.search-wrapper .search-icon {
+    color: var(--text-color-dimmer);
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+.search-wrapper input[type="text"] {
+    background-color: transparent;
+    border: none;
+    color: var(--text-color);
+    padding: 10px 0px;
+    font-size: 0.95em;
+    outline: none;
+    width: 200px; 
+    flex-grow: 1;
+}
+.search-wrapper input[type="text"]::placeholder {
+    color: var(--text-color-dimmer);
+}
+
+.sort-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.sort-wrapper select {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color-medium);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 0.9em;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+.sort-wrapper select:hover {
+    border-color: var(--text-color-dim);
+}
+.sort-wrapper select:focus {
+    border-color: var(--primary-color);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 
 .modal {
   position: fixed;

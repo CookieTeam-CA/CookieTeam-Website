@@ -1,7 +1,7 @@
 const defaultSkinPath = "/img/skin.png";
 const API_BASE_URL = "https://api.cookieattack.de:8989";
 const PLAYERS_PER_PAGE = 12;
-const playerCardCanvasBackgroundColor = 0x1a1a1a; // Main page background for canvas in player cards
+const playerCardCanvasBackgroundColor = 0x1a1a1a; 
 
 let allPlayersData = [];
 let currentPage = 1;
@@ -42,8 +42,6 @@ function displayCurrentPlayerPage() {
     const endIndex = startIndex + PLAYERS_PER_PAGE;
     const playersToShow = allPlayersData.slice(startIndex, endIndex);
 
-    console.log(`Displaying page ${currentPage}, players ${startIndex + 1} to ${Math.min(endIndex, allPlayersData.length)} of ${allPlayersData.length}`);
-
     if (playersToShow.length > 0) {
         playersToShow.forEach((player) => {
             const playerCard = document.createElement("div");
@@ -67,8 +65,7 @@ function displayCurrentPlayerPage() {
                 : 'Kein Cape';
             const capeInfoP = document.createElement("p");
             capeInfoP.textContent = capeIdText;
-            // capeInfoP.style.fontSize = '0.8em'; // Handled by CSS .player-card p:last-of-type
-            // capeInfoP.style.color = '#aaa'; // Handled by CSS
+            
             playerCard.appendChild(capeInfoP);
 
             playerContainer.appendChild(playerCard);
@@ -166,10 +163,10 @@ function changePlayerPage(newPage) {
 async function fetchAllDataAndPaginate() {
     const playerContainer = document.getElementById("playerContainer");
     const loadingIndicator = document.getElementById("loadingIndicator");
-    const loadingProgress = document.getElementById("loadingProgress"); // Assuming this span exists within loadingIndicator
+    const loadingProgress = document.getElementById("loadingProgress"); 
     const paginationControls = document.getElementById("paginationControls");
 
-    if (!playerContainer || !loadingIndicator || !paginationControls) { // Removed loadingProgress from this check as it's optional
+    if (!playerContainer || !loadingIndicator || !paginationControls) { 
         console.error("Essential elements for pagination/loading not found.");
         if(loadingIndicator) loadingIndicator.innerHTML = `<p style="color: var(--error-color);">Seitenfehler: Wichtige Elemente fehlen.</p>`;
         return;
@@ -180,7 +177,7 @@ async function fetchAllDataAndPaginate() {
 
 
     loadingIndicator.style.display = 'block';
-    if (loadingProgress) loadingProgress.textContent = ''; // Clear specific progress if element exists
+    if (loadingProgress) loadingProgress.textContent = ''; 
     playerContainer.style.display = 'none';
     paginationControls.style.display = 'none';
 
@@ -207,12 +204,11 @@ async function fetchAllDataAndPaginate() {
                     }
                 } catch (e) {
                     console.error(`Error processing cape URL: ${originalImageUrl}`, e);
-                    correctedImageUrl = originalImageUrl; // Keep original if URL parsing fails
+                    correctedImageUrl = originalImageUrl; 
                 }
                 capeDataMap.set(cape.cape_id, correctedImageUrl);
             }
         });
-        console.log(`Created cape lookup map with ${capeDataMap.size} entries.`);
 
         loadingIndicatorTextSpan.textContent = "Lade Spielerliste...";
         const playersResponse = await fetch(`${API_BASE_URL}/list_players`);
@@ -229,8 +225,7 @@ async function fetchAllDataAndPaginate() {
             paginationControls.style.display = 'none';
             return;
         }
-
-        console.log(`Fetching details for ${players.length} players...`);
+        
         const totalPlayersToFetch = players.length;
         let fetchedCount = 0;
         loadingIndicatorTextSpan.textContent = `Lade Spielerdetails (0/${totalPlayersToFetch})`;
@@ -243,13 +238,13 @@ async function fetchAllDataAndPaginate() {
                     loadingIndicatorTextSpan.textContent = `Lade Spielerdetails (${fetchedCount}/${totalPlayersToFetch})`;
                     if (!res.ok) {
                         console.warn(`Failed to get details for UUID ${player.minecraft_uuid}: ${res.status}`);
-                        return { ...player, minecraft_name: player.minecraft_uuid, detail_error: true }; // Use UUID as name placeholder
+                        return { ...player, minecraft_name: player.minecraft_uuid, detail_error: true }; 
                     }
                     const details = await res.json();
                     return {
-                        ...player, // Keep original player object data
-                        minecraft_name: details.minecraft_name, // Overwrite/add minecraft_name from details
-                        discord_id: details.discord_id,       // Add discord_id from details
+                        ...player, 
+                        minecraft_name: details.minecraft_name, 
+                        discord_id: details.discord_id,       
                         detail_error: false
                      };
                 })
@@ -257,7 +252,7 @@ async function fetchAllDataAndPaginate() {
                     fetchedCount++;
                     loadingIndicatorTextSpan.textContent = `Lade Spielerdetails (${fetchedCount}/${totalPlayersToFetch})`;
                     console.error(`Error fetching details for UUID ${player.minecraft_uuid}:`, error);
-                    return { ...player, minecraft_name: player.minecraft_uuid, detail_error: true }; // Use UUID as name placeholder
+                    return { ...player, minecraft_name: player.minecraft_uuid, detail_error: true }; 
                 })
         );
 

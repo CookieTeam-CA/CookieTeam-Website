@@ -174,7 +174,7 @@ function setupSharedControls() {
     panoramaSelect.onchange = () => {
         if (!mainViewer || !canvas) return;
         const selection = panoramaSelect.value;
-        const panoramaPath = selection === 'panorama1' ? 'img/panorama1.png' : null;
+        const panoramaPath = selection === 'panorama1' ? '../img/panorama1.png' : null;
 
         if (panoramaPath) {
             mainViewer.loadPanorama(panoramaPath).then(() => mainViewer.background = null)
@@ -268,13 +268,13 @@ async function attemptLoadCapeByName(playerName, statusElement) {
             if (playerData.banned) {
                 throw new Error(`Spieler "${playerName}" ist gebannt.`);
             }
-            if (playerData.cape_id === null || playerData.cape_id === undefined) { // KORREKTUR HIER
+            if (playerData.cape_id === null || playerData.cape_id === undefined) { 
                 throw new Error(`Spieler "${playerName}" hat kein aktives Cape.`);
             }
 
-            const capeResponse = await fetch(`${API_BASE_URL}/get_cape?cape_id=${playerData.cape_id}`); // KORREKTUR HIER
+            const capeResponse = await fetch(`${API_BASE_URL}/get_cape?cape_id=${playerData.cape_id}`); 
             if (!capeResponse.ok) {
-                throw new Error(`Cape ID ${playerData.cape_id} nicht gefunden.`); // KORREKTUR HIER
+                throw new Error(`Cape ID ${playerData.cape_id} nicht gefunden.`); 
             }
             const capeData = await capeResponse.json();
             const capeUrl = getCorrectCapeImageUrl(capeData.cape_image_url);
