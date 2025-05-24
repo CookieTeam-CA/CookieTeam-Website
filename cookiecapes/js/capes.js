@@ -275,7 +275,18 @@ async function fetchAllCapesAndPaginate() {
     controlsContainer.innerHTML = '';
 
     try {
-        const response = await fetch(`${API_BASE_URL}/list_capes_sorted?sort_by=active_user_count&order=desc`);
+        const initialRequestBody = {
+            sort_by: 'active_user_count',
+            order: 'desc',
+        };
+
+        const response = await fetch(`${API_BASE_URL}/list_capes_sorted`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(initialRequestBody)
+        });
 
         if (!response.ok) {
             const text = await response.text();

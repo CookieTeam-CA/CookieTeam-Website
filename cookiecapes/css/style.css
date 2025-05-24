@@ -172,7 +172,6 @@ a:hover {
         gap: 1.5rem;
         width: 100%;
     }
-
     .step-wizard-container {
         width: 95%;
         padding: 20px;
@@ -289,7 +288,6 @@ a:hover {
         height: 350px;
     }
 }
-
 
 @media (max-width: 480px) {
     header {
@@ -1639,10 +1637,12 @@ button:hover::before {
 .feature-icon {
   font-size: 1.1rem;
   color: var(--primary-color);
+  user-select: none;
 }
 
 .feature-text {
   color: var(--text-color-dim);
+  user-select: none;
 }
 
 .hero-cta {
@@ -1664,6 +1664,7 @@ button:hover::before {
   gap: 8px;
   transition: all 0.3s ease;
   border: 1px solid transparent;
+  user-select: none;
 }
 .cta-button .cta-icon {
     font-size: 1.2em;
