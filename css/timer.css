@@ -1,0 +1,151 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1f1f1f, #353535); /* Dunkler, moderner Gradient */
+    color: #ecf0f1; /* Helle Textfarbe */
+    overflow: hidden; /* Verhindert Scrollbalken */
+}
+
+.container {
+    text-align: center;
+    background-color: rgba(59, 59, 59, 0.8); /* Semi-transparenter Hintergrund */
+    padding: 40px 60px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); /* Tieferer Schatten */
+    backdrop-filter: blur(5px); /* Leichter Blur-Effekt */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Dezenter Rahmen */
+}
+
+h1 {
+    font-size: 3em;
+    margin-bottom: 40px;
+    color: #ff500f; /* Akzentfarbe für die Überschrift */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.countdown-timer {
+    display: flex;
+    justify-content: center;
+    gap: 30px; /* Mehr Abstand zwischen den Elementen */
+    flex-wrap: wrap; /* Ermöglicht Umbruch auf kleineren Bildschirmen */
+}
+
+.countdown-item {
+    background-color: rgba(78, 78, 78, 0.9); /* Etwas dunkler als der Container */
+    padding: 25px 35px;
+    border-radius: 10px;
+    min-width: 150px; /* Einheitliche Breite für die Boxen */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease-in-out; /* Sanfte Hover-Animation */
+}
+
+.countdown-item:hover {
+    transform: translateY(-5px); /* Leichter Hoch-Effekt beim Hover */
+}
+
+.number {
+    font-size: 5em; /* Sehr große Zahlen */
+    font-weight: 700;
+    line-height: 1;
+    color: #ff500f; /* Akzentfarbe für die Zahlen */
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
+}
+
+.label {
+    font-size: 1.4em;
+    margin-top: 10px;
+    text-transform: uppercase;
+    opacity: 0.8;
+    letter-spacing: 1px;
+}
+
+.event-message {
+    margin-top: 50px;
+    font-size: 2em;
+    font-weight: 700;
+    color: #2ecc71; /* Grüne Farbe für die Erfolgsmeldung */
+    animation: fadeIn 1s ease-out; /* Animation für die Nachricht */
+}
+
+/* Responsives Design */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.5em;
+        margin-bottom: 30px;
+    }
+
+    .countdown-timer {
+        gap: 20px;
+    }
+
+    .countdown-item {
+        padding: 20px 25px;
+        min-width: 120px;
+    }
+
+    .number {
+        font-size: 4em;
+    }
+
+    .label {
+        font-size: 1.2em;
+    }
+
+    .container {
+        padding: 30px 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 2em;
+    }
+
+    .countdown-timer {
+        flex-direction: column; /* Stapelt die Elemente vertikal */
+        align-items: center;
+        gap: 15px;
+    }
+
+    .countdown-item {
+        width: 80%; /* Passt die Breite an für vertikale Stapelung */
+        min-width: unset;
+        padding: 15px 20px;
+    }
+
+    .number {
+        font-size: 3em;
+    }
+
+    .label {
+        font-size: 1em;
+    }
+
+    .container {
+        padding: 20px;
+        margin: 20px; /* Etwas Abstand vom Rand */
+    }
+
+    .event-message {
+        font-size: 1.5em;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
