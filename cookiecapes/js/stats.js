@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const API_BASE_URL = 'http://api.cookieattack.de:8001'; // Passe dies an, falls nötig
+    const API_BASE_URL = 'https://api.cookieattack.de:8990'; // Passe dies an, falls nötig
     const PLAYERS_PER_PAGE = 12;
     const LIVE_STATS_REFRESH_INTERVAL_MS = 10000; // Alle 10 Sekunden
 
