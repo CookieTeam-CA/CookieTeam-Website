@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const API_BASE_URL = 'https://api.cookieattack.de:8990'; // Passe dies an, falls nötig
+    const API_BASE_URL = 'https://api.cookieattack.de:8990';
     const PLAYERS_PER_PAGE = 12;
-    const LIVE_STATS_REFRESH_INTERVAL_MS = 10000; // Alle 10 Sekunden
+    const LIVE_STATS_REFRESH_INTERVAL_MS = 10000;
 
     const playerCountEl = document.getElementById('player-count');
     const connectionStatusEl = document.getElementById('connection-status');
@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentPage = 0;
     let totalPlayers = 0;
     let historyChart;
+    const nameCache = new Map();
 
     const fetchLiveStats = async () => {
         try {
@@ -44,17 +45,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fetchHistory = async (timespan) => {
         chartLoader.style.display = 'block';
-        chartContainer.style.display = 'none';
+        if (historyChart) historyChart.clear();
 
         try {
             const response = await fetch(`${API_BASE_URL}/history?timespan=${timespan}`);
             if (!response.ok) throw new Error('Netzwerk-Antwort war nicht ok');
             const data = await response.json();
 
-            const timestamps = data.history.map(entry => {
-                const d = new Date(entry.timestamp);
-                return `${d.toLocaleDateString('de-DE')} ${d.toLocaleTimeString('de-DE')}`;
-            });
+            const timestamps = data.history.map(entry => new Date(entry.timestamp));
             const playerCounts = data.history.map(entry => entry.player_count);
 
             renderHistoryChart(timestamps, playerCounts);
@@ -63,67 +61,79 @@ document.addEventListener('DOMContentLoaded', () => {
             chartContainer.innerHTML = `<p style="text-align:center;">Fehler beim Laden des Graphen.</p>`;
         } finally {
             chartLoader.style.display = 'none';
-            chartContainer.style.display = 'block';
         }
     };
 
     const renderHistoryChart = (timestamps, counts) => {
-        if (historyChart) {
-            historyChart.dispose();
+        if (!historyChart) {
+            historyChart = echarts.init(chartContainer, 'dark');
+            window.addEventListener('resize', () => historyChart.resize());
         }
-        historyChart = echarts.init(chartContainer, 'dark');
 
         const option = {
             backgroundColor: 'transparent',
             tooltip: {
                 trigger: 'axis',
-                axisPointer: { type: 'cross' }
+                formatter: params => {
+                    const date = params[0].axisValue;
+                    const value = params[0].value;
+                    return `${date.toLocaleDateString('de-DE')} ${date.toLocaleTimeString('de-DE')}<br/><strong>${value}</strong> Spieler`;
+                }
             },
             xAxis: {
-                type: 'category',
+                type: 'time',
                 boundaryGap: false,
-                data: timestamps,
-                axisLabel: {
-                    rotate: 15,
-                    color: '#b3b3b3'
-                }
+                axisLabel: { color: '#b3b3b3' }
             },
             yAxis: {
                 type: 'value',
                 name: 'Spieler',
                 axisLabel: { color: '#b3b3b3' },
-                splitLine: {
-                    lineStyle: { color: '#2c2c2c' }
-                }
+                splitLine: { lineStyle: { color: '#2c2c2c' } }
             },
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '10%',
-                containLabel: true
-            },
+            grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
             series: [{
                 name: 'Spieler Online',
                 type: 'line',
                 smooth: true,
                 showSymbol: false,
-                data: counts,
+                data: timestamps.map((time, i) => [time, counts[i]]),
                 itemStyle: { color: '#ffffff' },
                 lineStyle: { width: 3 },
                 areaStyle: {
                     color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                        offset: 0,
-                        color: 'rgba(255, 255, 255, 0.3)'
+                        offset: 0, color: 'rgba(255, 255, 255, 0.3)'
                     }, {
-                        offset: 1,
-                        color: 'rgba(255, 255, 255, 0)'
+                        offset: 1, color: 'rgba(255, 255, 255, 0)'
                     }])
                 }
             }]
         };
 
         historyChart.setOption(option);
-        window.addEventListener('resize', () => historyChart.resize());
+        setTimeout(() => {
+            historyChart.resize();
+        }, 50);
+    };
+
+    const fetchPlayerName = async (uuid) => {
+        if (nameCache.has(uuid)) {
+            return nameCache.get(uuid);
+        }
+        try {
+            const response = await fetch(`https://api.minetools.eu/uuid/${uuid}`);
+            if (!response.ok) { 
+                nameCache.set(uuid, uuid);
+                return uuid;
+            }
+            const data = await response.json();
+            const name = data.name || uuid;
+            nameCache.set(uuid, name);
+            return name;
+        } catch (error) {
+            console.error(`Fehler beim Abrufen des Namens für UUID ${uuid}:`, error);
+            return uuid;
+        }
     };
 
     const fetchPlaytime = async (page) => {
@@ -141,25 +151,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (data.players.length === 0) {
                  playtimeListEl.innerHTML = `<p style="text-align:center; grid-column: 1 / -1;">Keine Spielerdaten gefunden.</p>`;
-            } else {
-                data.players.forEach(player => {
-                    const entry = document.createElement('div');
-                    entry.className = 'playtime-entry';
-                    entry.innerHTML = `
-                        <img src="https://starlightskins.lunareclipse.studio/render/isometric/${player.minecraft_uuid}/head" alt="Spieler-Kopf" class="player-head">
-                        <div class="player-info">
-                            <h4>${player.minecraft_uuid}</h4>
-                            <p>Spielzeit: ${formatSeconds(player.total_playtime_seconds)}</p>
-                        </div>
-                    `;
-                    playtimeListEl.appendChild(entry);
-                });
+                 updatePagination();
+                 return;
             }
+            
+            const playersWithNames = await Promise.all(
+                data.players.map(async (player) => {
+                    const name = await fetchPlayerName(player.minecraft_uuid);
+                    return { ...player, name };
+                })
+            );
+
+            playersWithNames.forEach(player => {
+                const entry = document.createElement('div');
+                entry.className = 'playtime-entry';
+                entry.innerHTML = `
+                    <img src="https://starlightskins.lunareclipse.studio/render/isometric/${player.minecraft_uuid}/head" alt="Spieler-Kopf" class="player-head">
+                    <div class="player-info">
+                        <h4>${player.name}</h4>
+                        <p>${player.minecraft_uuid}</p>
+                        <p>Spielzeit: ${formatSeconds(player.total_playtime_seconds)}</p>
+                    </div>
+                `;
+                playtimeListEl.appendChild(entry);
+            });
 
             updatePagination();
         } catch (error) {
             console.error('Fehler beim Abrufen der Spielzeiten:', error);
-            playtimeListEl.innerHTML = `<p style="text-align:center;">Fehler beim Laden der Spielzeiten.</p>`;
+            playtimeListEl.innerHTML = `<p style="text-align:center; grid-column: 1 / -1;">Fehler beim Laden der Spielzeiten.</p>`;
         } finally {
             playtimeLoader.style.display = 'none';
         }
@@ -170,31 +190,30 @@ document.addEventListener('DOMContentLoaded', () => {
         const h = Math.floor(totalSeconds / 3600);
         const m = Math.floor((totalSeconds % 3600) / 60);
         const s = totalSeconds % 60;
-        return `${h}h ${m}m ${s}s`;
+        let result = [];
+        if (h > 0) result.push(`${h}h`);
+        if (m > 0) result.push(`${m}m`);
+        if (s > 0 && h === 0) result.push(`${s}s`);
+        return result.join(' ');
     };
 
     const updatePagination = () => {
         pageInfoEl.textContent = `Seite ${currentPage + 1}`;
         prevPageBtn.disabled = currentPage === 0;
-        
         const maxPage = Math.ceil(totalPlayers / PLAYERS_PER_PAGE) - 1;
-        nextPageBtn.disabled = currentPage >= maxPage;
+        nextPageBtn.disabled = currentPage >= maxPage || totalPlayers === 0;
     };
-
 
     timespanControls.addEventListener('click', (e) => {
         if (e.target.classList.contains('timespan-btn')) {
             document.querySelector('.timespan-btn.active').classList.remove('active');
             e.target.classList.add('active');
-            const newTimespan = e.target.dataset.timespan;
-            fetchHistory(newTimespan);
+            fetchHistory(e.target.dataset.timespan);
         }
     });
 
     prevPageBtn.addEventListener('click', () => {
-        if (currentPage > 0) {
-            fetchPlaytime(currentPage - 1);
-        }
+        if (currentPage > 0) fetchPlaytime(currentPage - 1);
     });
 
     nextPageBtn.addEventListener('click', () => {
@@ -204,7 +223,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const init = () => {
         fetchLiveStats();
         setInterval(fetchLiveStats, LIVE_STATS_REFRESH_INTERVAL_MS);
-
         fetchHistory('7d');
         fetchPlaytime(0);
     };
