@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Statistiken</title>
+    <link rel="stylesheet" href="css/stats.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="js/stats.js" defer></script>
+</head>
+<body>
+
+    <header>
+        <h1>Server Statistiken</h1>
+        <div id="live-stats-container">
+            <div class="stat-card">
+                <h3>Verbindung</h3>
+                <div class="status-indicator-container">
+                    <div id="connection-status" class="status-indicator disconnected"></div>
+                    <span id="connection-status-text">Warte auf Daten...</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <h3>Spieler Online</h3>
+                <p id="player-count">...</p>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="card">
+            <div class="card-header">
+                <h2>Spieler-Verlauf</h2>
+                <div id="timespan-controls">
+                    <button class="timespan-btn active" data-timespan="7d">7 Tage</button>
+                    <button class="timespan-btn" data-timespan="30d">30 Tage</button>
+                    <button class="timespan-btn" data-timespan="all">Gesamt</button>
+                </div>
+            </div>
+            <div id="history-chart-container">
+                <div class="loader" id="chart-loader"></div>
+                <div id="history-chart"></div>
+            </div>
+        </section>
+
+        <section class="card">
+             <div class="card-header">
+                <h2>Top Spielzeiten</h2>
+            </div>
+            <div id="playtime-list-container">
+                <div class="loader" id="playtime-loader"></div>
+                <div id="playtime-list">
+                </div>
+            </div>
+            <div id="pagination-controls">
+                <button id="prev-page" disabled>← Vorherige Seite</button>
+                <span id="page-info">Seite 1</span>
+                <button id="next-page" disabled>Nächste Seite →</button>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

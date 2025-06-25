@@ -1,0 +1,26 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: system-ui, sans-serif; background-color: #fdfdff; color: #333; min-height: 100vh; overflow: hidden; }
+main { display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; text-align: center; padding: 2rem; }
+h1 { 
+    font-size: 5rem; 
+    font-weight: 900; 
+    color: #1a1a1a; 
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+h1 .letter {
+    display: inline-block;
+    line-height: 1em;
+}
+h2 { font-size: 3rem; font-weight: 700; color: #1a1a1a; margin-bottom: 2rem; }
+p { font-size: 1.2rem; color: #555; margin-bottom: 2.5rem; }
+.button, .back-button { display: inline-block; font-size: 1.1rem; font-weight: 600; color: #fff; background-color: #252530; border: none; border-radius: 10px; padding: 1rem 2.5rem; cursor: pointer; text-decoration: none; transition: all 0.3s ease; }
+.button:hover { background-color: #3b3b4f; transform: translateY(-4px); }
+.button-group { display: flex; gap: 1.5rem; }
+.button-group-vertical { display: flex; flex-direction: column; gap: 1.5rem; }
+.back-button { position: absolute; top: 2rem; left: 2rem; padding: 0.5rem 1rem; background-color: #e0e0e0; color: #333; }
+.background-animation-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+.emote { 
+    position: absolute; 
+    font-size: 2rem; 
+}
