@@ -75,8 +75,8 @@ document.addEventListener('DOMContentLoaded', () => {
             tooltip: {
                 trigger: 'axis',
                 formatter: params => {
-                    const date = params[0].axisValue;
-                    const value = params[0].value;
+                    const date = new Date(params[0].axisValue);
+                    const value = params[0].value[1];
                     return `${date.toLocaleDateString('de-DE')} ${date.toLocaleTimeString('de-DE')}<br/><strong>${value}</strong> Spieler`;
                 }
             },
